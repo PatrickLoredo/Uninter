@@ -1,0 +1,1347 @@
+/*------------------- ARRAYS -------------------*/
+let arrayTecnologiasADS = JSON.parse(localStorage.getItem('Tecnologias')) || [];
+let arrayDisciplinasADS = JSON.parse(localStorage.getItem('Disciplinas')) || [];
+let arrayLivrosADS = JSON.parse(localStorage.getItem('Livros')) || [];
+let arrayProjetosADS = JSON.parse(localStorage.getItem('Projetos')) || [];
+let arrayAnotacoesADS = JSON.parse(localStorage.getItem('Anotacoes')) || [];
+
+/*
+INDICES DE SUBARRAYS
+0: tecnologias
+1: disciplinas
+2: livros
+3: projetos
+4: Anotacoes
+*/
+let arrayIdsUtilizados = JSON.parse(localStorage.getItem('ids')) || [[], [], [], [], []];
+
+
+/*------------------- CLASSES DE OBJETOS -------------------*/
+class Tecnologia {
+    constructor(id, nome, apelido, aplicacao) {
+        this.id = id;
+        this.nome = nome;
+        this.apelido = apelido;
+        this.aplicacao = aplicacao;
+    }
+}
+
+class Disciplina {
+    constructor(id, nome, periodo, aulas) {
+        this.id = id;
+        this.nome = nome;
+        this.periodo = periodo;
+        this.aulas = aulas;
+    }
+}
+
+class Livro {
+    constructor(id, dataInicio, dataFinalizacao, nome, periodo, disciplina, statusLeitura) {
+        this.id = id;
+        this.dataInicio = dataInicio;
+        this.dataFinalizacao = dataFinalizacao;
+        this.nome = nome;
+        this.periodo = periodo;
+        this.disciplina = disciplina;
+        this.statusLeitura = statusLeitura;
+    }
+}
+
+class Projeto{
+    constructor(id, 
+        nome, 
+        dataInicio, 
+        dataFinalizacao, 
+        periodo, 
+        disciplina, 
+        status, 
+        linkProjeto,
+    tecnologias){
+        this.id = id;
+        this.nome = nome;
+        this.dataInicio = dataInicio;
+        this.dataFinalizacao = dataFinalizacao;
+        this.periodo = periodo;
+        this.disciplina = disciplina;
+        this.status = status;
+        this.linkProjeto = linkProjeto;
+        this.tecnologias = tecnologias;
+    }
+}
+
+class Anotacao {
+    constructor(id, dataInicio, dataAtualizacao, periodo, disciplina, nomeAula, anotacao) {
+        this.id = id;
+        this.dataInicio = dataInicio;
+        this.dataAtualizacao = dataAtualizacao;
+        this.periodo = periodo;
+        this.disciplina = disciplina;
+        this.nomeAula = nomeAula;
+        this.anotacao = anotacao;
+    }
+}
+
+/*=========================================== FUNÇÕES GERAIS ===========================================*/
+/*=====================================================================================================*/
+// GERADOR UNIVERSAL DE ID [OK]
+function gerarId(tipo, idInput) {
+    let inputId = document.getElementById(idInput);
+
+    if(tipo === 'tecnologia'){
+        let ultimoCodigo = arrayIdsUtilizados[0].length;
+        let proximoCodigo = ultimoCodigo + 1;
+        inputId.value = `tec_${proximoCodigo}`
+    }
+    else if(tipo === 'disciplina'){
+        let ultimoCodigo = arrayIdsUtilizados[1].length;
+        let proximoCodigo = ultimoCodigo + 1;
+        inputId.value = `disc_${proximoCodigo}`
+
+    }
+    else if(tipo === 'livro'){
+        let ultimoCodigo = arrayIdsUtilizados[2].length;
+        let proximoCodigo = ultimoCodigo + 1;
+        inputId.value = `liv_${proximoCodigo}`
+
+    }
+    else if(tipo === 'projeto'){
+        let ultimoCodigo = arrayIdsUtilizados[3].length;
+        let proximoCodigo = ultimoCodigo + 1;
+        inputId.value = `pjt_${proximoCodigo}`
+    }
+    else if(tipo === 'anotacao'){
+        let ultimoCodigo = arrayIdsUtilizados[4].length;
+        let proximoCodigo = ultimoCodigo + 1;
+        inputId.value = `anot_${proximoCodigo}`
+    }
+}
+
+//TRASNCRITOR DE DADOS INSERIDOS EM OUTRO INPUT [OK]
+function copiaDadosDigitados(idOrigem, idDestino) {
+    document.getElementById(idDestino).value = document.getElementById(idOrigem).value;
+}
+
+//LIMPA UM CAMPO PARA VALEU = '' [OK]
+function limparCampoIndividual(idCampo) {
+    let campo = document.getElementById(idCampo);
+    campo.value = '';
+}
+
+// FUNÇÃO GERAL DE EDIÇÃO DE CAMPO DE DADO CADASTRADO [DISABLED=FALSE] [OK]
+function editarCampoCadastrado(tipo, idCampo, indice) {
+    const campo = document.getElementById(idCampo);
+    const btnSalvar = document.getElementById(`btnSalvarExibicao${tipo}_${indice}`);
+    const btnEditar = document.getElementById(`btnEditarExibicao${tipo}_${indice}`);
+
+    if (campo) {
+        campo.disabled = false;
+        campo.focus();
+
+        if (btnSalvar.classList.contains('d-none')) {
+            btnSalvar.classList.replace('d-none', 'd-block');
+            btnEditar.classList.replace('d-block', 'd-none');
+        } else {
+            btnSalvar.classList.replace('d-block', 'd-none');
+            btnEditar.classList.replace('d-none', 'd-block');
+        }
+    }
+}
+
+// FUNÇÃO GERAL DE ATUALIZAÇÃO DE CAMPO DE DADO CADASTRADO ATUALIZANDO NO LOCALSTORAGE [OK]
+function sobrescreverCampoCadastrado(tipo, idCampo, indice) {
+    const campo = document.getElementById(idCampo);
+    const btnSalvar = document.getElementById(`btnSalvarExibicao${tipo}_${indice}`);
+    const btnEditar = document.getElementById(`btnEditarExibicao${tipo}_${indice}`);
+
+    if (!campo) {
+        console.error(`Campo não encontrado: ${idCampo}`);
+        return;
+    }
+
+    if (tipo === 'Disciplinas') {
+        arrayDisciplinasADS[indice].nome = campo.value;
+        localStorage.setItem('Disciplinas', JSON.stringify(arrayDisciplinasADS));
+    }
+
+    if (tipo === 'Tecnologias') {
+        arrayTecnologiasADS[indice].nome = campo.value;
+        localStorage.setItem('Tecnologias', JSON.stringify(arrayTecnologiasADS));
+        populaCheckboxTecnologias('inputTecnologiasProjeto');
+    }
+    if (tipo === 'Livros') {
+        arrayLivrosADS[indice].nome = campo.value;
+        localStorage.setItem('Livros', JSON.stringify(arrayLivrosADS));
+    }
+
+    campo.disabled = true;
+
+    btnEditar.classList.remove('d-none');
+    btnEditar.classList.add('d-block');
+
+    btnSalvar.classList.remove('d-block');
+    btnSalvar.classList.add('d-none');
+
+    alert(`O cadastro de ${campo.value} foi atualizado!`);
+}
+
+// FUNÇÃO GENERICA QUE EXCLUI CADASTRO NO LOCALSTORAGE CONFORME CONFIRMAÇÃO DO USUARIO [OK]
+function excluirCampoCadastrado(escolha, idCampo, indice) {
+    const campo = document.getElementById(idCampo);
+
+    let confirmacao = confirm(`Deseja realmente excluir ${campo.value} ?`)
+
+    if (confirmacao) {
+        if (escolha === 'Tecnologias') {
+            arrayTecnologiasADS.splice(indice, 1);
+            localStorage.setItem('Tecnologias', JSON.stringify(arrayTecnologiasADS));
+            populaListaButtonTecnologias();
+            gerarId(arrayTecnologiasADS,'tech','inputIdTecnologia');
+            populaCheckboxTecnologias('inputTecnologiasProjeto');
+        }
+        if (escolha === 'Disciplinas') {
+            arrayDisciplinasADS.splice(indice, 1);
+            localStorage.setItem('Disciplinas', JSON.stringify(arrayDisciplinasADS));
+            populaListaButtonDisciplinas();
+            populaSelectDisciplinas('selectDisplinaAnotacoes', 'inputPeriodoAnotacoes');
+            gerarId(arrayDisciplinasADS,'disc','inputIdDisciplina');
+        }
+        if (escolha === 'Livros') {
+            arrayLivrosADS.splice(indice, 1);
+            localStorage.setItem('Livros', JSON.stringify(arrayLivrosADS));
+            populaListaButtonDisciplinas();
+            populaListaButtonLivros();
+            gerarId(arrayLivrosADS, 'liv', 'inputIdLivros');
+        }
+
+
+        alert(`${escolha} ${campo.value} foi excluído (a)!`);
+    }
+    else {
+        return
+    }
+}
+
+// MOSTRA A DATA ATUAL EM UM ID ESPECÍFICO [OK]
+function mostraDataAtual(idCampo) {
+    const campoData = document.getElementById(idCampo);
+    const data = new Date();
+    const dia = String(data.getDate()).padStart(2, '0');
+    const mes = String(data.getMonth() + 1).padStart(2, '0');
+    const ano = data.getFullYear();
+
+    campoData.value = `${ano}-${mes}-${dia}`;
+}
+
+// POPULA SELECT DE DISCIPLINAS DE ACORDO COM ARRAY [OK]
+function populaSelectDisciplinas(idSelect, idInputPeriodo) {
+    const campoSelect = document.getElementById(idSelect);
+    const campoPeriodo = document.getElementById(idInputPeriodo);
+    const listaPeriodo = arrayDisciplinasADS.filter(
+        disciplina => disciplina.periodo == campoPeriodo.value
+    );
+
+    campoSelect.innerHTML = '';
+    for (let i = 0; i < listaPeriodo.length; i++) {
+        campoSelect.innerHTML += `
+            <option value="${listaPeriodo[i].nome}" class="textoCenter">
+                ${listaPeriodo[i].nome}
+            </option>
+        `;
+    }
+}
+
+// POPULA CAMPO ESPECIFICOM COM CHECKBOX DAS TECNOLOGIAS CADASTRADAS [OK]
+function populaCheckboxTecnologias(campo){
+    let campoExibicao = document.getElementById(campo);
+    campoExibicao.innerHTML = '';
+
+    for(let i=0; i<arrayTecnologiasADS.length;i++){
+        campoExibicao.innerHTML +=`
+            <div class="col-4 mb-2 mt-3 flexCenter">
+                <input type="checkbox" name="tecnologiasProjeto_${arrayTecnologiasADS[i].nome}" id="tecnologia_${arrayTecnologiasADS[i].nome}" checked>&nbsp;&nbsp;
+                <span class="uppercase tamanho08 text-danger fw-semibold">${arrayTecnologiasADS[i].nome}</span>
+            </div>
+        `
+    }
+}
+
+// ALTERA O CHEVRON DE DOWN PARA UP (VICE VERSA) [OK]
+function mudaChevron(idChevron) {
+    const icone = document.getElementById(idChevron);
+
+    if (icone.classList.contains('fa-chevron-down')) {
+        icone.classList.replace('fa-chevron-down', 'fa-chevron-up');
+    } else {
+        icone.classList.replace('fa-chevron-up', 'fa-chevron-down');
+    }
+}
+
+function abreLink(url) {
+    window.open(url, '_blank');
+}
+
+
+/*======================================== FUNÇÕES TECNOLOGIAS ========================================*/
+/*=====================================================================================================*/
+// SALVA NOVO CADASTRO DE TENCOLOGIA NO ARRAY [OK]
+function salvarNovaTecnologia() {
+    let campoCadastro_IdTecnologia = document.getElementById('inputIdTecnologia');
+    let campoCadastro_NomeTecnologia = document.getElementById('inputNomeTecnologia');
+    let campoCadastro_ApelidoTecnologia = document.getElementById('inputApelidoTecnologia');
+    let campoCadastro_AplicacaoTecnologia = document.getElementById('selectAplicacoTecnologia');
+
+    if (campoCadastro_NomeTecnologia.value.trim() === '') {
+        alert('Nenhum NOME DE TECNOLOGIA NÃO FOI INFORMADO. Tente novamente !')
+    }
+    else {
+        if (arrayTecnologiasADS.some(tecnologia => tecnologia === campoCadastro_NomeTecnologia.value.trim())) {
+            alert(`Tecnologia ${campoCadastro_NomeTecnologia.value} já foi cadastrada anteriormente!`); return
+        }
+
+        let novoCadastroTecnologia = new Tecnologia(campoCadastro_IdTecnologia.value, campoCadastro_NomeTecnologia.value, campoCadastro_ApelidoTecnologia.value, campoCadastro_AplicacaoTecnologia.value);
+
+        arrayTecnologiasADS.push(novoCadastroTecnologia);
+        localStorage.setItem('Tecnologias', JSON.stringify(arrayTecnologiasADS));
+
+        alert(`A tecnologia ${campoCadastro_NomeTecnologia.value}  foi cadastrada com sucesso !`)
+
+        arrayIdsUtilizados[0].push(campoCadastro_IdTecnologia.value);
+        localStorage.setItem('ids', JSON.stringify(arrayIdsUtilizados));
+
+        gerarId('tecnologia', 'inputIdTecnologia');
+
+        populaListaButtonTecnologias();
+        limparCampoIndividual('inputNomeTecnologia');
+        copiaDadosDigitados('inputNomeTecnologia', 'inputApelidoTecnologia');
+        populaCheckboxTecnologias('inputTecnologiasProjeto');
+        
+    }
+
+
+}
+
+// POPULA LISTA DE BUTTONS DE ACORDO COM ARRAY [OK]
+function populaListaButtonTecnologias() {
+    let campoInputCadastrosFrontend = document.getElementById('campoExibicaoTecnologiasFrontend');
+    let campoInputCadastrosBackend = document.getElementById('campoExibicaoTecnologiasBackend');
+    let campoInputCadastrosFullstack = document.getElementById('campoExibicaoTecnologiasFullStack');
+
+    campoInputCadastrosBackend.innerHTML = '';
+    campoInputCadastrosFrontend.innerHTML = '';
+    campoInputCadastrosFullstack.innerHTML = '';
+
+    for (let i = 0; i < arrayTecnologiasADS.length; i++) {
+
+
+        let mensagemPopular = `
+            <div class="col-md-6 col-sm-12 mb-2">
+                <div class="input-group">
+                    <input type="text" class="form-control uppercase text-center" value="${arrayTecnologiasADS[i].nome}" 
+                    disabled style="font-size:0.8rem" id="campoTecnologiaCadastrada_${arrayTecnologiasADS[i].nome}"></input>
+
+                    <button class="btn btn-success input-group-text d-none" 
+                    id="btnSalvarExibicaoTecnologias_${i}"
+                    onclick="sobrescreverCampoCadastrado('Tecnologias','campoTecnologiaCadastrada_${arrayTecnologiasADS[i].nome}', '${i}')">
+                        <i class="fa fa-save"></i>
+                    </button>                
+
+                    <button class="btn btn-primary input-group-text d-block"
+                    id="btnEditarExibicaoTecnologias_${i}"
+                    onclick="editarCampoCadastrado('Tecnologias', 'campoTecnologiaCadastrada_${arrayTecnologiasADS[i].nome}', ${i})">
+                        <i class="fa fa-edit"></i>
+                    </button>                
+
+                    <button class="btn btn-danger input-group-text d-block"
+                    id="btnExcluirExibicaoTecnologias_${i}"
+                    onclick="excluirCampoCadastrado('Tecnologias', 'campoTecnologiaCadastrada_${arrayTecnologiasADS[i].nome}', '${i}')">
+                        <i class="fa fa-trash"></i>
+                    </button>                
+            </div>
+        `
+
+        if (arrayTecnologiasADS[i].aplicacao === 'Frontend')
+            campoInputCadastrosFrontend.innerHTML += `
+                ${mensagemPopular}
+            `
+        else if (arrayTecnologiasADS[i].aplicacao === 'Backend') {
+            campoInputCadastrosBackend.innerHTML += `
+                ${mensagemPopular}
+            `
+        }
+        else {
+            campoInputCadastrosFullstack.innerHTML += `
+                ${mensagemPopular}
+            `
+        }
+    }
+}
+
+
+/*======================================== FUNÇÕES DISCIPLINAS ========================================*/
+/*=====================================================================================================*/
+// SALVA UMA NOVA DISCIPLINA NO LOCALSTORAGE [OK]
+function salvarNovaDisciplina() {
+    let campoCadastro_IdDisciplina = document.getElementById('inputIdDisciplina');
+    let campoCadastro_PeriodoDisciplina = document.getElementById('inputPeriodoDisciplina');
+    let campoCadastro_NomeDisciplina = document.getElementById('inputNomeDisciplina');
+    const idDisciplina = campoCadastro_IdDisciplina.value.trim();
+    const periodoDisciplina = Number(campoCadastro_PeriodoDisciplina.value);
+    const nomeDisciplina = campoCadastro_NomeDisciplina.value.trim();
+
+    if (nomeDisciplina === '') {
+        alert('Nenhuma disciplina informada! Preencha o campo e tente novamente.');
+        return;
+    }
+
+    if (
+        arrayDisciplinasADS.some(disciplina => disciplina.nome.toLowerCase() === nomeDisciplina.toLowerCase())
+    ) 
+    {
+        alert('A disciplina já foi inserida anteriormente! Tente um novo cadastro diferente.');
+        return;
+    }
+
+    let novaDisciplina = new Disciplina(idDisciplina, nomeDisciplina, periodoDisciplina, []);
+
+    arrayDisciplinasADS.push(novaDisciplina);
+    localStorage.setItem('Disciplinas', JSON.stringify(arrayDisciplinasADS));
+
+    populaListaButtonDisciplinas();
+    populaSelectDisciplinas('selectDisplinaAnotacoes', 'inputPeriodoAnotacoes');
+
+    alert('Disciplina cadastrada com sucesso!');
+
+    limparCampoIndividual('inputNomeDisciplina');
+    campoCadastro_PeriodoDisciplina.value = 1;
+    
+    arrayIdsUtilizados[1].push(campoCadastro_IdDisciplina.value);
+    localStorage.setItem('ids', JSON.stringify(arrayIdsUtilizados));
+    gerarId('disciplina', 'inputIdDisciplina')
+}
+
+// POPULA LISTA DE BUTTONS DE ACORDO COM ARRAY [OK]
+function populaListaButtonDisciplinas() {
+
+    const camposPeriodo = [
+        document.getElementById('alert1Periodo'),
+        document.getElementById('alert2Periodo'),
+        document.getElementById('alert3Periodo'),
+        document.getElementById('alert4Periodo'),
+        document.getElementById('alert5Periodo')
+    ];
+
+    const mensagemAlertPadrao = `
+        <div class="alert alert-danger">
+            <div class="row">
+                <div class="col">
+                    <h6 class="uppercase tamanho09 flexCenter">
+                        <i class="fas fa-triangle-exclamation fa-fade tamanho18"></i>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span class="textoCenter"><b>nenhuma disciplina <br>cadastrada</b> para esse período</span>
+                    </h6>
+                </div>
+            </div>
+        </div>
+    `;
+
+    for (let i = 0; i < camposPeriodo.length; i++) {
+        camposPeriodo[i].innerHTML = '';
+    }
+
+    for (let periodo = 1; periodo <= 5; periodo++) {
+
+        const disciplinasDoPeriodo = arrayDisciplinasADS.filter(
+            disciplina => Number(disciplina.periodo) === periodo
+        );
+
+        if (disciplinasDoPeriodo.length === 0) {
+            camposPeriodo[periodo - 1].innerHTML = mensagemAlertPadrao;
+            continue;
+        }
+
+        for (let i = 0; i < arrayDisciplinasADS.length; i++) {
+            const disciplina = arrayDisciplinasADS[i];
+            if (Number(disciplina.periodo) !== periodo) {
+                continue;
+            }
+
+            const mensagemPopular = `
+                <div class="col-12 mb-3">
+                    <div class="input-group">
+
+                        <span class="bg-dark input-group-text text-warning">
+                            <i class="fa fa-book"></i>
+                        </span>
+
+                        <input
+                            type="text" class="form-control uppercase textoCenter"
+                            value="${disciplina.nome}" disabled style="font-size: 0.8rem"
+                            id="campoDisciplinaCadastrada_${disciplina.nome}" >
+                        <button class="btn btn-success input-group-text d-none"
+                            onclick="sobrescreverCampoCadastrado(
+                                'Disciplinas',
+                                'campoDisciplinaCadastrada_${disciplina.nome}',
+                                '${i}')" id="btnSalvarExibicaoDisciplinas_${i}">
+                            <i class="fa fa-save"></i>
+                        </button>
+
+                        <button
+                            class="btn btn-primary input-group-text"
+                            id="btnEditarExibicaoDisciplinas_${i}"
+                            onclick="editarCampoCadastrado(
+                                'Disciplinas',
+                                'campoDisciplinaCadastrada_${disciplina.nome}', ${i})">
+                            <i class="fa fa-edit"></i>
+                        </button>
+
+                        <button
+                            class="btn btn-danger input-group-text"
+                            onclick="excluirCampoCadastrado(
+                                'Disciplinas',
+                                'campoDisciplinaCadastrada_${disciplina.nome}', '${i}' )">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            camposPeriodo[periodo - 1].innerHTML += mensagemPopular;
+        }
+    }
+}
+
+
+/*======================================== FUNÇÕES LIVROS ========================================*/
+/*=====================================================================================================*/
+// SALVA NOVO CADASTRO DE LIVRO DENTRO DO ARRAY [OK]
+function salvarNovoLivro() {
+    let campoCadastro_IdLivro = document.getElementById('inputIdLivros').value;
+    let campoCadastro_DataInicioLivro = document.getElementById('inputDataInicioLivros').value;
+    let campoCadastro_DataFinalizacaoLivro = document.getElementById('inputDataFinalLivros').value;
+    let campoCadastro_NomeLivro = document.getElementById('inputNomeLivros').value;
+    let campoCadastro_PeriodoLivro = document.getElementById('inputPeriodoLivros').value;
+    let campoCadastro_DisciplinaLivro = document.getElementById('selectDisplinaLivros').value;
+    let campoCadastro_StatusLeituraLivro = document.getElementById('inputStatusLeitutraLivros').value;
+
+    let livroExiste = arrayLivrosADS.some(
+        livro => livro.nome.trim().toLowerCase() === campoCadastro_NomeLivro.trim().toLowerCase()
+)   ;
+
+    if (campoCadastro_NomeLivro) {
+        if (livroExiste) {
+            alert(`O livro informado ${campoCadastro_NomeLivro} já foi cadastrado anteriormente. Tente novamente outro exemplar de livro !`)
+        }
+        else {
+            let novoLivro = new Livro(
+                campoCadastro_IdLivro,
+                campoCadastro_DataInicioLivro,
+                campoCadastro_DataFinalizacaoLivro,
+                campoCadastro_NomeLivro.trim(),
+                campoCadastro_PeriodoLivro,
+                campoCadastro_DisciplinaLivro,
+                campoCadastro_StatusLeituraLivro);
+
+            arrayLivrosADS.push(novoLivro);
+            localStorage.setItem('Livros', JSON.stringify(arrayLivrosADS));
+
+            alert(`O livro ${campoCadastro_NomeLivro} foi salvo com sucesso !`)
+
+            document.getElementById('inputDataFinalLivros').value = '';
+            document.getElementById('inputNomeLivros').value = '';
+            document.getElementById('inputPeriodoLivros').value = 1;
+
+            arrayIdsUtilizados[2].push(campoCadastro_IdLivro.value);
+            localStorage.setItem('ids', JSON.stringify(arrayIdsUtilizados));
+
+            gerarId('livro', 'inputIdLivros');
+            mostraDataAtual('inputDataInicioLivros');
+            populaSelectDisciplinas('selectDisplinaLivros', 'inputPeriodoLivros')
+        }
+    }
+    else {
+        alert('Nenhum nome de livro foi informado ! \nInsira e tente novamente.')
+    }
+    populaListaButtonLivros()
+}
+
+// VERIFICA SE A LEITURA DO IVRO SE ENCONTRA COMO FINALIZADO OU ABERTO - GERA O ALERT CONFORME OPTION [OK]
+function verificaStatusLeituraLivro(status) {
+    const alertSuccess = document.getElementById('alertLeituraLivroSuccess');
+    const alertDanger = document.getElementById('alertLeituraLivroDanger');
+
+    alertSuccess.classList.remove('d-block');
+    alertSuccess.classList.add('d-none');
+
+    alertDanger.classList.remove('d-block');
+    alertDanger.classList.add('d-none');
+
+    if (status === 'Em aberto') {
+        alertSuccess.classList.remove('d-none');
+        alertSuccess.classList.add('d-block');
+    }
+
+    if (status === 'Finalizado') {
+        alertDanger.classList.remove('d-none');
+        alertDanger.classList.add('d-block');
+    }
+}
+
+// POPULA OS NOMES DE LIVROS CADASTRADOS CONFORME PERIODO DE ESTUDO [OK]
+function populaListaButtonLivros() {
+    const campoExibicaoLivros_1Periodo = document.getElementById('campoExibicaoLivros_1Periodo');
+    const campoExibicaoLivros_2Periodo = document.getElementById('campoExibicaoLivros_2Periodo');
+    const campoExibicaoLivros_3Periodo = document.getElementById('campoExibicaoLivros_3Periodo');
+    const campoExibicaoLivros_4Periodo = document.getElementById('campoExibicaoLivros_4Periodo');
+    const campoExibicaoLivros_5Periodo = document.getElementById('campoExibicaoLivros_5Periodo');
+
+    campoExibicaoLivros_1Periodo.innerHTML = '';
+    campoExibicaoLivros_2Periodo.innerHTML = '';
+    campoExibicaoLivros_3Periodo.innerHTML = '';
+    campoExibicaoLivros_4Periodo.innerHTML = '';
+    campoExibicaoLivros_5Periodo.innerHTML = '';
+
+    for (let i = 0; i < arrayLivrosADS.length; i++) {
+        const livro = arrayLivrosADS[i];
+        const periodo = Number(livro.periodo);
+
+        const mensagemPopular = `
+            <div class="col-12 mb-3">
+                <div class="input-group">
+                    <input type="text" class="form-control uppercase tamanho08 textoCenter" value="${livro.nome}" disabled
+                    id="exibicaoLivros_${i}"></input>
+                    <button class="btn btn-secondary input-group-text">
+                        <i class="fa fa-hourglass"></i>
+                    </button>
+                    <button class="btn btn-primary input-group-text d-block" id="btnEditarExibicaoLivros_${i}"
+                    onclick="editarCampoCadastrado('Livros', 'exibicaoLivros_${i}', ${i})">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                    <button class="btn btn-success input-group-text d-none" id="btnSalvarExibicaoLivros_${i}"
+                    onclick="sobrescreverCampoCadastrado('Livros', 'exibicaoLivros_${i}', '${i}')">
+                        <i class="fa fa-save"></i>
+                    </button>
+                    <button class="btn btn-danger input-group-text"
+                    onclick="excluirCampoCadastrado('Livros', 'exibicaoLivros_${i}', ${i})">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+
+        if (periodo === 1) {campoExibicaoLivros_1Periodo.innerHTML += mensagemPopular;}
+        else if (periodo === 2) {campoExibicaoLivros_2Periodo.innerHTML += mensagemPopular;}
+        else if (periodo === 3) {campoExibicaoLivros_3Periodo.innerHTML += mensagemPopular;}
+        else if (periodo === 4) {campoExibicaoLivros_4Periodo.innerHTML += mensagemPopular;}
+        else if (periodo === 5) {campoExibicaoLivros_5Periodo.innerHTML += mensagemPopular;}
+    }
+}
+
+function limparCamposLivros() {
+    document.getElementById('inputDataInicioLivros').value = '';
+    document.getElementById('inputNomeLivros').value = '';
+    document.getElementById('inputStatusLeitutraLivros').value = '-';
+    document.getElementById('inputPeriodoLivros').value = '1';
+
+    populaSelectDisciplinas('selectDisplinaLivros', 'inputPeriodoLivros');
+    verificaStatusLeituraLivro('inputStatusLeitutraLivros');
+}
+
+/*======================================== FUNÇÕES PROJETOS ========================================*/
+/*=====================================================================================================*/
+
+//SALVA O NOVO CADASTRO DE PROJETO NO ARRAY DE PROJETOS [OK]
+function salvarProjeto() {
+    let campoCadastro_IdProjeto = document.getElementById('inputIdProjeto').value;
+    let campoCadastro_NomeProjeto = document.getElementById('inputNomeProjeto').value;
+    let campoCadastro_DataInicioProjeto = document.getElementById('inputDataInicioProjeto').value;
+    let campoCadastro_DataFinalizacaoProjeto = document.getElementById('inputDataFinalizacaoProjeto').value;
+    let campoCadastro_PeriodoProjeto = document.getElementById('inputPeriodoProjeto').value;
+    let campoCadastro_DisciplinaProjeto = document.getElementById('selectDisplinaProjeto').value;
+    let campoCadastro_StatusProjeto = document.getElementById('selectStatusProjeto').value;
+    let campoCadastro_LinkProjeto = document.getElementById('inputLinkProjeto').value;
+
+    function pegaTecnologiasSelecionadas() {
+        let tecnologiasSelecionadas = [];
+
+        let checkboxes = document.querySelectorAll(
+            'input[type="checkbox"][name^="tecnologiasProjeto_"]'
+        );
+
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                tecnologiasSelecionadas.push(checkbox.name);
+            }
+        });
+
+        return tecnologiasSelecionadas;
+    }
+
+    if (!campoCadastro_NomeProjeto.trim()) {
+        alert('O NOME DO PROJETO não foi inserido! Tente novamente.');
+        return;
+    }
+
+    if (arrayProjetosADS.some(projeto => projeto.nomeProjeto === campoCadastro_NomeProjeto.trim())){
+            alert('Esse nome de projeto já foi inserido anteriormente.\n' +
+            'Tente um novo nome de projeto diferente!'
+        );
+        return;
+    }
+
+    let tecnologiasSelecionadas = pegaTecnologiasSelecionadas();
+
+    let novoProjeto = new Projeto(
+        campoCadastro_IdProjeto,
+        campoCadastro_NomeProjeto,
+        campoCadastro_DataInicioProjeto,
+        campoCadastro_DataFinalizacaoProjeto,
+        campoCadastro_PeriodoProjeto,
+        campoCadastro_DisciplinaProjeto,
+        campoCadastro_StatusProjeto,
+        campoCadastro_LinkProjeto,
+        tecnologiasSelecionadas
+    );
+
+    arrayProjetosADS.push(novoProjeto);
+    localStorage.setItem('Projetos',JSON.stringify(arrayProjetosADS));
+
+    alert(`O projeto ${campoCadastro_NomeProjeto} foi cadastrado com Sucesso!`);
+
+    document.getElementById('inputNomeProjeto').value = '';
+    document.getElementById('inputDataFinalizacaoProjeto').value = '';
+    document.getElementById('inputPeriodoProjeto').value = 1;
+    document.getElementById('selectStatusProjeto').value = '-';
+    document.getElementById('inputLinkProjeto').value = '';
+
+    arrayIdsUtilizados[3].push(campoCadastro_IdProjeto.value);
+    localStorage.setItem('ids', JSON.stringify(arrayIdsUtilizados));
+    gerarId('projeto', 'campoCadastro_IdProjeto');
+
+    mostraDataAtual('inputDataInicioProjeto');
+    populaSelectDisciplinas('selectDisplinaProjeto','inputPeriodoProjeto');
+    populaCheckboxTecnologias('inputTecnologiasProjeto');
+}
+
+// POPULA O CAMPO COM TODOS OS PROJETOS JA CADASTRADOS [OK]
+function exibirProjetosCadastrado(){
+    const campoExibicao = document.getElementById('exibicaoProjetosCadastrados');
+    campoExibicao.innerHTML = '';
+
+    for(let i=0;i<arrayProjetosADS.length;i++){
+        campoExibicao.innerHTML +=`
+            <div class="col-12">
+                <button class="btn btn-sm btn-dark uppercase w-100"
+                data-bs-toggle="modal" data-bs-target="#modalProjetoEditar"
+                onclick="recuperaDadosProjetoModal('${i}'),
+                populaCheckboxTecnologias('exibicaoModalTecnologias')">
+                    <i class="fa fa-star text-warning"></i>&nbsp;&nbsp;
+                    ${arrayProjetosADS[i].nome}
+                </button>
+            </div>
+        `
+    }
+}
+
+function recuperaDadosProjetoModal(indice){
+    const campoModalBodyDados = document.getElementById('campoModalBodyDadosProjetoEditar');
+    const exibicaoModalTecnologias = document.getElementById('exibicaoModalTecnologias');
+    const modalBodyBtnHref = document.getElementById('campoModalProjetoBtnHref');
+
+    campoModalBodyDados.innerHTML = '';
+    exibicaoModalTecnologias.innerHTML = '';
+    modalBodyBtnHref.innerHTML = '';
+
+    modalBodyBtnHref.innerHTML = `
+        <div class="col-12 mb-3 flexCenter">
+            <button class="btn btn-dark btn-sm w-100"
+            onclick="abreLink('${arrayProjetosADS[indice].linkProjeto}')">
+                <i class="fa fa-link text-primary"></i>&nbsp;&nbsp;
+                <span>${arrayProjetosADS[indice].nome}</span>
+            </button>
+        </div>
+    `
+
+    campoModalBodyDados.innerHTML = `
+            <div class="col-12 mb-4">
+                <h6 class="uppercase textoCenter">dados do projeto</h6>
+            </div>
+            <div class="col-3 mb-3">
+                <label for="" class="labelFormat">id</label>
+                <input type="text" class="form-control uppercase" 
+                value="${arrayProjetosADS[indice].id}"
+                disabled>
+            </div>
+            <div class="col-9 mb-3">
+                <label for="" class="labelFormat">nome</label>
+                <input type="text" class="form-control uppercase" 
+                value="${arrayProjetosADS[indice].nome}" disabled>
+            </div>
+            <div class="col-5 mb-3">
+                <label for="" class="labelFormat">Data Inicio</label>
+                <input type="date" class="form-control uppercase" 
+                value="${arrayProjetosADS[indice].dataInicio}" disabled>
+            </div>
+            <div class="col-5 mb-3">
+                <label for="" class="labelFormat">Data Finalização</label>
+                <input type="date" class="form-control uppercase" 
+                value="${arrayProjetosADS[indice].dataFinalizacao}" disabled>
+            </div>
+            <div class="col-2 mb-3">
+                <label for="" class="labelFormat">Período</label>
+                <input type="number" class="form-control uppercase" 
+                min="1" max="5" value="${arrayProjetosADS[indice].periodo}"
+                disabled>
+            </div>
+            <div class="col-8 mb-3">
+                <label for="" class="labelFormat">Disciplina</label>
+                <input type="text" class="form-control uppercase" 
+                value="${arrayProjetosADS[indice].disciplina}"
+                disabled>
+            </div>
+            <div class="col-4 mb-3">
+                <label for="" class="labelFormat">sTATUS</label>
+                <select name="" class="form-select uppercase textoCenter" id="" disabled>
+                    <option>${arrayProjetosADS[indice].status}</option>
+                </select>
+            </div>
+            <div class="col-12 mb-5">
+                <label for="" class="labelFormat">link de acesso do projeto</label>
+                <input type="text" class="form-control uppercase" 
+                value="${arrayProjetosADS[indice].linkProjeto}" disabled>
+            </div>
+        <hr>
+    `
+
+}
+
+function limparCamposProjetos(){
+    document.getElementById('inputNomeProjeto').value = '';
+    const dataInicio_Projeto = document.getElementById('inputDataInicioProjeto').value;
+    const dataFinalizacao_Projeto = document.getElementById('inputDataFinalizacaoProjeto').value;
+    const periodo_Projeto = document.getElementById('inputPeriodoProjeto').value;
+    const disciplina_Projeto = document.getElementById('selectDisplinaProjeto').value;
+    const status_Projeto = document.getElementById('selectStatusProjeto').value;
+    const link_Projeto = document.getElementById('inputLinkProjeto').value;
+
+
+}
+
+function excluirProjeto(id){
+    let projetoExiste = arrayProjetosADS.some(projeto => projeto.id === id);
+
+    if(projetoExiste){
+        for(let i=0;i<arrayProjetosADS.length;i++){
+            if(arrayProjetosADS[i].id === id){
+            alert(`O ID: ${id} é referente ao projeto: ${arrayProjetosADS[i].nome}`);
+            }  
+        }
+    }
+}
+
+/*======================================== FUNÇÕES ANOTAÇÕES MATERIA ========================================*/
+/*=====================================================================================================*/
+
+// SALVA UMA NOVA ANOTAÇÃO NO LOCALSTORAGE [OK]
+function salvarAnotacaoMateria() {
+
+    const inputIdAnotacoes =
+        document.getElementById('inputIdAnotacoes').value;
+
+    const inputDataInicioAnotacoes =
+        document.getElementById('inputDataInicioAnotacoes').value;
+
+    const inputDataAtualizacaoAnotacoes =
+        document.getElementById('inputDataAtualizacaoAnotacoes').value;
+
+    const inputPeriodoAnotacoes =
+        document.getElementById('inputPeriodoAnotacoes').value;
+
+    const selectDisplinaAnotacoes =
+        document.getElementById('selectDisplinaAnotacoes').value;
+
+    const inputNomeMateriaAnotacoes =
+        document.getElementById('inputNomeMateriaAnotacoes').value.trim();
+
+    const textAreaAnotacaoMateria =
+        document.getElementById('textAreaAnotacaoMateria').value.trim();
+
+
+    // VALIDAÇÃO
+    if (
+        inputNomeMateriaAnotacoes === '' ||
+        textAreaAnotacaoMateria === ''
+    ) {
+        alert(
+            'Campos obrigatórios não foram preenchidos!\n' +
+            'Tente novamente.'
+        );
+
+        return;
+    }
+
+
+    // PROCURA ANOTAÇÃO EXISTENTE
+    const indiceMateria = arrayAnotacoesADS.findIndex(
+        anotacao =>
+            anotacao.nomeAula.toLowerCase() ===
+            inputNomeMateriaAnotacoes.toLowerCase()
+    );
+
+
+    // SE JÁ EXISTE
+    if (indiceMateria !== -1) {
+
+        const confirmacaoMateria = confirm(
+            'Já existe uma anotação feita anteriormente para essa matéria.\n' +
+            'Deseja atualizar?'
+        );
+
+        if (!confirmacaoMateria) {
+            return;
+        }
+
+        const anotacaoAtualizada = new Anotacao(
+            arrayAnotacoesADS[indiceMateria].id,
+            arrayAnotacoesADS[indiceMateria].dataInicio,
+            inputDataAtualizacaoAnotacoes,
+            inputPeriodoAnotacoes,
+            selectDisplinaAnotacoes,
+            inputNomeMateriaAnotacoes,
+            textAreaAnotacaoMateria
+        );
+
+        arrayAnotacoesADS[indiceMateria] = anotacaoAtualizada;
+
+        localStorage.setItem('Anotacoes',JSON.stringify(arrayAnotacoesADS));
+        alert('Anotação atualizada com sucesso!');
+
+        return;
+    }
+
+
+    // NOVA ANOTAÇÃO
+    const novaAnotacao = new Anotacao(
+        inputIdAnotacoes,
+        inputDataInicioAnotacoes,
+        inputDataAtualizacaoAnotacoes,
+        inputPeriodoAnotacoes,
+        selectDisplinaAnotacoes,
+        inputNomeMateriaAnotacoes,
+        textAreaAnotacaoMateria
+    );
+
+    arrayAnotacoesADS.push(novaAnotacao);
+
+    localStorage.setItem('Anotacoes',JSON.stringify(arrayAnotacoesADS));
+
+    // REGISTRA O ID COMO UTILIZADO
+    arrayIdsUtilizados[4].push(inputIdAnotacoes);
+    localStorage.setItem('ids', JSON.stringify(arrayIdsUtilizados));
+
+    alert('Anotação salva com sucesso!');
+
+    // LIMPA CAMPOS
+    document.getElementById('inputDataInicioAnotacoes').value = '';
+    document.getElementById('inputPeriodoAnotacoes').value = '1';
+    document.getElementById('inputNomeMateriaAnotacoes').value = '';
+    document.getElementById('textAreaAnotacaoMateria').value = '';
+
+    // GERA O PRÓXIMO ID DE ANOTAÇÃO
+    gerarId('anotacao', 'inputIdAnotacoes');
+
+    console.log(arrayAnotacoesADS);
+    console.log(arrayIdsUtilizados);
+}
+
+// EXIBE OS CARDS-HEADER DE CADA PERIODO DO CURSO [OK]
+function exibePeriodosAnotacoes() {
+    let campoExibicao = document.getElementById('mainExibicaoAnotacoes');
+    campoExibicao.innerHTML = '';
+
+    for (let i = 1; i < 6; i++) {
+        campoExibicao.innerHTML += `
+            <div class="row" id="anotacaoPeriodo${i}">
+                <div class="col">
+                    <div class="card-header mb-2">
+                        <div class="row">
+                            <div class="col">
+                                <h6 class="uppercase tamanho11 mb-0">
+                                    ${i}° período
+                                </h6>
+                            </div>
+
+                            <div class="col-auto">
+                                <span class="bg-warning uppercase fw-bold tamanho07 px-3 py-1 rounded-pill"
+                                id="contador_${i}Periodo"
+                                style="width: 20px">
+                                    Anotações
+                                </span>
+                            </div>
+
+                            <div class="col-auto">
+                                <button class="btn btn-danger btn-sm"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#body_${i}PeriodoAnotacoesAlert"
+                                    onclick="mudaChevron('iconeChevron_Anotacao0${i}'); 
+                                    populaAnotacoesPorPeriodo(${i});">
+
+                                    <i class="fa fa-chevron-down"
+                                        id="iconeChevron_Anotacao0${i}">
+                                    </i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="row card-body  collapse" id="body_${i}PeriodoAnotacoesAlert">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+}
+
+// EXIBE O ROUNDED-PILL COM A QUANITDADE DE ANOTAÇÕES POR PERIODO [OK]
+function calculaQtdAnotacoesPeriodo() {
+    const contador1Periodo = document.getElementById('contador_1Periodo');
+    const contador2Periodo = document.getElementById('contador_2Periodo');
+    const contador3Periodo = document.getElementById('contador_3Periodo');
+    const contador4Periodo = document.getElementById('contador_4Periodo');
+    const contador5Periodo = document.getElementById('contador_5Periodo');
+
+    let contagem1Periodo = 0;
+    let contagem2Periodo = 0;
+    let contagem3Periodo = 0;
+    let contagem4Periodo = 0;
+    let contagem5Periodo = 0;
+
+    for (let i = 0; i < arrayAnotacoesADS.length; i++) {
+        let periodo = Number(arrayAnotacoesADS[i].periodo);
+
+        if (periodo === 1) {
+            contagem1Periodo++;
+        }
+
+        if (periodo === 2) {
+            contagem2Periodo++;
+        }
+
+        if (periodo === 3) {
+            contagem3Periodo++;
+        }
+
+        if (periodo === 4) {
+            contagem4Periodo++;
+        }
+
+        if (periodo === 5) {
+            contagem5Periodo++;
+        }
+    }
+
+    contador1Periodo.innerHTML = `${contagem1Periodo} Anotações`
+    contador2Periodo.innerHTML = `${contagem2Periodo} Anotações`
+    contador3Periodo.innerHTML = `${contagem3Periodo} Anotações`
+    contador4Periodo.innerHTML = `${contagem4Periodo} Anotações`
+    contador5Periodo.innerHTML = `${contagem5Periodo} Anotações`
+}
+
+//  LIBERA CAMPOS PARA EDICAO [OK]
+function editaAnotacaoFeita(idCampoPeriodo, idCampoNomeAula,SelectDisciplinas, textAreaAnotacao) {
+    const campoPeriodo = document.getElementById(idCampoPeriodo);
+    const campoNomeAula = document.getElementById(idCampoNomeAula);
+    const selectDisciplinas = document.getElementById(SelectDisciplinas);
+    const campoTextAreaAnotacao = document.getElementById(textAreaAnotacao);
+
+
+    if(campoPeriodo.disabled){
+        campoPeriodo.disabled = false;
+        campoNomeAula.disabled = false;
+        selectDisciplinas.disabled = false;
+        campoTextAreaAnotacao.disabled = false;
+    }
+}
+
+// POPULA TODAS AS ANOTAÇÕES POR PERÍODO [OK]
+function populaAnotacoesPorPeriodo(periodoSelecionado) {
+    const campoPeriodo = document.getElementById(`body_${periodoSelecionado}PeriodoAnotacoesAlert`);
+    campoPeriodo.innerHTML = '';
+    let contador = 0;
+
+    for (let i = 0; i < arrayAnotacoesADS.length; i++) {
+        const anotacao = arrayAnotacoesADS[i];
+        if (Number(anotacao.periodo) !== periodoSelecionado) {continue;}
+        contador++;
+
+        const idPeriodo = `campoSessaoAnotacoesPERIODO_${i}`;
+        const idID = `campoSessaoAnotacoesID_${i}`;
+        const idNomeAula = `campoSessaoAnotacoesNOMEAULA_${i}`;
+        const idDisciplina = `campoSessaoAnotacoesDISCIPLINA_${i}`;
+        const idTextArea = `campoSessaoAnotacoesTEXTANOTACAO_${i}`;
+
+        campoPeriodo.innerHTML += `
+            <div class="col-12 mb-2">
+                <div class="alert alert-primary">
+                    <span class="iconetagNumero uppercase" data-bs-toggle="collapse"
+                        data-bs-target="#alertPeriodo_${periodoSelecionado}_Anotacao_${i}"
+                        style="cursor:pointer"
+                        onclick="consoleArray(arrayAnotacoesADS)">
+                            Resumo &nbsp;${contador}
+                    </span>
+
+                    <span class="iconetagDisciplina uppercase">
+                        ${arrayAnotacoesADS[i].disciplina}
+                    </span>
+
+                    <div class="row mt-2">
+                        <!-- DATA -->
+                        <div class="col-3 mb-2">
+                            <label class="labelFormat text-primary fw-bold">ID</label>
+                            <input class="form-control uppercase textoCenter"
+                            style="font-size: 0.8rem" type="text" value="${anotacao.id}"
+                            id="${idID}"
+                            disabled>
+                        </div>
+                      
+                        <!-- NOME DA AULA -->
+                        <div class="col mb-3">
+                            <label class="labelFormat text-primary fw-bold">Nome da Aula</label>
+                            <input class="form-control uppercase textoCenter" 
+                                style="font-size: 0.8rem" type="text" value="${anotacao.nomeAula}"
+                                disabled id="${idNomeAula}" data-toggle="tooltip" 
+                                title="${anotacao.nomeAula}">
+                        </div>
+                    </div>
+
+
+                    <!-- DETALHES -->
+                    <div class="row collapse" id="alertPeriodo_${periodoSelecionado}_Anotacao_${i}">
+                        <!-- PERÍODO -->
+                        <div class="col-auto mb-3">
+                            <label class="labelFormat text-primary fw-bold">periodo</label>
+                            <select class="form-select uppercase textoCenter"
+                                id="${idPeriodo}" disabled style="font-size: 0.8rem"
+                                onchange="populaSelectDisciplinas('${idDisciplina}', '${idPeriodo}')">
+
+                                <option value="1" ${Number(anotacao.periodo) === 1 ? 'selected' : ''}>
+                                    1
+                                </option>
+
+                                <option value="2" ${Number(anotacao.periodo) === 2 ? 'selected' : ''}>
+                                    2
+                                </option>
+
+                                <option value="3" ${Number(anotacao.periodo) === 3 ? 'selected' : ''}>
+                                    3
+                                </option>
+
+                                <option value="4"
+                                    ${Number(anotacao.periodo) === 4 ? 'selected' : ''}>
+                                    4
+                                </option>
+
+                                <option value="5" ${Number(anotacao.periodo) === 5 ? 'selected' : ''}>
+                                    5
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col mb-2">
+                            <label class="labelFormat text-primary fw-bold">
+                                Disciplina da Aula
+                            </label>
+
+                            <select class="form-select uppercase textoCenter"
+                                id="${idDisciplina}"  disabled
+                                style="font-size: 0.8rem">
+
+                                <option value="${anotacao.disciplina}" selected>
+                                    ${anotacao.disciplina}
+                                </option>
+                            </select>
+                        </div>
+
+                        <hr>
+
+                        <!-- ANOTAÇÃO -->
+                        <div class="col-12">
+                            <div class="mt-1">
+                                <label class="labelFormat text-primary fw-bold">
+                                    Anotações da Aula
+                                </label>
+
+                                <textarea class="form-control" rows="10" disabled
+                                    id="${idTextArea}">${anotacao.anotacao}
+                                </textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-12 flexCenter gap-2">
+                            <button class="btn btn-sm btn-primary"
+                                onclick="editaAnotacaoFeita(
+                                    '${idPeriodo}',
+                                    '${idNomeAula}',
+                                    '${idDisciplina}',
+                                    '${idTextArea}'
+                                )">
+
+                                <i class="fa fa-edit"></i>&nbsp;
+
+                                <span class="uppercase tamanho07">Editar</span>
+                            </button>
+
+                            <button class="btn btn-sm btn-success"
+                            onclick="sobscreverAtualizarAnotacao(
+                            '${idID}',
+                            '${idNomeAula}',
+                            '${idPeriodo}',
+                            '${idDisciplina}',
+                            '${idTextArea}')">
+                                <i class="fa fa-save"></i>&nbsp;
+                                <span class="uppercase tamanho07">Salvar</span>
+                            </button>
+
+
+                            <button class="btn btn-sm btn-danger"
+                            onclick="excluirAnotacaoCompleta('${anotacao.id}')">
+                                <i class="fa fa-trash"></i>&nbsp;
+                                <span class="uppercase tamanho07">Excluir</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Popula o select de disciplinas
+        populaSelectDisciplinas(idDisciplina,idPeriodo);
+
+        // Seleciona a disciplina que estava salva
+        document.getElementById(idDisciplina).value = anotacao.disciplina;
+    }
+
+
+    if (contador === 0) {
+
+        campoPeriodo.innerHTML = `
+            <div class="col-12">
+                <div class="alert alert-danger text-center">
+                    <span class="uppercase tamanho08 fw-bold">
+                        <i class="fas fa-exclamation-triangle"></i>&nbsp;
+                        Nenhuma anotação neste período.
+                    </span>
+                </div>
+            </div>
+        `;
+    }
+}
+
+
+// ATUALIZA O ARRAY DE ACORDO COM A ATUALIZAÇAÃO DA ANOTAÇÃO [OK]
+function sobscreverAtualizarAnotacao( id, nomeAula, periodo, disciplina, anotacao) {
+    const campoId = document.getElementById(id);
+    const campoNomeAula = document.getElementById(nomeAula);
+    const campoPeriodo = document.getElementById(periodo);
+    const campoDisciplinas = document.getElementById(disciplina);
+    const campoTextoAnotacao = document.getElementById(anotacao);
+
+    if ( !campoId || !campoNomeAula || !campoPeriodo || !campoDisciplinas || !campoTextoAnotacao) {
+        console.error('Um ou mais campos não foram encontrados.');
+        return;
+    }
+
+    const campoIdValor = campoId.value.trim();
+    const campoNomeAulaValor = campoNomeAula.value.trim();
+    const campoPeriodoValor = Number(campoPeriodo.value);
+    const campoDisciplinaValor = campoDisciplinas.value;
+    const campoTextoAnotacaoValor = campoTextoAnotacao.value.trim();
+
+    if ( campoNomeAulaValor === '' || campoTextoAnotacaoValor === '' ) {
+        alert(
+            'Os campos de Nome da Aula e Anotação não podem ficar vazios.\n' +
+            'Insira e tente novamente.'
+        );
+
+        return;
+    }
+
+    const indice = arrayAnotacoesADS.findIndex( anotacao => String(anotacao.id) === campoIdValor);
+
+    if (indice === -1) {
+        alert('Anotação não encontrada.');
+        return;
+    }
+
+    const periodoAnterior = Number(arrayAnotacoesADS[indice].periodo);
+
+    const data = new Date();
+    const dataAtualizacao =
+        `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}-${String(data.getDate()).padStart(2, '0')}`;
+
+    arrayAnotacoesADS[indice].nomeAula = campoNomeAulaValor;
+    arrayAnotacoesADS[indice].dataAtualizacao = dataAtualizacao;
+    arrayAnotacoesADS[indice].periodo = campoPeriodoValor;
+    arrayAnotacoesADS[indice].disciplina = campoDisciplinaValor;
+    arrayAnotacoesADS[indice].anotacao = campoTextoAnotacaoValor;
+
+    localStorage.setItem('Anotacoes', JSON.stringify(arrayAnotacoesADS));
+
+    alert('Anotação atualizada com sucesso!');
+
+    populaAnotacoesPorPeriodo(periodoAnterior);
+
+    if (periodoAnterior !== campoPeriodoValor) {
+        populaAnotacoesPorPeriodo(campoPeriodoValor);
+    }
+
+    calculaQtdAnotacoesPeriodo();
+    console.log(arrayAnotacoesADS);
+}
+
+function excluirAnotacaoCompleta(id) {
+    const confirmacao = confirm('Deseja realmente excluir esta anotação?');
+    if (!confirmacao) {return;}
+
+    const indice = arrayAnotacoesADS.findIndex(anotacao => String(anotacao.id) === String(id));
+    if (indice === -1) {
+        alert('Anotação não encontrada.');
+        return;
+    }
+
+    const periodo = Number(arrayAnotacoesADS[indice].periodo);
+    arrayAnotacoesADS.splice(indice, 1);
+
+    localStorage.setItem('Anotacoes',JSON.stringify(arrayAnotacoesADS));
+    alert('Anotação excluída com sucesso!');
+
+    populaAnotacoesPorPeriodo(periodo);
+    calculaQtdAnotacoesPeriodo();
+}
+
+
+function consoleArray(array){
+    console.log(array)
+}
+
+
+
+
+
+/*======================================== FUNÇÕES ONLOAD ========================================*/
+/*=====================================================================================================*/
+window.onload = () => {
+    verificaStatusLeituraLivro('Em Aberto');
+    gerarId(arrayProjetosADS, 'PRJ', 'inputIdProjeto'),
+    mostraDataAtual('inputDataInicioProjeto');
+    populaSelectDisciplinas('selectDisplinaProjeto', 'inputPeriodoProjeto');
+    populaCheckboxTecnologias('inputTecnologiasProjeto');
+
+    const modal = document.getElementById('modalProjetoEditar');
+    const modalInstance = new bootstrap.Modal(modal);
+    modalInstance.show();
+    recuperaDadosProjetoModal('0')
+    populaCheckboxTecnologias('exibicaoModalTecnologias')
+}
