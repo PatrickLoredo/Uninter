@@ -1339,9 +1339,9 @@ window.onload = () => {
     populaSelectDisciplinas('selectDisplinaProjeto', 'inputPeriodoProjeto');
     populaCheckboxTecnologias('inputTecnologiasProjeto');
 
-    const modal = document.getElementById('modalProjetoEditar');
+    /*const modal = document.getElementById('modalProjetoEditar');
     const modalInstance = new bootstrap.Modal(modal);
     modalInstance.show();
     recuperaDadosProjetoModal('0')
-    populaCheckboxTecnologias('exibicaoModalTecnologias')
+    populaCheckboxTecnologias('exibicaoModalTecnologias')*/
 }
