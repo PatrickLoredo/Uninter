@@ -19,7 +19,9 @@ a{
 #mainProjetosBody input,
 #mainTecnologiasBody input,
 #mainTecnologiasBody select,
-#campoModalBodyDadosProjetoEditar input{
+#campoModalBodyDadosProjetoEditar input,
+#mainExerciciosProvasBody input,
+#mainExerciciosProvasBody select{
     text-align: center;
 }
 
@@ -49,7 +51,9 @@ a{
 #mainProjetosBody input,
 #mainProjetosBody select,
 #mainTecnologiasBody input,
-#mainTecnologiasBody select{
+#mainTecnologiasBody select,
+#mainExerciciosProvasBody input,
+#mainExerciciosProvasBody select{
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -76,7 +80,9 @@ a{
 #mainTecnologiasBody input,
 #mainTecnologiasBody select,
 #campoModalBodyDadosProjetoEditar input,
-#campoModalBodyDadosProjetoEditar select{
+#campoModalBodyDadosProjetoEditar select,
+#mainExerciciosProvasBody input,
+#mainExerciciosProvasBody select{
     font-size: 0.7rem;
 }
 

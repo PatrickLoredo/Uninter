@@ -95,6 +95,257 @@
             <!--PRIMEIRA COLUNA DE COLLAPSE MAIN-->
 
             <div class="col-lg-6 col-sm-12">
+                <!--PROVAS E EXERCICIOS DO CURSO-->
+                <div class="row" id="mainProvasExercicios">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card mb-3">
+                                    <!--CARD HEAD - PROVAS E EXERCICIOS-->
+                                    <div class="card-header bg-warning text-light">
+                                        <div class="row"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#mainExerciciosProvasBody"
+                                        onclick="gerarId('inputIdExerciciosProvas',arrayExerciciosProvas,'trf'),
+                                        mostraDataAtual('inputDataExerciciosProvas'),
+                                        calculaDiasFaltam('inputDataExerciciosProvas', 'inputDiasFaltamExerciciosProvas')"
+                                        style="cursor: pointer;">
+                                            <div class="col">
+                                                <h5 class="tamanho12 uppercase flex-Center card-title mb-0 textoCenter">
+                                                    Provas e Exercícios
+                                                </h5>
+                                            </div>
+                                            <div class="col-auto flexCenter gap-2">
+                                                <button class="btn btn-sm btn-dark" 
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#mainExerciciosProvasBody"
+                                                    onclick="populaListaButtonExerciciosProvas(),
+                                                    gerarId('inputIdExerciciosProvas',arrayExerciciosProvas,'trf'),
+                                                    mostraDataAtual('inputDataExerciciosProvas'),
+                                                    calculaDiasFaltam('inputDataExerciciosProvas', 'inputDiasFaltamExerciciosProvas')">
+                                                    <i class="fa fa-circle-plus"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-dark" 
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#campoExibeCadastrosExerciciosProvas"
+                                                    onclick="populaListaButtonExerciciosProvas()">
+                                                    <i class="fa fa-list"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--CARD BODY - CADASTRO EXERCÍCIOS E PROVAS-->
+                                    <div class="card-body collapse" id="mainExerciciosProvasBody">
+                                        <div class="row">
+                                            <!--ID EXERCÍCIOS E PROVAS-->
+                                            <div class="col-auto col-lg-3 mb-3">
+                                                <label for="" class="labelFormat">Id</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-hashtag"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" id="inputIdExerciciosProvas"
+                                                        disabled>
+                                                </div>
+                                            </div>
+
+                                            <!--DATA EXERCÍCIOS E PROVAS-->
+                                            <div class="col-auto mb-3">
+                                                <label for="" class="labelFormat">Data</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                    <input type="date" class="form-control uppercase" 
+                                                    id="inputDataExerciciosProvas"
+                                                    onchange="calculaDiasFaltam('inputDataExerciciosProvas','inputDiasFaltamExerciciosProvas',document.getElementById('tipoTarefaCadastro').value)">
+                                                </div>
+                                            </div>
+
+                                            <!--DIAS FALTAM TAREFA-->
+                                            <div class="col mb-3">
+                                                <label for="" class="labelFormat">Dias Faltam</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control uppercase" 
+                                                    id="inputDiasFaltamExerciciosProvas"
+                                                        disabled>
+                                                </div>
+                                            </div>
+
+                                            <!--TIPO DE CADASTRO-->
+                                            <div class="col-6 col-lg-auto mb-3">
+                                                <label for="" class="labelFormat">tipo de tarefa</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                   <select name="" id="tipoTarefaCadastro" class="form-select">
+                                                        <option value="">-</option>
+                                                        <option value="Exercício">Exercicio</option>
+                                                        <option value="Prova">Prova</option>
+                                                        <option value="Trabalho">Trabalho</option>
+                                                        <option value="Outro">Outro</option>
+                                                   </select>
+                                                </div>
+                                            </div>
+
+                                            <!--PERIODO DA TAREFA-->
+                                            <div class="col-6 col-lg-auto mb-3">
+                                                <label for="" class="labelFormat">Período da tarefa</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                   <select name="" id="periodoTarefaCadastro" class="form-select"
+                                                   onchange="populaSelectDisciplinas('materiaTarefaCadastro','periodoTarefaCadastro')">
+                                                        <option value="">-</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                   </select>
+                                                </div>
+                                            </div>
+
+                                            <!--STATUS DA TAREFA-->
+                                            <div class="col-auto mb-3">
+                                                <label for="" class="labelFormat">Status da tarefa</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-hourglass"></i>
+                                                    </span>
+                                                   <select name="" id="statusTarefaCadastro" class="form-select">
+                                                        <option value="">-</option>
+                                                        <option value="Pendente" selected>Pendente</option>
+                                                        <option value="Finalizado(a)">Finalizado(a)</option>
+                                                   </select>
+                                                </div>
+                                            </div>
+
+                                            <!--MATÉRIA DA TAREFA-->
+                                            <div class="col-12 mb-3">
+                                                <label for="" class="labelFormat">Matéria da tarefa</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-book"></i>
+                                                    </span>
+                                                    <select name="" id="materiaTarefaCadastro" class="form-select"></select>
+                                                    <button class="btn btn-dark btn-sm"
+                                                    onclick="scrollParaId('mainDisciplinasBody',+1000),
+                                                    clicarElemento('btnCadastroNovaDisciplina')">
+                                                        <i class="fa fa-circle-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+
+                                        <!--BUTTONS DE SALVAR /-LIMPAR [Exercicios Provas]-->
+                                        <div class="row">
+                                            <div class="col text-center">
+                                                <button class="btn btn-sm btn-success " id="btnSalvarExerciciosProvas"
+                                                    onclick="salvarNovoExerciciosProvas()">
+                                                    <i class="fa fa-floppy-disk"></i>
+                                                    <span class="tamanho07">Salvar</span>
+                                                </button>
+                                                <button class="btn btn-sm btn-primary" 
+                                                id="btnLimparCamposExerciciosProvas"
+                                                onclick="limparCampoIndividual('inputNomeExerciciosProvas')">
+                                                    <i class="fa fa-broom"></i>
+                                                    <span class="tamanho07">limpar</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--CARD BODY - EXIBICAO TODAS TECNOLOGIAS-->
+                                    <div class="card-body collapse" id="campoExibeCadastrosExerciciosProvas">
+                                        <div class="row">
+                                            <div class="col">
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <h6 class="uppercase">Exercícios</h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="row" id="campoExibicaoExercicios">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <hr>
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <h6 class="uppercase">Provas</h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="row" id="campoExibicaoProvas">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <hr>
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <h6 class="uppercase">Trabalhos</h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="row" id="campoExibicaoTrabalhos">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <hr>
+
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <h6 class="uppercase">Outros</h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="row" id="campoExibicaoOutros">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!--TECNOLOGIAS DO CURSO-->
                 <div class="row" id="mainTecnologias">
                     <div class="col">
@@ -103,18 +354,22 @@
                                 <div class="card mb-3">
                                     <!--CARD HEAD - TECNOLOGIAS-->
                                     <div class="card-header bg-info text-light">
-                                        <div class="row">
+                                        <div class="row"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#mainTecnologiasBody"
+                                        onclick="gerarId('inputIdTecnologia',arrayTecnologiasADS,'tcn')"
+                                        style="cursor: pointer;">
                                             <div class="col">
                                                 <h5 class="tamanho12 uppercase flex-Center card-title mb-0 textoCenter">
                                                     Tecnologias do Curso
                                                 </h5>
                                             </div>
                                             <div class="col-auto flexCenter gap-2">
-                                                <button class="btn btn-sm btn-dark" 
+                                                <button class="btn btn-sm btn-dark"
                                                     data-bs-toggle="collapse"
                                                     data-bs-target="#mainTecnologiasBody"
                                                     onclick="populaListaButtonTecnologias(),
-                                                    gerarId( 'tecnologia','inputIdTecnologia')">
+                                                    gerarId('inputIdTecnologia',arrayTecnologiasADS,'tcn')">
                                                     <i class="fa fa-circle-plus"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-dark" data-bs-toggle="collapse"
@@ -130,7 +385,7 @@
                                     <div class="card-body collapse" id="mainTecnologiasBody">
                                         <div class="row">
                                             <!--ID TECNOLOGIA-->
-                                            <div class="col-4 mb-3">
+                                            <div class="col-3 mb-3">
                                                 <label for="" class="labelFormat">Id</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary text-light">
@@ -279,17 +534,23 @@
                             <div class="col-12">
                                 <div class="card mb-3">
                                     <div class="card-header bg-success text-light">
-                                        <div class="row">
+                                        <div class="row"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#mainDisciplinasBody"
+                                        onclick="gerarId('inputIdDisciplina',arrayDisciplinasADS,'dsc')"
+                                        style="cursor: pointer;">
                                             <div class="col">
                                                 <h5 class="tamanho12 uppercase flex-Center card-title mb-0 textoCenter">
                                                     Disciplinas do Curso
                                                 </h5>
                                             </div>
                                             <div class="col-auto flexCenter gap-2">
-                                                <button class="btn btn-sm btn-dark" data-bs-toggle="collapse"
+                                                <button class="btn btn-sm btn-dark" 
+                                                    id="btnCadastroNovaDisciplina" 
+                                                    data-bs-toggle="collapse"
                                                     data-bs-target="#mainDisciplinasBody"
-                                                    onclick="populaListaButtonDisciplinas(),
-                                                    gerarId( 'disciplina', 'inputIdDisciplina')">
+                                                    onclick="populaListaButtonDisciplinas();
+                                                    gerarId('inputIdDisciplina',arrayDisciplinasADS,'dsc')">
                                                     <i class="fa fa-circle-plus"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-dark" data-bs-toggle="collapse"
@@ -305,7 +566,7 @@
                                     <div class="card-body collapse" id="mainDisciplinasBody">
                                         <div class="row">
                                             <!--ID DISCIPLINA-->
-                                            <div class="col-4 mb-3">
+                                            <div class="col-3 mb-3">
                                                 <label for="" class="labelFormat">Id</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary text-light">
@@ -486,18 +747,23 @@
                             <div class="col-12">
                                 <div class="card mb-3">
                                     <div class="card-header bg-danger text-light">
-                                        <div class="row">
+                                        <div class="row"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#mainLivrosBody"
+                                        onclick="gerarId('inputIdLivros',arrayLivrosADS,'lvr')"
+                                        style="cursor: pointer;">
                                             <div class="col">
                                                 <h5 class="tamanho12 uppercase flex-Center card-title mb-0 textoCenter">
                                                     Livros do Curso
                                                 </h5>
                                             </div>
                                             <div class="col-auto flexCenter gap-2">
-                                                <button class="btn btn-sm btn-dark" data-bs-toggle="collapse"
+                                                <button class="btn btn-sm btn-dark" 
+                                                    data-bs-toggle="collapse"
                                                     data-bs-target="#mainLivrosBody"
                                                     onclick="populaListaButtonLivros(),
                                                     populaSelectDisciplinas('selectDisplinaLivros','inputPeriodoLivros'),
-                                                    gerarId('livro','inputIdLivros'),
+                                                    gerarId('inputIdLivros',arrayLivrosADS,'lvr'),
                                                     mostraDataAtual('inputDataInicioLivros'),
                                                     mostraDataAtual('inputDataAtualizacaoLivros')">
                                                     <i class="fa fa-circle-plus"></i>
@@ -514,12 +780,14 @@
                                     <!--CARD CADASTRO DE LIVROS-->
                                     <div class="card-body collapse" id="mainLivrosBody">
                                         <div class="row">
-                                            <!--ID CADASTRO LIVRO-->
                                             <div class="col-3 mb-3">
-                                                <label for="" class="labelFormat">
-                                                    Id
-                                                </label>
-                                                <input type="text" class="form-control" id="inputIdLivros" disabled>
+                                                <label for="" class="labelFormat">Id</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-hashtag"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" id="inputIdLivros" disabled>
+                                                </div>
                                             </div>
 
                                             <!--DATA INICIO CADASTRO LIVRO-->
@@ -731,17 +999,22 @@
                                 <div class="card mb-3">
                                     <!--CARD HEADER - PROJETOS-->
                                     <div class="card-header bg-secondary text-light">
-                                        <div class="row">
+                                        <div class="row"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#mainProjetosBody"
+                                        onclick="gerarId('inputIdProjeto',arrayProjetosADS,'pjt')"
+                                        style="cursor: pointer;">
                                             <div class="col">
                                                 <h5 class="tamanho12 uppercase flex-Center card-title mb-0 textoCenter">
                                                     Projetos do Curso
                                                 </h5>
                                             </div>
                                             <div class="col-auto flexCenter gap-2">
-                                                <button class="btn btn-sm btn-dark" data-bs-toggle="collapse"
+                                                <button class="btn btn-sm btn-dark" 
+                                                    data-bs-toggle="collapse"
                                                     data-bs-target="#mainProjetosBody"
                                                     onclick="exibirProjetosCadastrado(),
-                                                    gerarId('projeto', 'inputIdProjeto'),
+                                                    gerarId('inputIdProjeto',arrayProjetosADS,'pjt'),
                                                     mostraDataAtual('inputDataInicioProjeto'),
                                                     populaSelectDisciplinas('selectDisplinaProjeto', 'inputPeriodoProjeto'),
                                                     populaCheckboxTecnologias('inputTecnologiasProjeto')">
@@ -951,7 +1224,8 @@
                                                 onclick="exibePeriodosAnotacoes(),
                                                 calculaQtdAnotacoesPeriodo(),
                                                 mostraDataAtual('inputDataAtualizacaoAnotacoes'),
-                                                gerarId('anotacao','inputIdAnotacoes'),
+                                                gerarId('inputIdAnotacoes',arrayAnotacoesADS,'anot'),
+                                                
                                                 mostraDataAtual('inputDataInicioAnotacoes'),
                                                 populaSelectDisciplinas('selectDisplinaAnotacoes', 'inputPeriodoAnotacoes')">
                                                     <i class="fa fa-circle-plus"></i>

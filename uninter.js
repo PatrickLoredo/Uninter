@@ -4,6 +4,7 @@ let arrayDisciplinasADS = JSON.parse(localStorage.getItem('Disciplinas')) || [];
 let arrayLivrosADS = JSON.parse(localStorage.getItem('Livros')) || [];
 let arrayProjetosADS = JSON.parse(localStorage.getItem('Projetos')) || [];
 let arrayAnotacoesADS = JSON.parse(localStorage.getItem('Anotacoes')) || [];
+let arrayExerciciosProvas = JSON.parse(localStorage.getItem('ExericiosProvas')) || [];
 
 /*
 INDICES DE SUBARRAYS
@@ -84,36 +85,12 @@ class Anotacao {
 /*=========================================== FUNÇÕES GERAIS ===========================================*/
 /*=====================================================================================================*/
 // GERADOR UNIVERSAL DE ID [OK]
-function gerarId(tipo, idInput) {
+function gerarId(idInput, array, alias) {
     let inputId = document.getElementById(idInput);
 
-    if(tipo === 'tecnologia'){
-        let ultimoCodigo = arrayIdsUtilizados[0].length;
-        let proximoCodigo = ultimoCodigo + 1;
-        inputId.value = `tec_${proximoCodigo}`
-    }
-    else if(tipo === 'disciplina'){
-        let ultimoCodigo = arrayIdsUtilizados[1].length;
-        let proximoCodigo = ultimoCodigo + 1;
-        inputId.value = `disc_${proximoCodigo}`
-
-    }
-    else if(tipo === 'livro'){
-        let ultimoCodigo = arrayIdsUtilizados[2].length;
-        let proximoCodigo = ultimoCodigo + 1;
-        inputId.value = `liv_${proximoCodigo}`
-
-    }
-    else if(tipo === 'projeto'){
-        let ultimoCodigo = arrayIdsUtilizados[3].length;
-        let proximoCodigo = ultimoCodigo + 1;
-        inputId.value = `pjt_${proximoCodigo}`
-    }
-    else if(tipo === 'anotacao'){
-        let ultimoCodigo = arrayIdsUtilizados[4].length;
-        let proximoCodigo = ultimoCodigo + 1;
-        inputId.value = `anot_${proximoCodigo}`
-    }
+    let ultimoCodigo = array.length;
+    let proximoCodigo = ultimoCodigo + 1;
+    inputId.value = `${alias}_${proximoCodigo}`
 }
 
 //TRASNCRITOR DE DADOS INSERIDOS EM OUTRO INPUT [OK]
@@ -278,6 +255,55 @@ function mudaChevron(idChevron) {
 
 function abreLink(url) {
     window.open(url, '_blank');
+}
+
+function scrollParaId(id, pixels = 0) {
+    const elemento = document.getElementById(id);
+    if (!elemento) return;
+
+    window.scrollTo({
+        top: elemento.offsetTop + pixels,
+        behavior: 'smooth'
+    });
+}
+
+function clicarElemento(idElemento) {
+    const elemento = document.getElementById(idElemento);
+    if (!elemento) {
+        return;
+    }
+    elemento.click();
+}
+/*======================================== FUNÇÕES EXERCICIOS PROVAS ========================================*/
+/*=====================================================================================================*/
+function calculaDiasFaltam(idDataAtual, idcampoxibicaoDiasFaltam) {
+
+    const campoDataExercicio = document.getElementById(idDataAtual);
+    const campoExibicaoDiasFaltam = document.getElementById(idcampoxibicaoDiasFaltam);
+
+    let dataInformada = new Date(campoDataExercicio.value + 'T00:00:00');
+    let dataAtual = new Date();
+
+    dataAtual.setHours(0, 0, 0, 0);
+
+    let diferenca = dataInformada - dataAtual;
+    let dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+    if (dias < 0) {
+
+        alert(`A data informada é inferior à data atual!\n\nInsira uma data igual ou maior à data atual.`);
+        campoExibicaoDiasFaltam.value = 'n/a';
+        return;
+    }
+
+    if (dias === 0) {
+        campoExibicaoDiasFaltam.value = 'Hoje';
+    } 
+    else if (dias === 1) {
+        campoExibicaoDiasFaltam.value = '1 dia';
+    } 
+    else {
+        campoExibicaoDiasFaltam.value = `${dias} dias`;
+    }
 }
 
 
