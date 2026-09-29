@@ -4,7 +4,7 @@ let arrayDisciplinasADS = JSON.parse(localStorage.getItem('Disciplinas')) || [];
 let arrayLivrosADS = JSON.parse(localStorage.getItem('Livros')) || [];
 let arrayProjetosADS = JSON.parse(localStorage.getItem('Projetos')) || [];
 let arrayAnotacoesADS = JSON.parse(localStorage.getItem('Anotacoes')) || [];
-let arrayExerciciosProvas = JSON.parse(localStorage.getItem('ExericiosProvas')) || [];
+let arrayExerciciosProvas = JSON.parse(localStorage.getItem('ExerciciosProvas')) || [];
 
 /*
 INDICES DE SUBARRAYS
@@ -19,25 +19,28 @@ let arrayIdsUtilizados = JSON.parse(localStorage.getItem('ids')) || [[], [], [],
 
 /*------------------- CLASSES DE OBJETOS -------------------*/
 class Tecnologia {
-    constructor(id, nome, apelido, aplicacao) {
+    constructor(id, nome, apelido, aplicacao, statusAtividade) {
         this.id = id;
         this.nome = nome;
         this.apelido = apelido;
         this.aplicacao = aplicacao;
+        this.atividade = statusAtividade;
     }
 }
 
 class Disciplina {
-    constructor(id, nome, periodo, aulas) {
+    constructor(id, nome, periodo, aulas, atividade,statusAtividade) {
         this.id = id;
         this.nome = nome;
         this.periodo = periodo;
         this.aulas = aulas;
+        this.atividade = atividade;
+        this.statusAtividade = statusAtividade;
     }
 }
 
 class Livro {
-    constructor(id, dataInicio, dataFinalizacao, nome, periodo, disciplina, statusLeitura) {
+    constructor(id, dataInicio, dataFinalizacao, nome, periodo, disciplina, statusLeitura, statusAtividade) {
         this.id = id;
         this.dataInicio = dataInicio;
         this.dataFinalizacao = dataFinalizacao;
@@ -45,6 +48,7 @@ class Livro {
         this.periodo = periodo;
         this.disciplina = disciplina;
         this.statusLeitura = statusLeitura;
+        this.statusAtividade = statusAtividade;
     }
 }
 
@@ -57,21 +61,31 @@ class Projeto{
         disciplina, 
         status, 
         linkProjeto,
-    tecnologias){
-        this.id = id;
-        this.nome = nome;
-        this.dataInicio = dataInicio;
-        this.dataFinalizacao = dataFinalizacao;
-        this.periodo = periodo;
-        this.disciplina = disciplina;
-        this.status = status;
-        this.linkProjeto = linkProjeto;
-        this.tecnologias = tecnologias;
-    }
+        tecnologias,
+        statusAtividade) {
+            this.id = id;
+            this.nome = nome;
+            this.dataInicio = dataInicio;
+            this.dataFinalizacao = dataFinalizacao;
+            this.periodo = periodo;
+            this.disciplina = disciplina;
+            this.status = status;
+            this.linkProjeto = linkProjeto;
+            this.tecnologias = tecnologias;
+            this.statusAtividade = statusAtividade;
+            
+        }
 }
 
 class Anotacao {
-    constructor(id, dataInicio, dataAtualizacao, periodo, disciplina, nomeAula, anotacao) {
+    constructor(id, 
+        dataInicio, 
+        dataAtualizacao, 
+        periodo, 
+        disciplina, 
+        nomeAula, 
+        anotacao,
+        statusAtividade) {
         this.id = id;
         this.dataInicio = dataInicio;
         this.dataAtualizacao = dataAtualizacao;
@@ -79,18 +93,46 @@ class Anotacao {
         this.disciplina = disciplina;
         this.nomeAula = nomeAula;
         this.anotacao = anotacao;
+        this.statusAtividade = statusAtividade;
     }
+}
+
+class Tarefa {
+    constructor(
+        id, 
+        dataTarefa,
+        tipoTarefa,
+        statusTarefa, 
+        periodoTarefa,
+        disciplinaTarefa,
+        statusAtividade){
+            this.id = id;
+            this.dataTarefa = dataTarefa;
+            this.tipoTarefa = tipoTarefa;
+            this.statusTarefa = statusTarefa;
+            this.periodoTarefa = periodoTarefa;
+            this.disciplinaTarefa = disciplinaTarefa;
+            this.statusAtividade = statusAtividade;
+            
+        }
 }
 
 /*=========================================== FUNÇÕES GERAIS ===========================================*/
 /*=====================================================================================================*/
 // GERADOR UNIVERSAL DE ID [OK]
 function gerarId(idInput, array, alias) {
+
     let inputId = document.getElementById(idInput);
+
+    if (!inputId) {
+        console.error(`Elemento com ID "${idInput}" não foi encontrado.`);
+        return;
+    }
 
     let ultimoCodigo = array.length;
     let proximoCodigo = ultimoCodigo + 1;
-    inputId.value = `${alias}_${proximoCodigo}`
+
+    inputId.value = `${alias}_${proximoCodigo}`;
 }
 
 //TRASNCRITOR DE DADOS INSERIDOS EM OUTRO INPUT [OK]
@@ -172,7 +214,7 @@ function excluirCampoCadastrado(escolha, idCampo, indice) {
             arrayTecnologiasADS.splice(indice, 1);
             localStorage.setItem('Tecnologias', JSON.stringify(arrayTecnologiasADS));
             populaListaButtonTecnologias();
-            gerarId(arrayTecnologiasADS,'tech','inputIdTecnologia');
+            gerarId('inputIdTecnologia',arrayTecnologiasADS,'tcn');
             populaCheckboxTecnologias('inputTecnologiasProjeto');
         }
         if (escolha === 'Disciplinas') {
@@ -180,14 +222,14 @@ function excluirCampoCadastrado(escolha, idCampo, indice) {
             localStorage.setItem('Disciplinas', JSON.stringify(arrayDisciplinasADS));
             populaListaButtonDisciplinas();
             populaSelectDisciplinas('selectDisplinaAnotacoes', 'inputPeriodoAnotacoes');
-            gerarId(arrayDisciplinasADS,'disc','inputIdDisciplina');
+            gerarId('inputIdDisciplina',arrayDisciplinasADS,'disc');
         }
         if (escolha === 'Livros') {
             arrayLivrosADS.splice(indice, 1);
             localStorage.setItem('Livros', JSON.stringify(arrayLivrosADS));
             populaListaButtonDisciplinas();
             populaListaButtonLivros();
-            gerarId(arrayLivrosADS, 'liv', 'inputIdLivros');
+            gerarId('inputIdLivros',arrayLivrosADS, 'liv');
         }
 
 
@@ -207,6 +249,11 @@ function mostraDataAtual(idCampo) {
     const ano = data.getFullYear();
 
     campoData.value = `${ano}-${mes}-${dia}`;
+}
+
+function formataData(data) {
+    const [ano, mes, dia] = data.split('-');
+    return `${dia}/${mes}/${ano}`;
 }
 
 // POPULA SELECT DE DISCIPLINAS DE ACORDO COM ARRAY [OK]
@@ -274,6 +321,64 @@ function clicarElemento(idElemento) {
     }
     elemento.click();
 }
+
+function focarElemento(idElemento) {
+    const elementoFoco = document.getElementById(idElemento);
+    elementoFoco.focus();
+}
+
+function exibirNotificacaoAtividadePendente() {
+    let contadorExerciciosPendentes = 0;
+
+    for (let i = 0; i < arrayExerciciosProvas.length; i++) {
+        if (arrayExerciciosProvas[i].statusTarefa === 'Pendente') {
+            contadorExerciciosPendentes++;
+        }
+    }
+
+    const campoExerciciosPendentes = document.getElementById('sessaoAlertExerciciosPendentes');
+
+    if (contadorExerciciosPendentes > 0) {
+        campoExerciciosPendentes.innerHTML = `
+            <div class="col">
+                <div class="alert alert-danger">
+                    <div class="row">
+                        <div class="col flexCenter">
+                            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+                            <span class="uppercase tamanho09 fw-bold">
+                                Atenção
+                            </span>
+                        </div>
+                        <div class="col-1">
+                            <button class="btn btn-danger btn-sm" onclick="esconderElemento('sessaoAlertExerciciosPendentes')">
+                                <i class="fa fa-x"></i>
+                            </button>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col flexCenter">
+                            <span class="uppercase tamanho08">
+                                Existe(m) um total de <b><u>${contadorExerciciosPendentes} atividades pendentes</u></b> para serem realizadas.
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row mt-3 mt-lg-1">
+                        <div class="col flexCenter">
+                            <span class="uppercase tamanho08">
+                                Fique atento aos prazos e a programação de estudo.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+}
+
+function esconderElemento(id) {
+    document.getElementById(id).style.display = 'none';
+}
 /*======================================== FUNÇÕES EXERCICIOS PROVAS ========================================*/
 /*=====================================================================================================*/
 function calculaDiasFaltam(idDataAtual, idcampoxibicaoDiasFaltam) {
@@ -295,17 +400,157 @@ function calculaDiasFaltam(idDataAtual, idcampoxibicaoDiasFaltam) {
         return;
     }
 
-    if (dias === 0) {
-        campoExibicaoDiasFaltam.value = 'Hoje';
-    } 
-    else if (dias === 1) {
-        campoExibicaoDiasFaltam.value = '1 dia';
-    } 
-    else {
-        campoExibicaoDiasFaltam.value = `${dias} dias`;
+    campoExibicaoDiasFaltam.value = `${dias}`;
+
+}
+
+function salvarNovoExerciciosProvas() {
+    let campoID = document.getElementById('inputIdExerciciosProvas');
+    let campoDATA = document.getElementById('inputDataExerciciosProvas');
+    let campoTIPOTAREFA = document.getElementById('tipoTarefaCadastro');
+    let campoSTATUSPERIODO = document.getElementById('statusTarefaCadastro');
+    let campoPERIODO = document.getElementById('periodoTarefaCadastro');
+    let campoDISCIPLINA = document.getElementById('materiaTarefaCadastro');
+
+    if (
+        campoDATA.value === '' ||
+        campoTIPOTAREFA.value === '' ||
+        campoSTATUSPERIODO.value === '' ||
+        campoPERIODO.value === '' ||
+        campoDISCIPLINA.value === ''
+    ) {
+        alert('Preencha todos os campos obrigatórios');
+        return;
+    }
+
+    let cadastroExiste = arrayExerciciosProvas.some(tarefa => tarefa.dataTarefa === campoDATA.value && tarefa.disciplinaTarefa === campoDISCIPLINA.value && tarefa.tipoTarefa === campoTIPOTAREFA.value);
+
+    if (cadastroExiste) {
+    alert(`Já existe um cadastro de ${campoTIPOTAREFA.value.toUpperCase()} para a disciplina ${campoDISCIPLINA.value.toUpperCase()}, na data ${formataData(campoDATA.value)}.`);        return;
+    }
+
+    let novoExercicioProva = new Tarefa(
+        campoID.value,
+        campoDATA.value,
+        campoTIPOTAREFA.value,
+        campoSTATUSPERIODO.value,
+        campoPERIODO.value,
+        campoDISCIPLINA.value,
+        true
+    );
+
+    arrayExerciciosProvas.push(novoExercicioProva);
+
+    localStorage.setItem('ExerciciosProvas',JSON.stringify(arrayExerciciosProvas));
+
+    campoSTATUSPERIODO.value = 'Pendente';
+    campoPERIODO.value = '-';
+    campoDISCIPLINA.value = '';
+
+    gerarId('inputIdExerciciosProvas', arrayExerciciosProvas, 'trf');
+    mostraDataAtual('inputDataExerciciosProvas');
+
+    exibeCadastroExercicioProva();
+}
+
+function exibeCadastroExercicioProva() {
+    const campos = {
+        Exercício: document.getElementById('campoExibicaoExercicios'),
+        Prova: document.getElementById('campoExibicaoProvas'),
+        Trabalho: document.getElementById('campoExibicaoTrabalhos'),
+        Outro: document.getElementById('campoExibicaoOutros')
+    };
+
+    Object.values(campos).forEach(campo => campo.innerHTML = '');
+
+    for (let i = 0; i < arrayExerciciosProvas.length; i++) {
+
+        const tarefa = arrayExerciciosProvas[i];
+        console.log(tarefa.tipoTarefa);
+        const campo = campos[tarefa.tipoTarefa];
+
+        if (!campo) continue;
+
+        campo.innerHTML += `
+            <div class="col-12 mt-3">
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <span class="roundedUpData uppercase tamanho065" id="roundedDataAtividade_${i}">
+                            Data do(a) ${tarefa.tipoTarefa}: &nbsp;&nbsp;
+                            <span class="text-danger">
+                                ${formataData(tarefa.dataTarefa)}
+                            </span>
+                        </span>
+
+                        <span class="roundedUpStatus${tarefa.statusTarefa} uppercase tamanho065"
+                        id="roundedStatusAtividade_${i}">
+                            ${tarefa.tipoTarefa} ${tarefa.statusTarefa}
+                        </span>
+
+                        <div class="input-group">
+                            <span class="w-75 bg-secondary text-light px-3 py-1 uppercase tamanho07 flexCenter rounded-start-pill text-center"
+                            id="spanNomeAtividade_${i}">
+                                ${tarefa.disciplinaTarefa}
+                            </span>
+
+                            <button class="btn btn-sm btn-dark"
+                            onclick="removeAtividade('${i}')">
+                                <i class="fa fa-trash"></i>
+                            </button>
+
+                            <button class="btn btn-sm btn-success"
+                            id="btnAtividade_${i}"
+                            onclick="checaAtividade(
+                                'roundedStatusAtividade_${i}',
+                                '${i}',
+                                'btnAtividade_${i}',
+                                'iconAtividade_${i}')">
+
+                                <i class="fa fa-check"
+                                id="iconAtividade_${i}"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
     }
 }
 
+function checaAtividade(campoStatusAtividade, indiceArray, btnChecagem, iconeChecagem) {
+    const tarefa = arrayExerciciosProvas[indiceArray];
+    const campoAtividade = document.getElementById(campoStatusAtividade);
+    const buttonChecagem = document.getElementById(btnChecagem);
+    const iconChecagem = document.getElementById(iconeChecagem);
+
+    if (tarefa.statusTarefa === 'Pendente') {
+        tarefa.statusTarefa = 'Finalizado';
+
+        campoAtividade.classList.replace('roundedUpStatusPendente','roundedUpStatusFinalizado');
+
+        buttonChecagem.classList.replace('btn-success', 'btn-primary');
+        iconChecagem.classList.replace('fa-check', 'fa-hourglass');
+
+    } else {
+
+        tarefa.statusTarefa = 'Pendente';
+
+        campoAtividade.classList.replace('roundedUpStatusFinalizado','roundedUpStatusPendente');
+
+        buttonChecagem.classList.replace('btn-primary', 'btn-success');
+        iconChecagem.classList.replace('fa-hourglass', 'fa-check');
+    }
+
+    campoAtividade.innerHTML = `${tarefa.tipoTarefa} ${tarefa.statusTarefa}`;
+
+    localStorage.setItem('ExerciciosProvas',JSON.stringify(arrayExerciciosProvas));
+}
+
+function removeAtividade(indice) {
+    arrayExerciciosProvas.splice(indice, 1);
+    localStorage.setItem('ExerciciosProvas',JSON.stringify(arrayExerciciosProvas));
+    exibeCadastroExercicioProva();
+}
 
 /*======================================== FUNÇÕES TECNOLOGIAS ========================================*/
 /*=====================================================================================================*/
@@ -323,27 +568,33 @@ function salvarNovaTecnologia() {
         if (arrayTecnologiasADS.some(tecnologia => tecnologia === campoCadastro_NomeTecnologia.value.trim())) {
             alert(`Tecnologia ${campoCadastro_NomeTecnologia.value} já foi cadastrada anteriormente!`); return
         }
+        else{
+            if(campoCadastro_AplicacaoTecnologia.value === '-'){
+                alert('Preencha o campo de Aplicação da Tecnologia !')
+            }
+            else{
+                 let novoCadastroTecnologia = new Tecnologia(campoCadastro_IdTecnologia.value, campoCadastro_NomeTecnologia.value, campoCadastro_ApelidoTecnologia.value, campoCadastro_AplicacaoTecnologia.value);
 
-        let novoCadastroTecnologia = new Tecnologia(campoCadastro_IdTecnologia.value, campoCadastro_NomeTecnologia.value, campoCadastro_ApelidoTecnologia.value, campoCadastro_AplicacaoTecnologia.value);
+                arrayTecnologiasADS.push(novoCadastroTecnologia);
+                localStorage.setItem('Tecnologias', JSON.stringify(arrayTecnologiasADS));
 
-        arrayTecnologiasADS.push(novoCadastroTecnologia);
-        localStorage.setItem('Tecnologias', JSON.stringify(arrayTecnologiasADS));
+                alert(`A tecnologia ${campoCadastro_NomeTecnologia.value}  foi cadastrada com sucesso !`)
 
-        alert(`A tecnologia ${campoCadastro_NomeTecnologia.value}  foi cadastrada com sucesso !`)
+                arrayIdsUtilizados[0].push(campoCadastro_IdTecnologia.value);
+                localStorage.setItem('ids', JSON.stringify(arrayIdsUtilizados));
 
-        arrayIdsUtilizados[0].push(campoCadastro_IdTecnologia.value);
-        localStorage.setItem('ids', JSON.stringify(arrayIdsUtilizados));
+                campoCadastro_NomeTecnologia.value = '';
+                campoCadastro_ApelidoTecnologia.value = '';
+                campoCadastro_AplicacaoTecnologia.value = '-';
 
-        gerarId('tecnologia', 'inputIdTecnologia');
+                gerarId('inputIdTecnologia',arrayTecnologiasADS,'tcn');
 
-        populaListaButtonTecnologias();
-        limparCampoIndividual('inputNomeTecnologia');
-        copiaDadosDigitados('inputNomeTecnologia', 'inputApelidoTecnologia');
-        populaCheckboxTecnologias('inputTecnologiasProjeto');
-        
+                populaListaButtonTecnologias();
+                copiaDadosDigitados('inputNomeTecnologia', 'inputApelidoTecnologia');
+                populaCheckboxTecnologias('inputTecnologiasProjeto');
+            }
+        }
     }
-
-
 }
 
 // POPULA LISTA DE BUTTONS DE ACORDO COM ARRAY [OK]
@@ -442,7 +693,10 @@ function salvarNovaDisciplina() {
     
     arrayIdsUtilizados[1].push(campoCadastro_IdDisciplina.value);
     localStorage.setItem('ids', JSON.stringify(arrayIdsUtilizados));
-    gerarId('disciplina', 'inputIdDisciplina')
+
+    populaSelectDisciplinas('materiaTarefaCadastro','periodoTarefaCadastro');
+    gerarId('inputIdDisciplina',arrayDisciplinasADS, 'dsc');
+
 }
 
 // POPULA LISTA DE BUTTONS DE ACORDO COM ARRAY [OK]
@@ -535,7 +789,6 @@ function populaListaButtonDisciplinas() {
         }
     }
 }
-
 
 /*======================================== FUNÇÕES LIVROS ========================================*/
 /*=====================================================================================================*/
@@ -741,7 +994,7 @@ function salvarProjeto() {
 
     arrayIdsUtilizados[3].push(campoCadastro_IdProjeto.value);
     localStorage.setItem('ids', JSON.stringify(arrayIdsUtilizados));
-    gerarId('projeto', 'campoCadastro_IdProjeto');
+    gerarId('campoCadastro_IdProjeto',arrayProjetosADS,'ant');
 
     mostraDataAtual('inputDataInicioProjeto');
     populaSelectDisciplinas('selectDisplinaProjeto','inputPeriodoProjeto');
@@ -973,7 +1226,7 @@ function salvarAnotacaoMateria() {
     document.getElementById('textAreaAnotacaoMateria').value = '';
 
     // GERA O PRÓXIMO ID DE ANOTAÇÃO
-    gerarId('anotacao', 'inputIdAnotacoes');
+    gerarId('campoCadastro_IdProjeto',arrayProjetosADS,'ant');
 
     console.log(arrayAnotacoesADS);
     console.log(arrayIdsUtilizados);
@@ -1265,7 +1518,6 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
     }
 }
 
-
 // ATUALIZA O ARRAY DE ACORDO COM A ATUALIZAÇAÃO DA ANOTAÇÃO [OK]
 function sobscreverAtualizarAnotacao( id, nomeAula, periodo, disciplina, anotacao) {
     const campoId = document.getElementById(id);
@@ -1347,14 +1599,9 @@ function excluirAnotacaoCompleta(id) {
     calculaQtdAnotacoesPeriodo();
 }
 
-
 function consoleArray(array){
     console.log(array)
 }
-
-
-
-
 
 /*======================================== FUNÇÕES ONLOAD ========================================*/
 /*=====================================================================================================*/
@@ -1365,6 +1612,10 @@ window.onload = () => {
     populaSelectDisciplinas('selectDisplinaProjeto', 'inputPeriodoProjeto');
     populaCheckboxTecnologias('inputTecnologiasProjeto');
 
+    clicarElemento('btnSessaoCadastroExerciciosProvas');
+    exibeCadastroExercicioProva();
+    exibirNotificacaoAtividadePendente();
+    
     /*const modal = document.getElementById('modalProjetoEditar');
     const modalInstance = new bootstrap.Modal(modal);
     modalInstance.show();

@@ -91,6 +91,9 @@
         </div>
 
         <hr>
+
+        <div class="row" id="sessaoAlertExerciciosPendentes"></div>
+
         <div class="row">
             <!--PRIMEIRA COLUNA DE COLLAPSE MAIN-->
 
@@ -116,19 +119,17 @@
                                                 </h5>
                                             </div>
                                             <div class="col-auto flexCenter gap-2">
-                                                <button class="btn btn-sm btn-dark" 
+                                                <button class="btn btn-sm btn-dark"
                                                     data-bs-toggle="collapse"
                                                     data-bs-target="#mainExerciciosProvasBody"
-                                                    onclick="populaListaButtonExerciciosProvas(),
-                                                    gerarId('inputIdExerciciosProvas',arrayExerciciosProvas,'trf'),
+                                                    onclick="gerarId('inputIdExerciciosProvas',arrayExerciciosProvas,'trf'),
                                                     mostraDataAtual('inputDataExerciciosProvas'),
                                                     calculaDiasFaltam('inputDataExerciciosProvas', 'inputDiasFaltamExerciciosProvas')">
                                                     <i class="fa fa-circle-plus"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-dark" 
                                                     data-bs-toggle="collapse"
-                                                    data-bs-target="#campoExibeCadastrosExerciciosProvas"
-                                                    onclick="populaListaButtonExerciciosProvas()">
+                                                    data-bs-target="#campoExibeCadastrosExerciciosProvas">
                                                     <i class="fa fa-list"></i>
                                                 </button>
                                             </div>
@@ -139,32 +140,35 @@
                                     <div class="card-body collapse" id="mainExerciciosProvasBody">
                                         <div class="row">
                                             <!--ID EXERCÍCIOS E PROVAS-->
-                                            <div class="col-5 col-lg-3 mb-3">
+                                            <div class="col-4 col-lg-4 mb-3">
                                                 <label for="" class="labelFormat">Id</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary text-light">
                                                         <i class="fa fa-hashtag"></i>
                                                     </span>
-                                                    <input type="text" class="form-control" id="inputIdExerciciosProvas"
+                                                    <input type="text" 
+                                                    class="form-control" 
+                                                    id="inputIdExerciciosProvas"
                                                         disabled>
                                                 </div>
                                             </div>
 
                                             <!--DATA EXERCÍCIOS E PROVAS-->
-                                            <div class="col-7 mb-3">
+                                            <div class="col-8 col-lg-5 mb-3">
                                                 <label for="" class="labelFormat">Data</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary text-light">
                                                         <i class="fa fa-calendar"></i>
                                                     </span>
-                                                    <input type="date" class="form-control uppercase" 
+                                                    <input type="date" 
+                                                    class="form-control uppercase" 
                                                     id="inputDataExerciciosProvas"
                                                     onchange="calculaDiasFaltam('inputDataExerciciosProvas','inputDiasFaltamExerciciosProvas',document.getElementById('tipoTarefaCadastro').value)">
                                                 </div>
                                             </div>
 
                                             <!--DIAS FALTAM TAREFA-->
-                                            <div class="col-6 mb-3">
+                                            <div class="col-4 col-lg-3 mb-3">
                                                 <label for="" class="labelFormat">Dias Faltam</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary text-light">
@@ -177,7 +181,7 @@
                                             </div>
 
                                             <!--TIPO DE CADASTRO-->
-                                            <div class="col-6 col-lg-auto mb-3">
+                                            <div class="col-8 col-lg-auto mb-3">
                                                 <label for="" class="labelFormat">tipo de tarefa</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary text-light">
@@ -192,10 +196,25 @@
                                                    </select>
                                                 </div>
                                             </div>
+                                            
+                                            <!--STATUS DA TAREFA-->
+                                            <div class="col-6 col-lg-5 mb-3">
+                                                <label for="" class="labelFormat">Status da tarefa</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-hourglass"></i>
+                                                    </span>
+                                                    <select name="" id="statusTarefaCadastro" class="form-select">
+                                                        <option value="">-</option>
+                                                        <option value="Pendente" selected>Pendente</option>
+                                                        <option value="Finalizado">Finalizado(a)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
                                             <!--PERIODO DA TAREFA-->
-                                            <div class="col-6 col-lg-auto mb-3">
-                                                <label for="" class="labelFormat">Período da tarefa</label>
+                                            <div class="col-6 col-lg-3 mb-3">
+                                                <label for="" class="labelFormat">Período</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary text-light">
                                                         <i class="fa fa-calendar"></i>
@@ -211,25 +230,10 @@
                                                    </select>
                                                 </div>
                                             </div>
-
-                                            <!--STATUS DA TAREFA-->
-                                            <div class="col-6 mb-3">
-                                                <label for="" class="labelFormat">Status da tarefa</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text bg-primary text-light">
-                                                        <i class="fa fa-hourglass"></i>
-                                                    </span>
-                                                   <select name="" id="statusTarefaCadastro" class="form-select">
-                                                        <option value="">-</option>
-                                                        <option value="Pendente" selected>Pendente</option>
-                                                        <option value="Finalizado(a)">Finalizado(a)</option>
-                                                   </select>
-                                                </div>
-                                            </div>
-
+                                            
                                             <!--MATÉRIA DA TAREFA-->
                                             <div class="col-12 mb-3">
-                                                <label for="" class="labelFormat">Matéria da tarefa</label>
+                                                <label for="" class="labelFormat">Disciplina da tarefa</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary text-light">
                                                         <i class="fa fa-book"></i>
@@ -237,14 +241,15 @@
                                                     <select name="" id="materiaTarefaCadastro" class="form-select"></select>
                                                     <button class="btn btn-dark btn-sm"
                                                     onclick="scrollParaId('mainDisciplinasBody',+1000),
-                                                    clicarElemento('btnCadastroNovaDisciplina')">
+                                                    clicarElemento('btnCadastroNovaDisciplina'),
+                                                    focarElemento('inputNomeDisciplina')">
                                                         <i class="fa fa-circle-plus"></i>
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
                                         <hr>
-
+                                        
                                         <!--BUTTONS DE SALVAR /-LIMPAR [Exercicios Provas]-->
                                         <div class="row">
                                             <div class="col text-center">
@@ -385,7 +390,7 @@
                                     <div class="card-body collapse" id="mainTecnologiasBody">
                                         <div class="row">
                                             <!--ID TECNOLOGIA-->
-                                            <div class="col-3 mb-3">
+                                            <div class="col-4 col-lg-3 mb-3">
                                                 <label for="" class="labelFormat">Id</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary text-light">
@@ -433,7 +438,7 @@
                                                     </span>
                                                     <select name="" id="selectAplicacoTecnologia" class="form-control">
                                                         <option value="-">-</option>
-                                                        <option value="Backend" selected>Backend</option>
+                                                        <option value="Backend">Backend</option>
                                                         <option value="Frontend">Frontend</option>
                                                         <option value="FullStack">FullStack</option>
                                                     </select>
@@ -566,7 +571,7 @@
                                     <div class="card-body collapse" id="mainDisciplinasBody">
                                         <div class="row">
                                             <!--ID DISCIPLINA-->
-                                            <div class="col-3 mb-3">
+                                            <div class="col-4 mb-3">
                                                 <label for="" class="labelFormat">Id</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary text-light">
@@ -780,7 +785,7 @@
                                     <!--CARD CADASTRO DE LIVROS-->
                                     <div class="card-body collapse" id="mainLivrosBody">
                                         <div class="row">
-                                            <div class="col-3 mb-3">
+                                            <div class="col-4 mb-3">
                                                 <label for="" class="labelFormat">Id</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary text-light">
@@ -791,7 +796,7 @@
                                             </div>
 
                                             <!--DATA INICIO CADASTRO LIVRO-->
-                                            <div class="col-5 mb-3">
+                                            <div class="col-8 mb-3">
                                                 <label for="" class="labelFormat">
                                                     Data Início
                                                 </label>
@@ -799,24 +804,19 @@
                                             </div>
 
                                             <!--DATA ATUALIZACAO CADASTRO LIVRO-->
-                                            <div class="col-4 mb-3">
+                                            <div class="col-6 col-lg-4 mb-3">
                                                 <label for="" class="labelFormat">
                                                     Data Atualização
                                                 </label>
-                                                <input type="date" class="form-control" 
-                                                id="inputDataAtualizacaoLivros" disabled>
+                                                <div class="input-group">
+                                                    <span class="bg-primary text-light input-group-text">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                    <input type="date" class="form-control" id="inputDataAtualizacaoLivros" disabled>
+                                                </div>
                                             </div>
-
-                                            <!--NOME CADASTRO LIVRO-->
-                                            <div class="col-7 mb-3">
-                                                <label for="" class="labelFormat">
-                                                    nome do livro
-                                                </label>
-                                                <input type="text" class="form-control" id="inputNomeLivros">
-                                            </div>
-
                                             <!--STATUS CADASTRO LIVRO-->
-                                            <div class="col-5 mb-3 textoCenter">
+                                            <div class="col-6 col-lg mb-3 textoCenter">
                                                 <label for="" class="labelFormat">
                                                     status
                                                 </label>
@@ -833,25 +833,47 @@
                                                     </select>
                                                 </div>
                                             </div>
-
+                                            
                                             <!--PERÍODO CADASTRO LIVRO-->
-                                            <div class="col-3 mb-3">
+                                            <div class="col-3 col-lg-3 mb-3">
                                                 <label for="" class="labelFormat">
                                                     período
                                                 </label>
-                                                <input type="number" class="form-control" id="inputPeriodoLivros"
-                                                    min="1" value="1"
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-clock"></i>
+                                                    </span>
+                                                    <input type="number" class="form-control" 
+                                                    id="inputPeriodoLivros"
+                                                    min="1" value="1" 
                                                     onchange="populaSelectDisciplinas('selectDisplinaLivros','inputPeriodoLivros')">
-                                            </div>
-
+                                                </div>
+                                            </div
                                             <!--DISCIPLINA CADASTRO LIVRO-->
-                                            <div class="col-9 mb-3">
+                                            <div class="col-9 col-lg-12 mb-3">
                                                 <label for="" class="labelFormat">
                                                     disciplina
                                                 </label>
-                                                <select name="" id="selectDisplinaLivros" class="form-select"></select>
+                                                <div class="input-group">
+                                                    <span class="bg-primary text-light input-group-text">
+                                                        <i class="fa fa-school"></i>
+                                                    </span>
+                                                    <select name="" id="selectDisplinaLivros" class="form-select"></select>
+                                                </div>
                                             </div>
-
+                                            
+                                            <!--NOME CADASTRO LIVRO-->
+                                            <div class="col-12 mb-3">
+                                                <label for="" class="labelFormat">
+                                                    nome do livro
+                                                </label>
+                                                <div class="input-group">
+                                                    <span class="bg-danger input-group-text text-light">
+                                                        <i class="fa fa-book-open"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" id="inputNomeLivros">
+                                                </div>
+                                            </div>
                                             <!--ALERTS DE EXIBICAO DE STATUS CADASTRO LIVRO-->
                                             <div class="">
                                                 <div class="col-12 d-none" id="alertLeituraLivroSuccess">
@@ -1032,63 +1054,98 @@
                                     <!--CARD BODY - CADASTRO PROJETOS-->
                                     <div class="card-body collapse" id="mainProjetosBody">
                                         <div class="row">
-                                            <div class="col-3 mb-3">
+                                            <div class="col-4 col-lg-3 mb-3">
                                                 <label for="" class="labelFormat">
                                                     Id
                                                 </label>
-                                                <input type="text" class="form-control" id="inputIdProjeto" disabled>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-hashtag"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" id="inputIdProjeto" disabled>
+                                                </div>
                                             </div>
 
-                                            <div class="col-9 mb-3">
+                                            <div class="col col-lg-9 mb-3">
                                                 <label for="" class="labelFormat">
                                                     Nome do Projeto
                                                 </label>
-                                                <input type="text" class="form-control" id="inputNomeProjeto">
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-tag"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" id="inputNomeProjeto">
+                                                </div>
                                             </div>
 
-                                            <div class="col-6 mb-3">
+                                            <div class="col-6 col-lg-5 mb-3">
                                                 <label for="" class="labelFormat">
                                                     data de inicio
                                                 </label>
-                                                <input type="date" class="form-control" id="inputDataInicioProjeto">
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                    <input type="date" class="form-control" id="inputDataInicioProjeto">
+                                                </div>
                                             </div>
 
-                                            <div class="col-6 mb-3">
+                                            <div class="col-6  col-lg-4 mb-3">
                                                 <label for="" class="labelFormat">
                                                     data de finalização
                                                 </label>
-                                                <input type="date" class="form-control"
-                                                    id="inputDataFinalizacaoProjeto">
+                                                 <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                    <input type="date" class="form-control" id="inputDataFinalizacaoProjeto">
+                                                </div>
                                             </div>
 
 
-                                            <div class="col-3 mb-3">
+                                            <div class="col-3 col-lg-3 mb-3">
                                                 <label for="" class="labelFormat">
                                                     período
                                                 </label>
-                                                <input type="number" class="form-control" min="1" value="1"
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-clock"></i>
+                                                    </span>
+                                                    <input type="number" class="form-control" 
+                                                    min="1" 
+                                                    value="1"
                                                     id="inputPeriodoProjeto"
                                                     onchange="populaSelectDisciplinas('selectDisplinaProjeto', 'inputPeriodoProjeto')">
+                                                </div>
                                             </div>
 
-                                            <div class="col-9 mb-3">
+                                            <div class="col-9 col-lg-12 mb-3">
                                                 <label for="" class="labelFormat">
                                                     disciplina
                                                 </label>
-                                                <select name="" id="selectDisplinaProjeto" 
-                                                class="form-select"></select>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-book-open"></i>
+                                                    </span>
+                                                    <select name="" id="selectDisplinaProjeto" class="form-select"></select>
+                                                </div>
                                             </div>
 
                                             <div class="col-auto mb-4">
                                                 <label for="" class="labelFormat">
                                                     status
                                                 </label>
-                                                <select name="" id="selectStatusProjeto"
-                                                    class="form-select textoCenter">
-                                                    <option value="-">-</option>
-                                                    <option value="Produção" selected>Produção</option>
-                                                    <option value="Finalizado">Finalizado</option>
-                                                </select>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-hammer"></i>
+                                                    </span>
+                                                    <select name="" id="selectStatusProjeto"
+                                                        class="form-select textoCenter">
+                                                        <option value="-">-</option>
+                                                        <option value="Produção" selected>Produção</option>
+                                                        <option value="Finalizado">Finalizado</option>
+                                                    </select>
+                                                </div>
                                             </div>
 
                                             <div class="col mb-4">
@@ -1211,7 +1268,17 @@
                             <div class="col-sm-12">
                                 <div class="card mb-3">
                                     <div class="card-header bg-primary text-light">
-                                        <div class="row">
+                                        <div class="row"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#mainAnotacoesBody"
+                                        onclick="exibePeriodosAnotacoes(),
+                                        calculaQtdAnotacoesPeriodo(),
+                                        mostraDataAtual('inputDataAtualizacaoAnotacoes'),
+                                        gerarId('inputIdAnotacoes',arrayAnotacoesADS,'ant'),                                        
+                                        mostraDataAtual('inputDataInicioAnotacoes'),
+                                        populaSelectDisciplinas('selectDisplinaAnotacoes', 'inputPeriodoAnotacoes')"
+                                        style="cursor: pointer;">
+                                        
                                             <div class="col">
                                                 <h5 class="tamanho12 uppercase flex-Center card-title mb-0 textoCenter">
                                                     Anotações de Matéria
@@ -1224,7 +1291,7 @@
                                                 onclick="exibePeriodosAnotacoes(),
                                                 calculaQtdAnotacoesPeriodo(),
                                                 mostraDataAtual('inputDataAtualizacaoAnotacoes'),
-                                                gerarId('inputIdAnotacoes',arrayAnotacoesADS,'anot'),
+                                                gerarId('inputIdAnotacoes',arrayAnotacoesADS,'ant'),
                                                 
                                                 mostraDataAtual('inputDataInicioAnotacoes'),
                                                 populaSelectDisciplinas('selectDisplinaAnotacoes', 'inputPeriodoAnotacoes')">
@@ -1242,61 +1309,93 @@
                                     </div>
 
                                     <!--CARD BODY - CADASTRO ANOTAÇÕES-->
-                                    <div class="card-body collapse" id="mainAnotacoesBody">
+                                    <div class="card-body " id="mainAnotacoesBody">
                                         <div class="row">
-                                            <div class="col-3 mb-3">
+                                            <div class="col-4 col-lg-3 mb-3">
                                                 <label for="" class="labelFormat">
                                                     Id
                                                 </label>
-                                                <input type="text" class="form-control" 
-                                                id="inputIdAnotacoes" disabled>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-hashtag"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control"  id="inputIdAnotacoes" disabled>
+                                                </div>
                                             </div>
-                                            <div class="col-5 mb-3">
+                                            <div class="col-8 col-lg-4 mb-3">
                                                 <label for="" class="labelFormat">
                                                     Data Início
                                                 </label>
-                                                <input type="date" class="form-control" 
-                                                id="inputDataInicioAnotacoes">
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                    <input type="date" class="form-control"  id="inputDataInicioAnotacoes">
+                                                </div>
                                             </div>
-                                            <div class="col-4 mb-3">
+                                            <div class="col-6 col-lg-5 mb-3">
                                                 <label for="" class="labelFormat">
                                                     Data Atualização
                                                 </label>
-                                                <input type="date" class="form-control" 
-                                                id="inputDataAtualizacaoAnotacoes" disabled>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                    <input type="date" class="form-control"  id="inputDataAtualizacaoAnotacoes" disabled>
+                                                </div>
                                             </div>
-                                            <div class="col-3 mb-3">
+                                            <div class="col-6 col-lg-3 mb-3">
                                                 <label for="" class="labelFormat">
                                                     período
                                                 </label>
-                                                <input type="number" class="form-control" 
-                                                id="inputPeriodoAnotacoes"
-                                                    min="1" value="1"
-                                                    onchange="populaSelectDisciplinas('selectDisplinaAnotacoes', 'inputPeriodoAnotacoes')">
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-clock"></i>
+                                                    </span>
+                                                    <input type="number" class="form-control" 
+                                                        id="inputPeriodoAnotacoes"
+                                                        min="1" value="1"
+                                                        onchange="populaSelectDisciplinas('selectDisplinaAnotacoes', 'inputPeriodoAnotacoes')">                                                
+                                                </div>
                                             </div>
-                                            <div class="col mb-3">
+                                            <div class="col-12 col-lg-9 mb-3">
                                                 <label for="" class="labelFormat">
                                                     disciplina
                                                 </label>
-                                                <select name="" id="selectDisplinaAnotacoes"
-                                                    class="form-select"></select>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-school"></i>
+                                                    </span>
+                                                     <select name="" id="selectDisplinaAnotacoes" class="form-select"></select>
+                                                </div>
                                             </div>
                                             <div class="col-12 mb">
                                                 <label for="" class="labelFormat">
                                                     Nome da Matéria
                                                 </label>
-                                                <input type="text" class="form-control" 
-                                                id="inputNomeMateriaAnotacoes"
-                                                placeholder="Digite o nome da Matéria...">
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-light">
+                                                        <i class="fa fa-book-open"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" 
+                                                    id="inputNomeMateriaAnotacoes"
+                                                    placeholder="Digite o nome da Matéria...">                                                </div>
+
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col">
                                                 <hr>
                                                 <div class="card-body">
+                                                    <div class="input-group">
+                                                    <span class="input-group-text bg-danger text-light">
+                                                        <i class="fa fa-comments"></i>
+                                                    </span>
                                                     <textarea name="" 
                                                     id="textAreaAnotacaoMateria" class="form-control" rows="10"
-                                                        placeholder="Digite sua anotação da matéria aqui..."></textarea>
+                                                        placeholder="Digite sua anotação da matéria aqui..."></textarea>                                                
+                                                </div>
+                                                    
                                                 </div>
                                             </div>
                                         </div>

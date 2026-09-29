@@ -67,6 +67,10 @@ a{
     font-size: 0.6rem;
 }
 
+.tamanho065{
+    font-size: 0.65rem;
+}
+
 .tamanho07,
 .labelFormat,
 #navbarNav .nav-item a,
@@ -84,6 +88,10 @@ a{
 #mainExerciciosProvasBody input,
 #mainExerciciosProvasBody select{
     font-size: 0.7rem;
+}
+
+.tamanho075{
+    font-size: 0.75rem;
 }
 
 .tamanho08,
@@ -164,4 +172,29 @@ a{
     width: 330px;
     background-color: lightcoral;
     color: white;
+}
+
+.roundedUpData{
+    background-color: lightblue;
+    border-radius: 20px 0px 0px 20px;
+
+}
+.roundedUpStatusPendente{
+    background-color:lightpink;
+}
+.roundedUpStatusFinalizado{
+    background-color:lightgreen;
+}
+.roundedUpStatusPendente,
+.roundedUpStatusFinalizado{
+    border-radius: 0px 20px 20px 0px;
+}
+.roundedUpData,
+.roundedUpStatusPendente,
+.roundedUpStatusFinalizado{
+    position: relative;
+    top: -3px;
+    padding: 3px 15px;
+    z-index: 99;
+    font-weight: bold;
 }
