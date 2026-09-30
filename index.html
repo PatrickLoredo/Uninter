@@ -39,7 +39,7 @@
     <!--NAVBAR SUPERIOR-->
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark text-light" id="navbarInicio">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">ADS Uninter</a>
+            <a class="navbar-brand uppercase" href="https://uninter-pi.vercel.app/">ADS Uninter</a>
             <div class="" id="navbarNav">
                 <ul class="navbar nav m-auto">
                     <li class="nav-item">
@@ -124,7 +124,8 @@
                                                     data-bs-target="#mainExerciciosProvasBody"
                                                     onclick="gerarId('inputIdExerciciosProvas',arrayExerciciosProvas,'trf'),
                                                     mostraDataAtual('inputDataExerciciosProvas'),
-                                                    calculaDiasFaltam('inputDataExerciciosProvas', 'inputDiasFaltamExerciciosProvas')">
+                                                    calculaDiasFaltam('inputDataExerciciosProvas', 'inputDiasFaltamExerciciosProvas'),
+                                                    scrollParaId('btnSalvarExerciciosProvas',200)">
                                                     <i class="fa fa-circle-plus"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-dark" 
@@ -374,7 +375,8 @@
                                                     data-bs-toggle="collapse"
                                                     data-bs-target="#mainTecnologiasBody"
                                                     onclick="populaListaButtonTecnologias(),
-                                                    gerarId('inputIdTecnologia',arrayTecnologiasADS,'tcn')">
+                                                    gerarId('inputIdTecnologia',arrayTecnologiasADS,'tcn')
+                                                    scrollParaId('btnSalvarTecnologias',200)">
                                                     <i class="fa fa-circle-plus"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-dark" data-bs-toggle="collapse"
@@ -555,12 +557,14 @@
                                                     data-bs-toggle="collapse"
                                                     data-bs-target="#mainDisciplinasBody"
                                                     onclick="populaListaButtonDisciplinas();
-                                                    gerarId('inputIdDisciplina',arrayDisciplinasADS,'dsc')">
+                                                    gerarId('inputIdDisciplina',arrayDisciplinasADS,'dsc'),
+                                                    scrollParaId('btnSalvarDisciplinas',200)">
                                                     <i class="fa fa-circle-plus"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-dark" data-bs-toggle="collapse"
                                                     data-bs-target="#campoExibeCadastrosDisciplinas"
-                                                    onclick="populaListaButtonDisciplinas()">
+                                                    onclick="populaListaButtonDisciplinas(),
+                                                    mostraQtdDisciplinas()">
                                                     <i class="fa fa-list"></i>
                                                 </button>
                                             </div>
@@ -632,8 +636,10 @@
                                                     <div class="card-header">
                                                         <div class="row">
                                                             <div class="col flexCenter">
-                                                                <h6 class="uppercase">Disciplinas - 1° Período</h6>
+                                                                <h6 class="uppercase text-center">Disciplinas - 1° Período</h6>
                                                             </div>
+                                                            <div class="col-auto"
+                                                            id="spanQtdDisciplinas_1Periodo"></div>
                                                             <div class="col-2">
                                                                 <button class="btn btn-sm btn-danger"
                                                                 data-bs-toggle="collapse"
@@ -770,7 +776,8 @@
                                                     populaSelectDisciplinas('selectDisplinaLivros','inputPeriodoLivros'),
                                                     gerarId('inputIdLivros',arrayLivrosADS,'lvr'),
                                                     mostraDataAtual('inputDataInicioLivros'),
-                                                    mostraDataAtual('inputDataAtualizacaoLivros')">
+                                                    mostraDataAtual('inputDataAtualizacaoLivros'),
+                                                    scrollParaId('btnSalvarLivros',200)">
                                                     <i class="fa fa-circle-plus"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-dark" data-bs-toggle="collapse"
@@ -848,7 +855,7 @@
                                                     min="1" value="1" 
                                                     onchange="populaSelectDisciplinas('selectDisplinaLivros','inputPeriodoLivros')">
                                                 </div>
-                                            </div
+                                            </div>
                                             <!--DISCIPLINA CADASTRO LIVRO-->
                                             <div class="col-9 col-lg-12 mb-3">
                                                 <label for="" class="labelFormat">
@@ -897,7 +904,7 @@
                                         <hr>
                                         <div class="row">
                                             <div class="col text-center">
-                                                <button class="btn btn-sm btn-success" id="btnSalvarAnotacoes"
+                                                <button class="btn btn-sm btn-success" id="btnSalvarLivros"
                                                     onclick="salvarNovoLivro()">
                                                     <i class="fa fa-floppy-disk"></i>
                                                     <span class="tamanho07">Salvar</span>
@@ -1039,7 +1046,8 @@
                                                     gerarId('inputIdProjeto',arrayProjetosADS,'pjt'),
                                                     mostraDataAtual('inputDataInicioProjeto'),
                                                     populaSelectDisciplinas('selectDisplinaProjeto', 'inputPeriodoProjeto'),
-                                                    populaCheckboxTecnologias('inputTecnologiasProjeto')">
+                                                    populaCheckboxTecnologias('inputTecnologiasProjeto'),
+                                                    scrollParaId('btnSalvarProjetos',100)">
                                                     <i class="fa fa-circle-plus"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-dark" data-bs-toggle="collapse"
@@ -1292,7 +1300,7 @@
                                                 calculaQtdAnotacoesPeriodo(),
                                                 mostraDataAtual('inputDataAtualizacaoAnotacoes'),
                                                 gerarId('inputIdAnotacoes',arrayAnotacoesADS,'ant'),
-                                                
+                                                scrollParaId('btnSalvarAnotacoes',100)
                                                 mostraDataAtual('inputDataInicioAnotacoes'),
                                                 populaSelectDisciplinas('selectDisplinaAnotacoes', 'inputPeriodoAnotacoes')">
                                                     <i class="fa fa-circle-plus"></i>
@@ -1309,7 +1317,7 @@
                                     </div>
 
                                     <!--CARD BODY - CADASTRO ANOTAÇÕES-->
-                                    <div class="card-body " id="mainAnotacoesBody">
+                                    <div class="card-body collapse " id="mainAnotacoesBody">
                                         <div class="row">
                                             <div class="col-4 col-lg-3 mb-3">
                                                 <label for="" class="labelFormat">

@@ -790,6 +790,38 @@ function populaListaButtonDisciplinas() {
     }
 }
 
+function mostraQtdDisciplinas() {
+
+    let contadores = {
+        contador1: 0,
+        contador2: 0,
+        contador3: 0,
+        contador4: 0,
+        contador5: 0
+    };
+
+    for (let i = 0; i < arrayDisciplinasADS.length; i++) {
+        let periodo = arrayDisciplinasADS[i].periodo;
+
+        console.log(arrayDisciplinasADS[i].periodo)
+
+        switch (periodo) {
+            case 1: contadores.contador1++; break;
+            case 2: contadores.contador2++; break;
+            case 3: contadores.contador3++; break;
+            case 4: contadores.contador4++; break;
+            case 5: contadores.contador5++; break;
+        }
+    }
+
+    for (let i = 1; i <= 5; i++) {
+        document.getElementById(`spanQtdDisciplinas_${i}Periodo`).innerHTML = `
+        <span class="bg-info text-light px-3 py-1 uppercase tamanho07 rounded-pill">
+            ${contadores[`contador${i}`]} Disciplinas
+        </span>`;
+    }
+}
+
 /*======================================== FUNÇÕES LIVROS ========================================*/
 /*=====================================================================================================*/
 // SALVA NOVO CADASTRO DE LIVRO DENTRO DO ARRAY [OK]
