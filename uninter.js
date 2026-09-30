@@ -821,7 +821,7 @@ function mostraQtdDisciplinas() {
 
     for (let i = 1; i <= 5; i++) {
         document.getElementById(`spanQtdDisciplinas_${i}Periodo`).innerHTML = `
-        <span class="bg-info text-light px-3 py-1 uppercase tamanho06 rounded-pill">
+        <span class="bg-secondary text-light px-3 py-1 uppercase tamanho06 rounded-pill">
             ${contadores[`contador${i}`]} Disciplinas
         </span>`;
     }
