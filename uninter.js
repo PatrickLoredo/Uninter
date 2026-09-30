@@ -223,6 +223,7 @@ function excluirCampoCadastrado(escolha, idCampo, indice) {
             populaListaButtonDisciplinas();
             populaSelectDisciplinas('selectDisplinaAnotacoes', 'inputPeriodoAnotacoes');
             gerarId('inputIdDisciplina',arrayDisciplinasADS,'disc');
+            mostraQtdDisciplinas();
         }
         if (escolha === 'Livros') {
             arrayLivrosADS.splice(indice, 1);
@@ -340,12 +341,13 @@ function exibirNotificacaoAtividadePendente() {
 
     if (contadorExerciciosPendentes > 0) {
         campoExerciciosPendentes.innerHTML = `
-            <div class="col">
+            <div class="col-sm-0 col-lg-2"></div>
+            <div class="col-12 col-lg-8">
                 <div class="alert alert-danger">
                     <div class="row">
                         <div class="col flexCenter">
-                            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
-                            <span class="uppercase tamanho09 fw-bold">
+                            <i class="fa fa-exclamation-triangle fa-fade"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="uppercase tamanho11 fw-bold">
                                 Atenção
                             </span>
                         </div>
@@ -357,21 +359,23 @@ function exibirNotificacaoAtividadePendente() {
                         <div class="col-1"></div>
                     </div>
                     <div class="row mt-3">
+                    <hr>
                         <div class="col flexCenter">
-                            <span class="uppercase tamanho08">
+                            <span class="uppercase tamanho07">
                                 Existe(m) um total de <b><u>${contadorExerciciosPendentes} atividades pendentes</u></b> para serem realizadas.
                             </span>
                         </div>
                     </div>
-                    <div class="row mt-3 mt-lg-1">
+                    <div class="row mt-2 mt-lg-1">
                         <div class="col flexCenter">
-                            <span class="uppercase tamanho08">
+                            <span class="uppercase tamanho07">
                                 Fique atento aos prazos e a programação de estudo.
                             </span>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-sm-0 col-lg-2"></div>
         `;
     }
 }
@@ -489,7 +493,9 @@ function exibeCadastroExercicioProva() {
 
                         <div class="input-group">
                             <span class="w-75 bg-secondary text-light px-3 py-1 uppercase tamanho07 flexCenter rounded-start-pill text-center"
-                            id="spanNomeAtividade_${i}">
+                            id="spanNomeAtividade_${i}"
+                            data-bs-toggle="tooltip"
+                            title="${tarefa.disciplinaTarefa}">
                                 ${tarefa.disciplinaTarefa}
                             </span>
 
@@ -696,12 +702,12 @@ function salvarNovaDisciplina() {
 
     populaSelectDisciplinas('materiaTarefaCadastro','periodoTarefaCadastro');
     gerarId('inputIdDisciplina',arrayDisciplinasADS, 'dsc');
+    mostraQtdDisciplinas();
 
 }
 
 // POPULA LISTA DE BUTTONS DE ACORDO COM ARRAY [OK]
 function populaListaButtonDisciplinas() {
-
     const camposPeriodo = [
         document.getElementById('alert1Periodo'),
         document.getElementById('alert2Periodo'),
@@ -748,16 +754,16 @@ function populaListaButtonDisciplinas() {
             const mensagemPopular = `
                 <div class="col-12 mb-3">
                     <div class="input-group">
-
                         <span class="bg-dark input-group-text text-warning">
                             <i class="fa fa-book"></i>
                         </span>
+                        <input type="text" class="form-control uppercase textoCenter"
+                            data-bs-toggle="tooltip"
+                            title="${disciplina.nome}"
+                            value="${disciplina.nome}" disabled style="font-size: 0.7rem"
+                            id="campoDisciplinaCadastrada_${disciplina.nome}">
 
-                        <input
-                            type="text" class="form-control uppercase textoCenter"
-                            value="${disciplina.nome}" disabled style="font-size: 0.8rem"
-                            id="campoDisciplinaCadastrada_${disciplina.nome}" >
-                        <button class="btn btn-success input-group-text d-none"
+                        <button class="btn btn-success btn-sm input-group-text d-none"
                             onclick="sobrescreverCampoCadastrado(
                                 'Disciplinas',
                                 'campoDisciplinaCadastrada_${disciplina.nome}',
@@ -766,7 +772,7 @@ function populaListaButtonDisciplinas() {
                         </button>
 
                         <button
-                            class="btn btn-primary input-group-text"
+                            class="btn btn-primary btn-sm input-group-text"
                             id="btnEditarExibicaoDisciplinas_${i}"
                             onclick="editarCampoCadastrado(
                                 'Disciplinas',
@@ -775,7 +781,7 @@ function populaListaButtonDisciplinas() {
                         </button>
 
                         <button
-                            class="btn btn-danger input-group-text"
+                            class="btn btn-danger btn-sm input-group-text"
                             onclick="excluirCampoCadastrado(
                                 'Disciplinas',
                                 'campoDisciplinaCadastrada_${disciplina.nome}', '${i}' )">
@@ -791,7 +797,6 @@ function populaListaButtonDisciplinas() {
 }
 
 function mostraQtdDisciplinas() {
-
     let contadores = {
         contador1: 0,
         contador2: 0,
@@ -816,7 +821,7 @@ function mostraQtdDisciplinas() {
 
     for (let i = 1; i <= 5; i++) {
         document.getElementById(`spanQtdDisciplinas_${i}Periodo`).innerHTML = `
-        <span class="bg-info text-light px-3 py-1 uppercase tamanho07 rounded-pill">
+        <span class="bg-info text-light px-3 py-1 uppercase tamanho06 rounded-pill">
             ${contadores[`contador${i}`]} Disciplinas
         </span>`;
     }
