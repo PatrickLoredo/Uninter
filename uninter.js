@@ -1640,6 +1640,59 @@ function consoleArray(array){
     console.log(array)
 }
 
+function expandirReduzirTextArea() {
+    const iconeBtn = document.getElementById('iconeExpandirRecolher');
+    const colunaPrincipal = document.getElementById('colunaPricipalAnotacoes');
+    const btnExpandeRecolhe = document.getElementById('btnExpandeRecolhe');
+
+    if (iconeBtn.classList.contains('fa-up-right-and-down-left-from-center')) {
+        iconeBtn.classList.replace(
+            'fa-up-right-and-down-left-from-center',
+            'fa-down-left-and-up-right-to-center'
+        );
+        btnExpandeRecolhe.classList.replace("btn-dark",'btn-danger')
+        colunaPrincipal.classList.replace('col-lg-6', 'col-lg-12');
+        scrollParaId('btnSalvarAnotacoes',50)
+        iconeBtn.classList.add('fa-beat-fade')
+
+        document.getElementById('mainProvasExercicios').classList.add('d-none');
+        document.getElementById('mainTecnologias').classList.add('d-none');
+        document.getElementById('mainDisciplinas').classList.add('d-none');
+        document.getElementById('mainLivros').classList.add('d-none');
+        document.getElementById('mainProjetos').classList.add('d-none');
+
+
+        document.getElementById('colunaIDnovaAnotacao').classList.replace('col-lg-3','col-lg-2');
+        document.getElementById('colunaDATAINICIOnovaAnotacao').classList.replace('col-lg-4','col-lg-auto');
+        document.getElementById('colunaDATAATUALIZACAOnovaAnotacao').classList.replace('col-lg-5','col-lg-auto');
+        document.getElementById('colunaPERIODOnovaAnotacao').classList.replace('col-lg-3','col-lg-2');
+        document.getElementById('colunaDISCIPLINAnovaAnotacao').classList.replace('col-lg-9','col-lg-6');
+        document.getElementById('colunaNOMEMATERIAnovaAnotacao').classList.replace('col-12','col-6');
+    } 
+    else {
+        iconeBtn.classList.replace(
+            'fa-down-left-and-up-right-to-center',
+            'fa-up-right-and-down-left-from-center'
+        );
+
+        btnExpandeRecolhe.classList.replace("btn-danger",'btn-dark')
+        iconeBtn.classList.remove('fa-beat-fade')
+        colunaPrincipal.classList.replace('col-lg-12', 'col-lg-6');
+
+        document.getElementById('mainProvasExercicios').classList.remove('d-none');
+        document.getElementById('mainTecnologias').classList.remove('d-none');
+        document.getElementById('mainDisciplinas').classList.remove('d-none');
+        document.getElementById('mainLivros').classList.remove('d-none');
+        document.getElementById('mainProjetos').classList.remove('d-none');
+
+        document.getElementById('colunaIDnovaAnotacao').classList.replace('col-lg-2','col-lg-3');
+        document.getElementById('colunaDATAINICIOnovaAnotacao').classList.replace('col-lg-auto','col-lg-4');
+        document.getElementById('colunaDATAATUALIZACAOnovaAnotacao').classList.replace('col-lg-auto','col-lg-5');
+        document.getElementById('colunaPERIODOnovaAnotacao').classList.replace('col-lg-2','col-lg-3');
+        document.getElementById('colunaDISCIPLINAnovaAnotacao').classList.replace('col-lg-6','col-lg-9');
+        document.getElementById('colunaNOMEMATERIAnovaAnotacao').classList.replace('col-6','col-12');
+    }
+}
 /*======================================== FUNÇÕES ONLOAD ========================================*/
 /*=====================================================================================================*/
 window.onload = () => {
