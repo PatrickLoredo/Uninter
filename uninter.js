@@ -1871,8 +1871,15 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                         <div class="col-12">
                             <div class="mt-1">
                                 <label class="labelFormat text-primary fw-bold">
-                                    Anotações da Aula
+                                    Anotações da Aula 
                                 </label>
+
+                                <button class="btn btn-sm btn-dark rounded-pill btnExpandText d-none d-lg-block btnExpansivo" 
+                                id="btnExpancaoMinimizar_${idDisciplina}"
+                                onclick="expandirReduzirTextArea('iconeExpandirRecolher_${idDisciplina}', 'colunaPricipalAnotacoes', 'btnExpancaoMinimizar_${idDisciplina}')">
+                                    <i class="fa-solid fa-up-right-and-down-left-from-center" id ="iconeExpandirRecolher_${idDisciplina}"></i>
+                                </button>
+
 
                                 <textarea class="form-control" rows="10" disabled
                                     id="${idTextArea}">${anotacao.anotacao}
@@ -2025,10 +2032,10 @@ function consoleArray(array){
     console.log(array)
 }
 
-function expandirReduzirTextArea() {
-    const iconeBtn = document.getElementById('iconeExpandirRecolher');
-    const colunaPrincipal = document.getElementById('colunaPricipalAnotacoes');
-    const btnExpandeRecolhe = document.getElementById('btnExpandeRecolhe');
+function expandirReduzirTextArea(iconeDoBTN, colunaPrincipalMain, btnParaExpandeRecolhe) {
+    const iconeBtn = document.getElementById(iconeDoBTN);
+    const colunaPrincipal = document.getElementById(colunaPrincipalMain);
+    const btnExpandeRecolhe = document.getElementById(btnParaExpandeRecolhe);
 
     if (iconeBtn.classList.contains('fa-up-right-and-down-left-from-center')) {
         iconeBtn.classList.replace(

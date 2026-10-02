@@ -193,13 +193,15 @@ a{
 .roundedUpData,
 .roundedUpStatusPendente,
 .roundedUpStatusFinalizado,
-.btnExpandText{
+.btnExpandText,
+.btnExpansivo{
     position: relative;
     z-index: 99;
 }
 .roundedUpData,
 .roundedUpStatusPendente,
-.roundedUpStatusFinalizado{
+.roundedUpStatusFinalizado,
+.btnExpansivo{
     top: -3px;
     padding: 3px 15px;
     font-weight: bold;
@@ -207,5 +209,9 @@ a{
 
 .btnExpandText{
     top: 15px;
+    right: -95%;
+}
+.btnExpansivo{
+    top: 10px;
     right: -95%;
 }
