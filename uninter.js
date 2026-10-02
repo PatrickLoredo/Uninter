@@ -1786,7 +1786,8 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
         campoPeriodo.innerHTML += `
             <div class="col-12 mt-4">
                 <div class="alert alert-primary">
-                    <span class="iconetagNumero uppercase px-2" data-bs-toggle="collapse"
+                    <span class="iconetagNumero uppercase px-2 rounded-start-pill" 
+                        data-bs-toggle="collapse"
                         data-bs-target="#alertPeriodo_${periodoSelecionado}_Anotacao_${i}"
                         style="cursor:pointer"
                         onclick="consoleArray(arrayAnotacoesADS)">&nbsp;&nbsp;
@@ -1794,7 +1795,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                             <span>Resumo &nbsp;${contador}</span>
                     </span>
 
-                    <span class="iconetagDisciplina uppercase">
+                    <span class="iconetagDisciplina uppercase rounded-start-pill">
                         ${arrayAnotacoesADS[i].disciplina}
                     </span>
 
