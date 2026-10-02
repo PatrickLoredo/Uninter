@@ -1888,6 +1888,18 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                         </div>
 
                         <div class="col-12 flexCenter gap-2">
+                        
+                            <button class="btn btn-sm btn-success"
+                            onclick="sobscreverAtualizarAnotacao(
+                            '${idID}',
+                            '${idNomeAula}',
+                            '${idPeriodo}',
+                            '${idDisciplina}',
+                            '${idTextArea}')">
+                                <i class="fa fa-save"></i>&nbsp;
+                                <span class="uppercase tamanho07">Salvar</span>
+                            </button>
+
                             <button class="btn btn-sm btn-primary"
                                 onclick="editaAnotacaoFeita(
                                     '${idPeriodo}',
@@ -1900,18 +1912,6 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
 
                                 <span class="uppercase tamanho07">Editar</span>
                             </button>
-
-                            <button class="btn btn-sm btn-success"
-                            onclick="sobscreverAtualizarAnotacao(
-                            '${idID}',
-                            '${idNomeAula}',
-                            '${idPeriodo}',
-                            '${idDisciplina}',
-                            '${idTextArea}')">
-                                <i class="fa fa-save"></i>&nbsp;
-                                <span class="uppercase tamanho07">Salvar</span>
-                            </button>
-
 
                             <button class="btn btn-sm btn-danger"
                             onclick="excluirAnotacaoCompleta('${anotacao.id}')">
