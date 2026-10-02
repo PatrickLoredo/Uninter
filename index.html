@@ -42,37 +42,51 @@
             <a class="navbar-brand uppercase" href="https://uninter-pi.vercel.app/">ADS Uninter</a>
             <div class="" id="navbarNav">
                 <ul class="navbar nav m-auto">
-                    <li class="nav-item">
+                    <li class="nav-item"
+                    data-bs-toggle="tooltip"
+                    title="Plataforma AVA - Uninter">
                         <a href="https://univirtus.uninter.com/ava/web/#/" target="_blank" class="iconeNavbar">
                             <i class="fa-solid fa-graduation-cap"></i>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item"
+                    data-bs-toggle="tooltip"
+                    title="GITHUB - Pessoal">
                         <a href="https://github.com/" target="_blank" class="iconeNavbar">
                             <i class="fa fa-github"></i>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item"
+                    data-bs-toggle="tooltip"
+                    title="FontAwesome - Icons">
                         <a href="https://fontawesome.com/icons" target="_blank" class="iconeNavbar">
                             <i class="fa-brands fa-font-awesome"></i>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item"
+                    data-bs-toggle="tooltip"
+                    title="Bootstrap - Documents">
                         <a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/" target="_blank" class="iconeNavbar">
                             <i class="fa-brands fa-bootstrap"></i>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item"
+                    data-bs-toggle="tooltip"
+                    title="Vercel - Pessoal">
                         <a href="https://vercel.com/patrick-loredo-projects" target="_blank" class="iconeNavbar">
                             <i class="fa-brands fa-mendeley"></i>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item"
+                    data-bs-toggle="tooltip"
+                    title="Chat GPT">
                         <a href="https://chatgpt.com/" target="_blank" class="iconeNavbar">
                             <i class="fa-solid fa-robot"></i>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item"
+                    data-bs-toggle="tooltip"
+                    title="Biblioteca DEV - Pessoal">
                         <a href="https://biblioteca-dev-gules.vercel.app/" target="_blank" class="iconeNavbar">
                             <i class="fa-solid fa-code"></i>
                         </a>
@@ -98,6 +112,36 @@
         <hr>
 
         <div class="row" id="sessaoAlertExerciciosPendentes"></div>
+
+        <div class="row">
+            <div class="col-lg-4 col-1"></div>
+            <div class="col">
+                <div class="d-flex gap-2" id="btnExportImport">
+                    <button type="button"
+                            class="btn btn-success uppercase"
+                            onclick="exportarBackup()">
+                        <i class="fa-solid fa-upload"></i>
+                        Exportar Backup
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-primary uppercase"
+                            onclick="document.getElementById('inputImportarBackup').click()">
+                        <i class="fa-solid fa-download"></i>
+                        Importar Backup
+                    </button>
+
+                    <input type="file"
+                        id="inputImportarBackup"
+                        accept=".xlsx"
+                        style="display: none;"
+                        onchange="importarBackup(this)">
+                </div>
+            </div>
+            <div class="col-lg-4 col-1"></div>
+        </div>
+
+        <hr>
 
         <div class="row">
             <!--PRIMEIRA COLUNA DE COLLAPSE MAIN-->
@@ -1473,6 +1517,8 @@
         <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
         <script> AOS.init({ duration: 1200, once: true });</script>
 
+        <!--SHEETJS - LEITURA E CRIAÇÃO DE JS-->
+        <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
         <script src="uninter.js"></script>
 </body>
 

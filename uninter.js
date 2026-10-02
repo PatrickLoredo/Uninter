@@ -383,6 +383,391 @@ function exibirNotificacaoAtividadePendente() {
 function esconderElemento(id) {
     document.getElementById(id).style.display = 'none';
 }
+
+window.exportarBackup = function () {
+
+    if (typeof XLSX === 'undefined') {
+
+        alert(
+            'Erro: a biblioteca SheetJS não foi carregada.\n\n' +
+            'Verifique o carregamento do XLSX no HTML.'
+        );
+
+        console.error('XLSX não está disponível.');
+
+        return;
+    }
+
+    try {
+
+        const workbook = XLSX.utils.book_new();
+
+        const dadosBackup = [
+
+            {
+                nomeAba: 'Tecnologias',
+                dados: arrayTecnologiasADS
+            },
+
+            {
+                nomeAba: 'Disciplinas',
+                dados: arrayDisciplinasADS
+            },
+
+            {
+                nomeAba: 'Livros',
+                dados: arrayLivrosADS
+            },
+
+            {
+                nomeAba: 'Projetos',
+                dados: arrayProjetosADS
+            },
+
+            {
+                nomeAba: 'Anotacoes',
+                dados: arrayAnotacoesADS
+            },
+
+            {
+                nomeAba: 'ExerciciosProvas',
+                dados: arrayExerciciosProvas
+            }
+
+        ];
+
+        dadosBackup.forEach(item => {
+
+            const dadosPlanilha = item.dados.map(objeto => {
+
+                const linha = {};
+
+                Object.keys(objeto).forEach(chave => {
+
+                    const valor = objeto[chave];
+
+                    if (
+                        typeof valor === 'object' &&
+                        valor !== null
+                    ) {
+
+                        linha[chave] = JSON.stringify(valor);
+
+                    } else {
+
+                        linha[chave] = valor;
+
+                    }
+
+                });
+
+                return linha;
+
+            });
+
+            const worksheet =
+                dadosPlanilha.length > 0
+                    ? XLSX.utils.json_to_sheet(dadosPlanilha)
+                    : XLSX.utils.aoa_to_sheet([]);
+
+            XLSX.utils.book_append_sheet(
+                workbook,
+                worksheet,
+                item.nomeAba
+            );
+
+        });
+
+        const dadosIds = arrayIdsUtilizados.map(
+            (grupo, indice) => ({
+
+                grupo: indice,
+                ids: JSON.stringify(grupo)
+
+            })
+        );
+
+        const worksheetIds =
+            XLSX.utils.json_to_sheet(dadosIds);
+
+        XLSX.utils.book_append_sheet(
+            workbook,
+            worksheetIds,
+            'IdsUtilizados'
+        );
+
+        const data = new Date();
+
+        const dia =
+            String(data.getDate()).padStart(2, '0');
+
+        const mes =
+            String(data.getMonth() + 1).padStart(2, '0');
+
+        const ano =
+            data.getFullYear();
+
+        const dataBackup =
+            `${dia}${mes}${ano}`;
+
+        const nomeArquivo =
+            `backupUninter_${dataBackup}.xlsx`;
+
+        XLSX.writeFile(
+            workbook,
+            nomeArquivo
+        );
+
+        console.log(
+            `Backup exportado com sucesso: ${nomeArquivo}`
+        );
+
+        alert(
+            `Backup exportado com sucesso!\n\n` +
+            `Arquivo: ${nomeArquivo}`
+        );
+
+    } catch (erro) {
+
+        console.error(
+            'Erro ao exportar backup:',
+            erro
+        );
+
+        alert(
+            'Não foi possível exportar o backup.\n\n' +
+            'Verifique o console do navegador para mais detalhes.'
+        );
+
+    }
+
+};
+
+
+window.importarBackup = function (input) {
+
+    const arquivo = input.files[0];
+
+    if (!arquivo) {
+        return;
+    }
+
+    const confirmacao = confirm(
+
+        'Atenção!\n\n' +
+
+        'A importação irá substituir os dados atuais pelos dados do backup.\n\n' +
+
+        'Deseja continuar?'
+
+    );
+
+    if (!confirmacao) {
+
+        input.value = '';
+
+        return;
+    }
+
+    const leitor = new FileReader();
+
+    leitor.onload = function (evento) {
+
+        try {
+
+            const dados =
+                new Uint8Array(
+                    evento.target.result
+                );
+
+            const workbook =
+                XLSX.read(dados, {
+                    type: 'array'
+                });
+
+
+            function lerAba(nomeAba) {
+
+                if (
+                    !workbook.SheetNames.includes(nomeAba)
+                ) {
+
+                    return [];
+
+                }
+
+                const worksheet =
+                    workbook.Sheets[nomeAba];
+
+                return XLSX.utils.sheet_to_json(
+                    worksheet
+                );
+
+            }
+
+
+            function converterObjetos(array) {
+
+                return array.map(objeto => {
+
+                    const novoObjeto = {};
+
+                    Object.keys(objeto).forEach(chave => {
+
+                        let valor = objeto[chave];
+
+                        if (
+                            typeof valor === 'string' &&
+                            (
+                                valor.startsWith('[') ||
+                                valor.startsWith('{')
+                            )
+                        ) {
+
+                            try {
+
+                                valor = JSON.parse(valor);
+
+                            } catch (erro) {
+
+                            }
+
+                        }
+
+                        novoObjeto[chave] = valor;
+
+                    });
+
+                    return novoObjeto;
+
+                });
+
+            }
+
+
+            const tecnologias =
+                converterObjetos(
+                    lerAba('Tecnologias')
+                );
+
+            const disciplinas =
+                converterObjetos(
+                    lerAba('Disciplinas')
+                );
+
+            const livros =
+                converterObjetos(
+                    lerAba('Livros')
+                );
+
+            const projetos =
+                converterObjetos(
+                    lerAba('Projetos')
+                );
+
+            const anotacoes =
+                converterObjetos(
+                    lerAba('Anotacoes')
+                );
+
+            const exerciciosProvas =
+                converterObjetos(
+                    lerAba('ExerciciosProvas')
+                );
+
+
+            const dadosIds =
+                lerAba('IdsUtilizados');
+
+            const idsUtilizados =
+                dadosIds.map(item => {
+
+                    try {
+
+                        return JSON.parse(item.ids);
+
+                    } catch (erro) {
+
+                        return [];
+
+                    }
+
+                });
+
+
+            localStorage.setItem(
+                'Tecnologias',
+                JSON.stringify(tecnologias)
+            );
+
+            localStorage.setItem(
+                'Disciplinas',
+                JSON.stringify(disciplinas)
+            );
+
+            localStorage.setItem(
+                'Livros',
+                JSON.stringify(livros)
+            );
+
+            localStorage.setItem(
+                'Projetos',
+                JSON.stringify(projetos)
+            );
+
+            localStorage.setItem(
+                'Anotacoes',
+                JSON.stringify(anotacoes)
+            );
+
+            localStorage.setItem(
+                'ExerciciosProvas',
+                JSON.stringify(exerciciosProvas)
+            );
+
+            localStorage.setItem(
+                'ids',
+                JSON.stringify(idsUtilizados)
+            );
+
+
+            alert(
+
+                'Backup importado com sucesso!\n\n' +
+
+                'A página será recarregada para atualizar os dados.'
+
+            );
+
+            input.value = '';
+
+            location.reload();
+
+        } catch (erro) {
+
+            console.error(
+                'Erro ao importar backup:',
+                erro
+            );
+
+            alert(
+
+                'Não foi possível importar o backup.\n\n' +
+
+                'Verifique se o arquivo é um backup válido do ADS Uninter.'
+
+            );
+
+            input.value = '';
+
+        }
+
+    };
+
+    leitor.readAsArrayBuffer(arquivo);
+
+};
+
 /*======================================== FUNÇÕES EXERCICIOS PROVAS ========================================*/
 /*=====================================================================================================*/
 function calculaDiasFaltam(idDataAtual, idcampoxibicaoDiasFaltam) {
@@ -1697,7 +2082,7 @@ function expandirReduzirTextArea() {
 /*=====================================================================================================*/
 window.onload = () => {
     verificaStatusLeituraLivro('Em Aberto');
-    gerarId(arrayProjetosADS, 'PRJ', 'inputIdProjeto'),
+    gerarId('inputIdProjeto', arrayProjetosADS, 'PRJ');
     mostraDataAtual('inputDataInicioProjeto');
     populaSelectDisciplinas('selectDisplinaProjeto', 'inputPeriodoProjeto');
     populaCheckboxTecnologias('inputTecnologiasProjeto');

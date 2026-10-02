@@ -86,7 +86,8 @@ a{
 #campoModalBodyDadosProjetoEditar input,
 #campoModalBodyDadosProjetoEditar select,
 #mainExerciciosProvasBody input,
-#mainExerciciosProvasBody select{
+#mainExerciciosProvasBody select,
+#btnExportImport button{
     font-size: 0.7rem;
 }
 
