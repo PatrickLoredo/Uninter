@@ -1784,13 +1784,14 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
         const idTextArea = `campoSessaoAnotacoesTEXTANOTACAO_${i}`;
 
         campoPeriodo.innerHTML += `
-            <div class="col-12 mb-2">
+            <div class="col-12 mt-4">
                 <div class="alert alert-primary">
-                    <span class="iconetagNumero uppercase" data-bs-toggle="collapse"
+                    <span class="iconetagNumero uppercase px-2" data-bs-toggle="collapse"
                         data-bs-target="#alertPeriodo_${periodoSelecionado}_Anotacao_${i}"
                         style="cursor:pointer"
-                        onclick="consoleArray(arrayAnotacoesADS)">
-                            Resumo &nbsp;${contador}
+                        onclick="consoleArray(arrayAnotacoesADS)">&nbsp;&nbsp;
+                            <i class="fa fa-eye" id="iconeChevron_Anotacao_${i}"></i>&nbsp;&nbsp;
+                            <span>Resumo &nbsp;${contador}</span>
                     </span>
 
                     <span class="iconetagDisciplina uppercase">
