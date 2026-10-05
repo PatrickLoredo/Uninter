@@ -1648,7 +1648,7 @@ function salvarAnotacaoMateria() {
     document.getElementById('textAreaAnotacaoMateria').value = '';
 
     // GERA O PRÓXIMO ID DE ANOTAÇÃO
-    gerarId('campoCadastro_IdProjeto',arrayProjetosADS,'ant');
+    gerarId('inputIdAnotacoes',arrayAnotacoesADS,'ant');
 
     console.log(arrayAnotacoesADS);
     console.log(arrayIdsUtilizados);
