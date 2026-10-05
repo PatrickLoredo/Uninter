@@ -113,6 +113,7 @@
 
         <div class="row" id="sessaoAlertExerciciosPendentes"></div>
 
+        <!--BOTÕES DE EXPORTAR E IMPORTAR BACKUP-->
         <div class="row">
             <div class="col-lg-4 col-1"></div>
             <div class="col">
@@ -145,7 +146,6 @@
 
         <div class="row">
             <!--PRIMEIRA COLUNA DE COLLAPSE MAIN-->
-
             <div class="col-lg-6 col-sm-12">
                 <!--PROVAS E EXERCICIOS DO CURSO-->
                 <div class="row" id="mainProvasExercicios">
@@ -1367,11 +1367,13 @@
                                                 populaSelectDisciplinas('selectDisplinaAnotacoes', 'inputPeriodoAnotacoes')">
                                                     <i class="fa fa-circle-plus"></i>
                                                 </button>
+
                                                 <button class="btn btn-sm btn-dark"
                                                 data-bs-toggle="collapse"
                                                 data-bs-target="#mainExibicaoAnotacoes"
-                                                onclick="exibePeriodosAnotacoes(),
-                                                calculaQtdAnotacoesPeriodo()">
+                                                onclick="exibePeriodosAnotacoes();
+                                                calculaQtdAnotacoesPeriodo()"
+                                                id="btnExibirAnotacoes">
                                                     <i class="fa fa-list"></i>
                                                 </button>
                                             </div>
