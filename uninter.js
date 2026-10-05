@@ -1884,7 +1884,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
 
 
                                 <textarea class="form-control" rows="10" disabled
-                                    id="${idTextArea}">🟡▪️🔴⚠️🌟 <br>${anotacao.anotacao}
+                                    id="${idTextArea}">${anotacao.anotacao}
                                 </textarea>
                             </div>
                         </div>
