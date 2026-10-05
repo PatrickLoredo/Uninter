@@ -1801,7 +1801,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
 
                     <div class="row mt-2">
                         <!-- DATA -->
-                        <div class="col-lg-3 col-7 mb-2">
+                        <div class="col-lg-3 col-12 mb-2">
                             <label class="labelFormat text-primary fw-bold">ID</label>
                             <input class="form-control uppercase textoCenter"
                             style="font-size: 0.8rem" type="text" value="${anotacao.id}"
