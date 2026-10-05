@@ -1810,7 +1810,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                         </div>
                       
                         <!-- NOME DA AULA -->
-                        <div class="col-12 col-lg mb-3">
+                        <div class="col-12 col-lg mb-3 mt-3 mt-lg-0">
                             <label class="labelFormat text-primary fw-bold">Nome da Aula</label>
                             <input class="form-control uppercase textoCenter" 
                                 style="font-size: 0.8rem" type="text" value="${anotacao.nomeAula}"
