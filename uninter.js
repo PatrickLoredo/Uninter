@@ -1772,7 +1772,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
     campoPeriodo.innerHTML = '';
     let contador = 0;
 
-    for (let i = 0; i < arrayAnotacoesADS.length; i++) {
+    for (let i = arrayAnotacoesADS.length - 1; i >= 0; i--) {
         const anotacao = arrayAnotacoesADS[i];
         if (Number(anotacao.periodo) !== periodoSelecionado) {continue;}
         contador++;
@@ -1792,7 +1792,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                         style="cursor:pointer"
                         onclick="consoleArray(arrayAnotacoesADS)">&nbsp;&nbsp;
                             <i class="fa fa-eye" id="iconeChevron_Anotacao_${i}"></i>&nbsp;&nbsp;
-                            <span>Resumo &nbsp;${contador}</span>
+                            <span>Resumo &nbsp;${i+1}</span>
                     </span>
 
                     <span class="iconetagDisciplina uppercase rounded-start-pill">
@@ -1876,7 +1876,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                                     Ícones Utilizados
                                 </label>
 
-                                <textarea class="form-control" rows="7" disabled>
+                                <textarea class="form-control" rows="5" disabled>
                                     1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣🔟➡️⬅️⬆️⬇️⏺️⏹️⏹️#️⃣ &nbsp;&nbsp; ❌✅⛔🚫❗⚠️ &nbsp;&nbsp; 🔴🟠🟡🟢🔵🟣⚫⚪🟤 &nbsp;&nbsp; 🔺🔻🔸🔹🔶🔷 &nbsp;&nbsp; ▪️▫️ &nbsp;&nbsp; 🟥🟧🟨🟩🟦🟪⬛⬜🟫 &nbsp;&nbsp; 💭🚩
                                 </textarea>
                             </div>
