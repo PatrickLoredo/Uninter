@@ -1761,7 +1761,7 @@ function insereIconeTextArea(icone, idTextArea) {
 }
 
 function exibeIcones(idCampo) {
-    const campoTextArea = document.getElementById('idCampo');
+    const campoTextArea = document.getElementById(idCampo);
     campoTextArea.innerHTML = ''; 
     for(let i=0;i<arrayIcones.length;i++){
         campoTextArea.innerHTML += `
