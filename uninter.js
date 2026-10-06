@@ -2046,7 +2046,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                 </div>
             </div>
             
-            exibeIcones('${idID});
+            exibeIcones('${idID}');
 
         `;
 
