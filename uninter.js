@@ -1770,7 +1770,6 @@ function editaAnotacaoFeita(idCampoPeriodo, idCampoNomeAula,SelectDisciplinas, t
 function populaAnotacoesPorPeriodo(periodoSelecionado) {
     const campoPeriodo = document.getElementById(`body_${periodoSelecionado}PeriodoAnotacoesAlert`);
     campoPeriodo.innerHTML = '';
-    let contador = 0;
 
     for (let i = arrayAnotacoesADS.length - 1; i >= 0; i--) {
         const anotacao = arrayAnotacoesADS[i];
