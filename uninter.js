@@ -1873,6 +1873,20 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                         <div class="col-12">
                             <div class="mt-1">
                                 <label class="labelFormat text-primary fw-bold">
+                                    Ícones Utilizados
+                                </label>
+
+                                <textarea class="form-control" rows="3" disabled>
+                                    1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣🔟➡️⬅️⬆️⬇️⏺️⏹️⏹️#️⃣ &nbsp;&nbsp; ❌✅⛔🚫❗⚠️ &nbsp;&nbsp; 🔴🟠🟡🟢🔵🟣⚫⚪🟤 &nbsp;&nbsp; 🔺🔻🔸🔹🔶🔷 &nbsp;&nbsp; ▪️▫️ &nbsp;&nbsp; 🟥🟧🟨🟩🟦🟪⬛⬜🟫 &nbsp;&nbsp; 💭🚩
+                                </textarea>
+                            </div>
+                        </div>
+
+
+                        <!-- ANOTAÇÃO -->
+                        <div class="col-12">
+                            <div class="mt-1">
+                                <label class="labelFormat text-primary fw-bold">
                                     Anotações da Aula 
                                 </label>
 
