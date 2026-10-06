@@ -1766,7 +1766,7 @@ function exibeIcones(idCampo) {
     for(let i=0;i<arrayIcones.length;i++){
         campoTextArea.innerHTML += `
             <div class="col-1 mb-2">
-                <button class="btn btn-sm btn-outline-secondary"
+                <button class="btn btn-sm btn-outline-white"
                     value="${arrayIcones[i].trim()}"
                     onclick="insereIconeTextArea(this.value,'textAreaAnotacaoMateria')"
                     ondblclick="excluirIconeAnotacao(this.value)">
