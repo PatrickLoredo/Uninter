@@ -1962,7 +1962,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                             </div>
                             <div class="col-auto">
                                 <button class="btn btn-sm btn-dark"
-                                data-bs-toggle="modal" data-bs-target="#modalCadastroIcones">
+                                data-bs-toggle="modal" data-bs-target="#modalCadastroIcones_${i}">
                                     <i class="fa fa-plus"></i></button>
                             </div>
                             <div class="col"></div>
@@ -2036,6 +2036,52 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                                 <span class="uppercase tamanho07">
                                     Excluir
                                 </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--MODAL CADASTRO ICONES-->
+            <div class="modal mt-5" tabindex="-1" id="modalCadastroIcones_${i}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header m-auto flexCenter">
+                            <div class="row">
+                                <div class="col">
+                                    <h5 class="modal-title uppercase tamanho12">cadastrar icone</h5>
+                                </div>
+                                <div class="col-1">
+                                    <button type="button" class="btn btn-sm btn-danger"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close">
+                                            <i class="fa fa-x"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <label for="" class="labelFormat">
+                                Insira o ícone que deseja utilizar nas anotações das matérias
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-primary text-light">
+                                    <i class="fa fa-star"></i>
+                                </span>
+                                <input type="text" class="form-control col-12" id="inputNomeIcone_${i}" 
+                                placeholder="Insira o ícone...">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success uppercase"
+                            onclick="salvarIconeAnotacao('inputNomeIcone_${i}')">
+                                <i class="fa fa-save"></i>&nbsp;
+                                <span class="tamanho08">salvar</span>
+                            </button>
+                            <button type="button" class="btn btn-primary uppercase"
+                            onclick="limparIconeAnotacao('inputNomeIcone_${i}')">
+                                <i class="fa fa-broom"></i>&nbsp;
+                                <span class="tamanho08">limpar</span>
                             </button>
                         </div>
                     </div>
