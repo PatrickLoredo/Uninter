@@ -1645,7 +1645,7 @@ function salvarAnotacaoMateria() {
     document.getElementById('inputDataInicioAnotacoes').value = '';
     document.getElementById('inputPeriodoAnotacoes').value = '1';
     document.getElementById('inputNomeMateriaAnotacoes').value = 'Aula Teórica X - ';
-    document.getElementById('textAreaAnotacaoMateria').value = '🟡▪️🔴⚠️🌟❌✅⬇️⬆️⬅️➡️';
+    document.getElementById('textAreaAnotacaoMateria').value = '';
 
     // GERA O PRÓXIMO ID DE ANOTAÇÃO
     gerarId('inputIdAnotacoes',arrayAnotacoesADS,'ant');
