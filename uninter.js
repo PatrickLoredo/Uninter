@@ -1951,11 +1951,11 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
 
                         <hr>
 
-                        <div class="row">
+                        <div class="row mb-3">
                             <div class="col"></div>
                             <div class="col-auto m-auto">
                                 <label for="" class="labelFormat">
-                                    ícones utilizados LOLO
+                                    ícones utilizados
                                 </label>
                             </div>
                             <div class="col-auto">
@@ -1966,7 +1966,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                             <div class="col"></div>
                         </div>
 
-                        <div class="row" id="colunaExibeIcones_${idID}"></div>
+                        <div class="row my-2" id="colunaExibeIcones_${idID}"></div>
 
                         <!-- ANOTAÇÃO -->
                         <div class="col-12">
