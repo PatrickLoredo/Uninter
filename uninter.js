@@ -2074,7 +2074,8 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success uppercase"
-                            onclick="salvarIconeAnotacao('inputNomeIcone_${i}')">
+                            onclick="salvarIconeAnotacao('inputNomeIcone_${i}'),
+                            exibeIcones(`colunaExibeIcones_${idID}`, `${idTextArea}_${i}`)">
                                 <i class="fa fa-save"></i>&nbsp;
                                 <span class="tamanho08">salvar</span>
                             </button>
