@@ -1760,15 +1760,16 @@ function insereIconeTextArea(icone, idTextArea) {
     textArea.value = textoAtual.substring(0, posicaoCursor) + icone + textoAtual.substring(posicaoCursor);
 }
 
-function exibeIcones(idCampo) {
+function exibeIcones(idCampo , idTextAreaInserir) {
     const campoTextArea = document.getElementById(idCampo);
+    
     campoTextArea.innerHTML = ''; 
     for(let i=0;i<arrayIcones.length;i++){
         campoTextArea.innerHTML += `
             <div class="col-1 mb-2">
-                <button class="btn btn-sm btn-outline-white"
+                <button class="btn btn-sm btn-outline-dark"
                     value="${arrayIcones[i].trim()}"
-                    onclick="insereIconeTextArea(this.value,'textAreaAnotacaoMateria')"
+                    onclick="insereIconeTextArea(this.value, '${idTextAreaInserir}')"
                     ondblclick="excluirIconeAnotacao(this.value)">
                     ${arrayIcones[i]}
                 </button>
@@ -1787,6 +1788,7 @@ function salvarIconeAnotacao(idInput){
         exibeIcones();
     }
     localStorage.setItem('Icones', JSON.stringify(arrayIcones));
+    alert('Ícone salvo com sucesso! \n\nClique no ícone para inseri-lo na anotação.\nClique duas vezes para excluir o ícone.');
 }
 
 function limparIconeAnotacao(idInput){
@@ -1986,21 +1988,16 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                                     </i>
                                 </button>
 
-                                <textarea class="form-control" rows="10" disabled id="${idTextArea}">
+                                <textarea class="form-control" rows="10" disabled id="${idTextArea}_${i}">
                                     ${anotacao.anotacao}
                                 </textarea>
-
                             </div>
-
                         </div>
 
 
                         <!-- BOTÕES -->
-
                         <div class="col-12 flexCenter gap-2">
-
                             <!-- SALVAR -->
-
                             <button
                                 class="btn btn-sm btn-success"
                                 onclick="sobscreverAtualizarAnotacao(
@@ -2008,7 +2005,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                                     '${idNomeAula}',
                                     '${idPeriodo}',
                                     '${idDisciplina}',
-                                    '${idTextArea}')">
+                                    '${idTextArea}_${i}' )">
 
                                 <i class="fa fa-save"></i>&nbsp;
                                 <span class="uppercase tamanho07">
@@ -2022,7 +2019,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                                     '${idPeriodo}',
                                     '${idNomeAula}',
                                     '${idDisciplina}',
-                                    '${idTextArea}' )">
+                                    '${idTextArea}_${i}' )">
 
                                 <i class="fa fa-edit"></i>&nbsp;
                                 <span class="uppercase tamanho07">
@@ -2054,7 +2051,8 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
         // Seleciona a disciplina salva
         document.getElementById(idDisciplina).value =anotacao.disciplina;
 
-        exibeIcones(`colunaExibeIcones_${idID}`);
+        exibeIcones(`colunaExibeIcones_${idID}`, `${idTextArea}_${i}`);
+        insereIconeTextArea(anotacao.anotacao, `${idTextArea}_${i}`);
     }
 
     // Nenhuma anotação encontrada para este período
@@ -2221,5 +2219,5 @@ window.onload = () => {
     clicarElemento('btnSessaoCadastroExerciciosProvas');
     exibeCadastroExercicioProva();
     exibirNotificacaoAtividadePendente();
-    exibeIcones('colunaExibeIcones');
+    exibeIcones('colunaExibeIcones', 'textAreaAnotacaoMateria');
 };
