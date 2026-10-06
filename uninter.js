@@ -1760,8 +1760,8 @@ function insereIconeTextArea(icone, idTextArea) {
     textArea.value = textoAtual.substring(0, posicaoCursor) + icone + textoAtual.substring(posicaoCursor);
 }
 
-function exibeIcones() {
-    const campoTextArea = document.getElementById('colunaExibeIcones');
+function exibeIcones(idCampo) {
+    const campoTextArea = document.getElementById('idCampo');
     campoTextArea.innerHTML = ''; 
     for(let i=0;i<arrayIcones.length;i++){
         campoTextArea.innerHTML += `
@@ -1967,7 +1967,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                             <div class="col"></div>
                         </div>
 
-                        <div class="row" id="colunaExibeIcones"></div>
+                        <div class="row" id="colunaExibeIcones_${id}"></div>
 
                         <!-- ANOTAÇÃO -->
                         <div class="col-12">
@@ -2045,9 +2045,11 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                     </div>
                 </div>
             </div>
+            
+            exibeIcones('${idID});
+
         `;
 
-        exibeIcones();
 
         // Popula o select de disciplinas
         populaSelectDisciplinas(idDisciplina,idPeriodo);
@@ -2220,5 +2222,5 @@ window.onload = () => {
     clicarElemento('btnSessaoCadastroExerciciosProvas');
     exibeCadastroExercicioProva();
     exibirNotificacaoAtividadePendente();
-    exibeIcones();
+    exibeIcones('colunaExibeIcones');
 };
