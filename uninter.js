@@ -1876,7 +1876,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                                     Ícones Utilizados
                                 </label>
 
-                                <textarea class="form-control" rows="3" disabled>
+                                <textarea class="form-control" rows="5" disabled>
                                     1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣🔟➡️⬅️⬆️⬇️⏺️⏹️⏹️#️⃣ &nbsp;&nbsp; ❌✅⛔🚫❗⚠️ &nbsp;&nbsp; 🔴🟠🟡🟢🔵🟣⚫⚪🟤 &nbsp;&nbsp; 🔺🔻🔸🔹🔶🔷 &nbsp;&nbsp; ▪️▫️ &nbsp;&nbsp; 🟥🟧🟨🟩🟦🟪⬛⬜🟫 &nbsp;&nbsp; 💭🚩
                                 </textarea>
                             </div>
