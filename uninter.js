@@ -1952,19 +1952,22 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
 
                         <hr>
 
-                        <!-- ÍCONES UTILIZADOS -->
-                        <div class="col-12">
-                            <div class="mt-1">
-                                <label class="labelFormat text-primary fw-bold">
-                                    Ícones Utilizados
+                        <div class="row">
+                            <div class="col"></div>
+                            <div class="col-auto m-auto">
+                                <label for="" class="labelFormat">
+                                    ícones utilizados
                                 </label>
-                                <textarea
-                                    class="form-control"
-                                    rows="5"
-                                    disabled>1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣🔟➡️⬅️⬆️⬇️⏺️⏹️⏹️#️⃣ &nbsp;&nbsp; ❌✅⛔🚫❗⚠️ &nbsp;&nbsp; 🔴🟠🟡🟢🔵🟣⚫⚪🟤 &nbsp;&nbsp; 🔺🔻🔸🔹🔶🔷 &nbsp;&nbsp; ▪️▫️ &nbsp;&nbsp; 🟥🟧🟨🟩🟦🟪⬛⬜🟫 &nbsp;&nbsp; 💭🚩</textarea>
                             </div>
+                            <div class="col-auto">
+                                <button class="btn btn-sm btn-dark"
+                                data-bs-toggle="modal" data-bs-target="#modalCadastroIcones">
+                                    <i class="fa fa-plus"></i></button>
+                            </div>
+                            <div class="col"></div>
                         </div>
 
+                        <div class="row" id="colunaExibeIcones"></div>
 
                         <!-- ANOTAÇÃO -->
                         <div class="col-12">
@@ -2044,6 +2047,8 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
             </div>
         `;
 
+        exibeIcones();
+        
         // Popula o select de disciplinas
         populaSelectDisciplinas(idDisciplina,idPeriodo);
 
