@@ -1828,7 +1828,6 @@ function editaAnotacaoFeita(idCampoPeriodo, idCampoNomeAula,SelectDisciplinas, t
 
 // POPULA TODAS AS ANOTAÇÕES POR PERÍODO [OK]
 function populaAnotacoesPorPeriodo(periodoSelecionado) {
-
     const campoPeriodo = document.getElementById(
         `body_${periodoSelecionado}PeriodoAnotacoesAlert`
     );
@@ -1967,7 +1966,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                             <div class="col"></div>
                         </div>
 
-                        <div class="row" id="colunaExibeIcones_${id}"></div>
+                        <div class="row" id="colunaExibeIcones_${idID}"></div>
 
                         <!-- ANOTAÇÃO -->
                         <div class="col-12">
@@ -2054,7 +2053,8 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
 
         // Seleciona a disciplina salva
         document.getElementById(idDisciplina).value =anotacao.disciplina;
-        exibeIcones(`${idID}`);
+
+        exibeIcones(`colunaExibeIcones_${idID}`);
     }
 
     // Nenhuma anotação encontrada para este período
