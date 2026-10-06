@@ -2048,7 +2048,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
             
             
 
-        `exibeIcones(`${idID}`);
+        `exibeIcones(`'${idID}'`);
         ;
 
 
