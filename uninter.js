@@ -1956,7 +1956,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                             <div class="col"></div>
                             <div class="col-auto m-auto">
                                 <label for="" class="labelFormat">
-                                    ícones utilizados
+                                    ícones utilizados LOLO
                                 </label>
                             </div>
                             <div class="col-auto">
@@ -2048,7 +2048,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
         `;
 
         exibeIcones();
-        
+
         // Popula o select de disciplinas
         populaSelectDisciplinas(idDisciplina,idPeriodo);
 
