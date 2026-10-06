@@ -5,6 +5,7 @@ let arrayLivrosADS = JSON.parse(localStorage.getItem('Livros')) || [];
 let arrayProjetosADS = JSON.parse(localStorage.getItem('Projetos')) || [];
 let arrayAnotacoesADS = JSON.parse(localStorage.getItem('Anotacoes')) || [];
 let arrayExerciciosProvas = JSON.parse(localStorage.getItem('ExerciciosProvas')) || [];
+let arrayIcones = JSON.parse(localStorage.getItem('Icones')) || [];
 
 /*
 INDICES DE SUBARRAYS
@@ -116,6 +117,7 @@ class Tarefa {
             
         }
 }
+
 
 /*=========================================== FUNÇÕES GERAIS ===========================================*/
 /*=====================================================================================================*/
@@ -1750,6 +1752,64 @@ function calculaQtdAnotacoesPeriodo() {
     contador5Periodo.innerHTML = `${contagem5Periodo} Anotações`
 }
 
+function insereIconeTextArea(icone, idTextArea) {
+    const textArea = document.getElementById(idTextArea);
+    const posicaoCursor = textArea.selectionStart;
+    const textoAtual = textArea.value;
+
+    textArea.value = textoAtual.substring(0, posicaoCursor) + icone + textoAtual.substring(posicaoCursor);
+}
+
+function exibeIcones() {
+    const campoTextArea = document.getElementById('colunaExibeIcones');
+    campoTextArea.innerHTML = ''; 
+    for(let i=0;i<arrayIcones.length;i++){
+        campoTextArea.innerHTML += `
+            <div class="col-1 mb-2">
+                <button class="btn btn-sm btn-outline-secondary"
+                    value="${arrayIcones[i].trim()}"
+                    onclick="insereIconeTextArea(this.value,'textAreaAnotacaoMateria')"
+                    ondblclick="excluirIconeAnotacao(this.value)">
+                    ${arrayIcones[i]}
+                </button>
+            </div>
+        `;
+    }
+}
+
+function salvarIconeAnotacao(idInput){
+    const input = document.getElementById(idInput);
+    const icone = input.value;
+
+    if(icone.trim() !== ''){
+        arrayIcones.push(icone);
+        input.value = '';
+        exibeIcones();
+    }
+    localStorage.setItem('Icones', JSON.stringify(arrayIcones));
+}
+
+function limparIconeAnotacao(idInput){
+    const input = document.getElementById(idInput);
+    input.value = '';
+}
+
+function excluirIconeAnotacao(icone){
+    const index = arrayIcones.indexOf(icone);
+
+    if(index !== -1){
+        let confirmacao = confirm('Deseja realmente excluir este ícone?');
+        if(confirmacao){
+            arrayIcones.splice(index, 1);
+            localStorage.setItem('Icones', JSON.stringify(arrayIcones));
+            exibeIcones();
+        }
+        else{
+            alert('Exclusão cancelada!');
+        }
+    }
+}
+
 //  LIBERA CAMPOS PARA EDICAO [OK]
 function editaAnotacaoFeita(idCampoPeriodo, idCampoNomeAula,SelectDisciplinas, textAreaAnotacao) {
     const campoPeriodo = document.getElementById(idCampoPeriodo);
@@ -1767,7 +1827,6 @@ function editaAnotacaoFeita(idCampoPeriodo, idCampoNomeAula,SelectDisciplinas, t
 }
 
 // POPULA TODAS AS ANOTAÇÕES POR PERÍODO [OK]
-// POPULA TODAS AS ANOTAÇÕES POR PERÍODO
 function populaAnotacoesPorPeriodo(periodoSelecionado) {
 
     const campoPeriodo = document.getElementById(
@@ -1777,17 +1836,13 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
     campoPeriodo.innerHTML = '';
 
     const periodo = Number(periodoSelecionado);
-
     let encontrouAnotacao = false;
 
     for (let i = arrayAnotacoesADS.length - 1; i >= 0; i--) {
-
         const anotacao = arrayAnotacoesADS[i];
-
         if (Number(anotacao.periodo) !== periodo) {
             continue;
         }
-
         encontrouAnotacao = true;
 
         const idPeriodo = `campoSessaoAnotacoesPERIODO_${i}`;
@@ -1797,219 +1852,141 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
         const idTextArea = `campoSessaoAnotacoesTEXTANOTACAO_${i}`;
 
         campoPeriodo.innerHTML += `
-
             <div class="col-12 mt-4">
-
                 <div class="alert alert-primary">
-
                     <span class="iconetagNumero uppercase px-2 rounded-start-pill" 
                         data-bs-toggle="collapse"
                         data-bs-target="#alertPeriodo_${periodo}_Anotacao_${i}"
                         style="cursor:pointer"
                         onclick="consoleArray(arrayAnotacoesADS)">
-
                         &nbsp;&nbsp;
-
                         <i class="fa fa-eye"
                             id="iconeChevron_Anotacao_${i}">
                         </i>
-
                         &nbsp;&nbsp;
-
                         <span>
                             Resumo &nbsp;${i + 1}
                         </span>
-
                     </span>
-
                     <span class="iconetagDisciplina uppercase rounded-start-pill">
                         ${anotacao.disciplina}
                     </span>
-
-
                     <div class="row mt-2">
-
                         <!-- ID -->
-
                         <div class="col-lg-3 col-12 mb-2">
-
                             <label class="labelFormat text-primary fw-bold">
                                 ID
                             </label>
-
-                            <input
-                                class="form-control uppercase textoCenter"
+                            <input class="form-control uppercase textoCenter"
                                 style="font-size: 0.8rem"
                                 type="text"
                                 value="${anotacao.id}"
                                 id="${idID}"
-                                disabled
-                            >
-
+                                disabled>
                         </div>
 
-
                         <!-- NOME DA AULA -->
-
                         <div class="col-12 col-lg mb-3 mt-3 mt-lg-0">
-
                             <label class="labelFormat text-primary fw-bold">
                                 Nome da Aula
                             </label>
-
-                            <input
-                                class="form-control uppercase textoCenter"
+                            <input class="form-control uppercase textoCenter"
                                 style="font-size: 0.8rem"
                                 type="text"
                                 value="${anotacao.nomeAula}"
                                 disabled
                                 id="${idNomeAula}"
                                 data-toggle="tooltip"
-                                title="${anotacao.nomeAula}"
-                            >
-
+                                title="${anotacao.nomeAula}">
                         </div>
-
                     </div>
-
 
                     <!-- DETALHES -->
 
-                    <div
-                        class="row collapse"
-                        id="alertPeriodo_${periodo}_Anotacao_${i}"
-                    >
-
+                    <div class="row collapse" id="alertPeriodo_${periodo}_Anotacao_${i}">
                         <!-- PERÍODO -->
-
                         <div class="col-auto mb-3">
-
                             <label class="labelFormat text-primary fw-bold">
                                 Período
                             </label>
 
-                            <select
-                                class="form-select uppercase textoCenter"
+                            <select class="form-select uppercase textoCenter"
                                 id="${idPeriodo}"
                                 disabled
                                 style="font-size: 0.8rem"
-                                onchange="populaSelectDisciplinas('${idDisciplina}', '${idPeriodo}')"
-                            >
+                                onchange="populaSelectDisciplinas('${idDisciplina}', '${idPeriodo}')">
 
-                                <option value="1"
-                                    ${Number(anotacao.periodo) === 1 ? 'selected' : ''}>
+                                <option value="1" ${Number(anotacao.periodo) === 1 ? 'selected' : ''}>
                                     1
                                 </option>
-
-                                <option value="2"
-                                    ${Number(anotacao.periodo) === 2 ? 'selected' : ''}>
+                                <option value="2" ${Number(anotacao.periodo) === 2 ? 'selected' : ''}>
                                     2
                                 </option>
-
-                                <option value="3"
-                                    ${Number(anotacao.periodo) === 3 ? 'selected' : ''}>
+                                <option value="3" ${Number(anotacao.periodo) === 3 ? 'selected' : ''}>
                                     3
                                 </option>
-
-                                <option value="4"
-                                    ${Number(anotacao.periodo) === 4 ? 'selected' : ''}>
+                                <option value="4" ${Number(anotacao.periodo) === 4 ? 'selected' : ''}>
                                     4
                                 </option>
-
-                                <option value="5"
-                                    ${Number(anotacao.periodo) === 5 ? 'selected' : ''}>
+                                <option value="5" ${Number(anotacao.periodo) === 5 ? 'selected' : ''}>
                                     5
                                 </option>
-
                             </select>
-
                         </div>
 
-
                         <!-- DISCIPLINA -->
-
                         <div class="col mb-2">
-
                             <label class="labelFormat text-primary fw-bold">
                                 Disciplina da Aula
                             </label>
-
-                            <select
-                                class="form-select uppercase textoCenter"
+                            <select class="form-select uppercase textoCenter"
                                 id="${idDisciplina}"
                                 disabled
-                                style="font-size: 0.8rem"
-                            >
+                                style="font-size: 0.8rem">
 
-                                <option
-                                    value="${anotacao.disciplina}"
-                                    selected
-                                >
+                                <option value="${anotacao.disciplina}" selected>
                                     ${anotacao.disciplina}
                                 </option>
-
                             </select>
-
                         </div>
 
                         <hr>
 
-
                         <!-- ÍCONES UTILIZADOS -->
-
                         <div class="col-12">
-
                             <div class="mt-1">
-
                                 <label class="labelFormat text-primary fw-bold">
                                     Ícones Utilizados
                                 </label>
-
                                 <textarea
                                     class="form-control"
                                     rows="5"
-                                    disabled
-                                >1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣🔟➡️⬅️⬆️⬇️⏺️⏹️⏹️#️⃣ &nbsp;&nbsp; ❌✅⛔🚫❗⚠️ &nbsp;&nbsp; 🔴🟠🟡🟢🔵🟣⚫⚪🟤 &nbsp;&nbsp; 🔺🔻🔸🔹🔶🔷 &nbsp;&nbsp; ▪️▫️ &nbsp;&nbsp; 🟥🟧🟨🟩🟦🟪⬛⬜🟫 &nbsp;&nbsp; 💭🚩</textarea>
-
+                                    disabled>1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣🔟➡️⬅️⬆️⬇️⏺️⏹️⏹️#️⃣ &nbsp;&nbsp; ❌✅⛔🚫❗⚠️ &nbsp;&nbsp; 🔴🟠🟡🟢🔵🟣⚫⚪🟤 &nbsp;&nbsp; 🔺🔻🔸🔹🔶🔷 &nbsp;&nbsp; ▪️▫️ &nbsp;&nbsp; 🟥🟧🟨🟩🟦🟪⬛⬜🟫 &nbsp;&nbsp; 💭🚩</textarea>
                             </div>
-
                         </div>
 
 
                         <!-- ANOTAÇÃO -->
-
                         <div class="col-12">
-
                             <div class="mt-1">
-
                                 <label class="labelFormat text-primary fw-bold">
                                     Anotações da Aula
                                 </label>
 
-                                <button
-                                    class="btn btn-sm btn-dark rounded-pill btnExpandText d-none d-lg-block btnExpansivo"
+                                <button class="btn btn-sm btn-dark rounded-pill btnExpandText d-none d-lg-block btnExpansivo"
                                     id="btnExpancaoMinimizar_${idDisciplina}"
                                     onclick="expandirReduzirTextArea(
                                         'iconeExpandirRecolher_${idDisciplina}',
                                         'colunaPricipalAnotacoes',
-                                        'btnExpancaoMinimizar_${idDisciplina}'
-                                    )"
-                                >
-
-                                    <i
-                                        class="fa-solid fa-up-right-and-down-left-from-center"
-                                        id="iconeExpandirRecolher_${idDisciplina}"
-                                    ></i>
-
+                                        'btnExpancaoMinimizar_${idDisciplina}')">
+                                    <i class="fa-solid fa-up-right-and-down-left-from-center"
+                                        id="iconeExpandirRecolher_${idDisciplina}">
+                                    </i>
                                 </button>
 
-
-                                <textarea
-                                    class="form-control"
-                                    rows="10"
-                                    disabled
-                                    id="${idTextArea}"
-                                >${anotacao.anotacao}</textarea>
+                                <textarea class="form-control" rows="10" disabled id="${idTextArea}">
+                                    ${anotacao.anotacao}
+                                </textarea>
 
                             </div>
 
@@ -2029,108 +2006,64 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                                     '${idNomeAula}',
                                     '${idPeriodo}',
                                     '${idDisciplina}',
-                                    '${idTextArea}'
-                                )"
-                            >
+                                    '${idTextArea}')">
 
                                 <i class="fa fa-save"></i>&nbsp;
-
                                 <span class="uppercase tamanho07">
                                     Salvar
                                 </span>
-
                             </button>
 
-
                             <!-- EDITAR -->
-
-                            <button
-                                class="btn btn-sm btn-primary"
+                            <button class="btn btn-sm btn-primary"
                                 onclick="editaAnotacaoFeita(
                                     '${idPeriodo}',
                                     '${idNomeAula}',
                                     '${idDisciplina}',
-                                    '${idTextArea}'
-                                )"
-                            >
+                                    '${idTextArea}' )">
 
                                 <i class="fa fa-edit"></i>&nbsp;
-
                                 <span class="uppercase tamanho07">
                                     Editar
                                 </span>
-
                             </button>
 
 
                             <!-- EXCLUIR -->
-
-                            <button
-                                class="btn btn-sm btn-danger"
-                                onclick="excluirAnotacaoCompleta('${anotacao.id}')"
-                            >
-
+                            <button class="btn btn-sm btn-danger"
+                                onclick="excluirAnotacaoCompleta('${anotacao.id}')">
                                 <i class="fa fa-trash"></i>&nbsp;
 
                                 <span class="uppercase tamanho07">
                                     Excluir
                                 </span>
-
                             </button>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         `;
-
 
         // Popula o select de disciplinas
-
-        populaSelectDisciplinas(
-            idDisciplina,
-            idPeriodo
-        );
-
+        populaSelectDisciplinas(idDisciplina,idPeriodo);
 
         // Seleciona a disciplina salva
-
-        document.getElementById(idDisciplina).value =
-            anotacao.disciplina;
-
+        document.getElementById(idDisciplina).value =anotacao.disciplina;
     }
-
 
     // Nenhuma anotação encontrada para este período
-
     if (!encontrouAnotacao) {
-
         campoPeriodo.innerHTML = `
-
             <div class="col-12">
-
                 <div class="alert alert-danger text-center">
-
                     <span class="uppercase tamanho08 fw-bold">
-
                         <i class="fas fa-exclamation-triangle"></i>&nbsp;
-
                         Nenhuma anotação neste período.
-
                     </span>
-
                 </div>
-
             </div>
-
         `;
-
     }
-
 }
 
 // ATUALIZA O ARRAY DE ACORDO COM A ATUALIZAÇAÃO DA ANOTAÇÃO [OK]
@@ -2282,4 +2215,5 @@ window.onload = () => {
     clicarElemento('btnSessaoCadastroExerciciosProvas');
     exibeCadastroExercicioProva();
     exibirNotificacaoAtividadePendente();
+    exibeIcones();
 };
