@@ -2045,10 +2045,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                     </div>
                 </div>
             </div>
-            
-            
-
-        `exibeIcones(`'${idID}'`);
+        `
         ;
 
 
@@ -2057,6 +2054,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
 
         // Seleciona a disciplina salva
         document.getElementById(idDisciplina).value =anotacao.disciplina;
+        exibeIcones(`${idID}`);
     }
 
     // Nenhuma anotação encontrada para este período
