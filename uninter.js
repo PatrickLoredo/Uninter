@@ -2046,9 +2046,10 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                 </div>
             </div>
             
-            exibeIcones('${idID}');
+            
 
-        `;
+        `exibeIcones(`${idID}`);
+        ;
 
 
         // Popula o select de disciplinas
