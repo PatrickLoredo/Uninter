@@ -1766,29 +1766,45 @@ function exibeIcones(idCampo , idTextAreaInserir) {
     campoTextArea.innerHTML = ''; 
     for(let i=0;i<arrayIcones.length;i++){
         campoTextArea.innerHTML += `
-            <div class="col-1 mb-2">
-                <button class="btn btn-sm btn-outline-dark"
-                    value="${arrayIcones[i].trim()}"
-                    onclick="insereIconeTextArea(this.value, '${idTextAreaInserir}')"
-                    ondblclick="excluirIconeAnotacao(this.value)">
-                    ${arrayIcones[i]}
-                </button>
-            </div>
+            <button class="btn btn-sm btn-outline-dark mb-1"
+                value="${arrayIcones[i].trim()}"
+                onclick="insereIconeTextArea(this.value, '${idTextAreaInserir}')"
+                ondblclick="excluirIconeAnotacao(this.value)">
+                ${arrayIcones[i]}
+            </button>
         `;
     }
 }
 
-function salvarIconeAnotacao(idInput){
+function salvarIconeAnotacao(idInput) {
     const input = document.getElementById(idInput);
-    const icone = input.value;
 
-    if(icone.trim() !== ''){
-        arrayIcones.push(icone);
-        input.value = '';
-        exibeIcones();
+    if (!input) {
+        console.error(`Campo não encontrado: ${idInput}`);
+        return;
     }
-    localStorage.setItem('Icones', JSON.stringify(arrayIcones));
-    alert('Ícone salvo com sucesso! \n\nClique no ícone para inseri-lo na anotação.\nClique duas vezes para excluir o ícone.');
+
+    const icone = input.value.trim();
+
+    if (icone === '') {
+        alert('Insira um ícone antes de salvar.');
+        return;
+    }
+
+    arrayIcones.push(icone);
+
+    localStorage.setItem(
+        'Icones',
+        JSON.stringify(arrayIcones)
+    );
+
+    input.value = '';
+
+    alert(
+        'Ícone salvo com sucesso!\n\n' +
+        'Clique no ícone para inseri-lo na anotação.\n' +
+        'Clique duas vezes para excluir o ícone.'
+    );
 }
 
 function limparIconeAnotacao(idInput){
@@ -1968,7 +1984,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                             <div class="col"></div>
                         </div>
 
-                        <div class="row my-2" id="colunaExibeIcones_${idID}"></div>
+                        <div class="row my-2" id="colunaExibeIcones_${i}"></div>
 
                         <!-- ANOTAÇÃO -->
                         <div class="col-12">
@@ -2075,7 +2091,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success uppercase"
                             onclick="salvarIconeAnotacao('inputNomeIcone_${i}'),
-                            exibeIcones('colunaExibeIcones_${idID}', '${idTextArea}_${i}')">
+                            exibeIcones('colunaExibeIcones_${i}', '${idTextArea}_${i}')">
                                 <i class="fa fa-save"></i>&nbsp;
                                 <span class="tamanho08">salvar</span>
                             </button>
@@ -2098,7 +2114,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
         // Seleciona a disciplina salva
         document.getElementById(idDisciplina).value =anotacao.disciplina;
 
-        exibeIcones(`colunaExibeIcones_${idID}`, `${idTextArea}_${i}`);
+        exibeIcones(`colunaExibeIcones_${i}`, `${idTextArea}_${i}`);
         insereIconeTextArea(anotacao.anotacao, `${idTextArea}_${i}`);
     }
 
