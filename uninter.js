@@ -2014,7 +2014,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
 
 
                         <!-- BOTÕES -->
-                        <div class="col-12 flexCenter gap-2 mt-2">
+                        <div class="col-12 flexCenter gap-2 mt-3">
                             <!-- SALVAR -->
                             <button
                                 class="btn btn-sm btn-success"
