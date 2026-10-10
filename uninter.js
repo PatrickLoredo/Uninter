@@ -1984,7 +1984,9 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                             <div class="col"></div>
                         </div>
 
-                        <div class="row my-2" id="colunaExibeIcones_${i}"></div>
+                        <div class="row my-2 m-auto">
+                            <div class="col" id="colunaExibeIcones_${i}"></div>
+                        </div>
 
                         <!-- ANOTAÇÃO -->
                         <div class="col-12">

@@ -85,26 +85,9 @@
 
     <!--EXIBICAO INICIAL PRINCIPAL-->
     <main class="container mt-4" id="mainContent">
-
-        <!--MENSAGEM CENTRAL PRINCIPAL-->
-        <div class="row mt-5 pt-5">
-            <div class="col-12">
-                <h1 class="text-center mb-4 uppercase flex-Center">Bem-vindo ao ADS Uninter</h1>
-                <p class="text-center tamanho13">Este é o sistema criado para unir todo progresso relacionado a
-                    <strong class="text-primary">Graduação no Curso Tecnólogo de Análise e Desenvolvimento de
-                        Sistemas</strong>.
-                </p>
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="row" id="sessaoAlertExerciciosPendentes"></div>
-
         <!--BOTÕES DE EXPORTAR E IMPORTAR BACKUP-->
-        <div class="row">
-            <div class="col-lg-4 col-1"></div>
-            <div class="col">
+        <div class="row py-3 py-lg-2 w-100 mt-lg-3" style="margin-top: 2rem; position: fixed; z-index: 999; background-color: white;">
+            <div class="col flexCenter">
                 <div class="d-flex gap-2" id="btnExportImport">
                     <button type="button" class="btn btn-success uppercase" onclick="exportarBackup()">
                         <i class="fa-solid fa-upload"></i>
@@ -121,8 +104,24 @@
                         onchange="importarBackup(this)">
                 </div>
             </div>
-            <div class="col-lg-4 col-1"></div>
         </div>
+
+        <!--MENSAGEM CENTRAL PRINCIPAL-->
+        <div class="row mt-5 pt-5">
+            <div class="col-12">
+                <h1 class="text-center mb-4 mt-5 uppercase flex-Center">Bem-vindo ao ADS Uninter</h1>
+                <p class="text-center tamanho13">Este é o sistema criado para unir todo progresso relacionado a
+                    <strong class="text-primary">Graduação no Curso Tecnólogo de Análise e Desenvolvimento de
+                        Sistemas</strong>.
+                </p>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row" id="sessaoAlertExerciciosPendentes"></div>
+
+        
 
         <hr>
 
