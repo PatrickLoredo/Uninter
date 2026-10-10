@@ -389,14 +389,12 @@ function esconderElemento(id) {
 window.exportarBackup = function () {
 
     if (typeof XLSX === 'undefined') {
-
         alert(
             'Erro: a biblioteca SheetJS não foi carregada.\n\n' +
             'Verifique o carregamento do XLSX no HTML.'
         );
 
         console.error('XLSX não está disponível.');
-
         return;
     }
 
@@ -405,37 +403,34 @@ window.exportarBackup = function () {
         const workbook = XLSX.utils.book_new();
 
         const dadosBackup = [
-
             {
                 nomeAba: 'Tecnologias',
                 dados: arrayTecnologiasADS
             },
-
             {
                 nomeAba: 'Disciplinas',
                 dados: arrayDisciplinasADS
             },
-
             {
                 nomeAba: 'Livros',
                 dados: arrayLivrosADS
             },
-
             {
                 nomeAba: 'Projetos',
                 dados: arrayProjetosADS
             },
-
             {
                 nomeAba: 'Anotacoes',
                 dados: arrayAnotacoesADS
             },
-
             {
                 nomeAba: 'ExerciciosProvas',
                 dados: arrayExerciciosProvas
+            },
+            {
+                nomeAba: 'Icones',
+                dados: arrayIcones
             }
-
         ];
 
         dadosBackup.forEach(item => {
@@ -452,13 +447,9 @@ window.exportarBackup = function () {
                         typeof valor === 'object' &&
                         valor !== null
                     ) {
-
                         linha[chave] = JSON.stringify(valor);
-
                     } else {
-
                         linha[chave] = valor;
-
                     }
 
                 });
@@ -482,10 +473,8 @@ window.exportarBackup = function () {
 
         const dadosIds = arrayIdsUtilizados.map(
             (grupo, indice) => ({
-
                 grupo: indice,
                 ids: JSON.stringify(grupo)
-
             })
         );
 
@@ -509,16 +498,12 @@ window.exportarBackup = function () {
         const ano =
             data.getFullYear();
 
-        const dataBackup =
-            `${dia}${mes}${ano}`;
+        const dataBackup = `${dia}${mes}${ano}`;
 
         const nomeArquivo =
             `backupUninter_${dataBackup}.xlsx`;
 
-        XLSX.writeFile(
-            workbook,
-            nomeArquivo
-        );
+        XLSX.writeFile(workbook, nomeArquivo);
 
         console.log(
             `Backup exportado com sucesso: ${nomeArquivo}`
@@ -531,10 +516,7 @@ window.exportarBackup = function () {
 
     } catch (erro) {
 
-        console.error(
-            'Erro ao exportar backup:',
-            erro
-        );
+        console.error('Erro ao exportar backup:', erro);
 
         alert(
             'Não foi possível exportar o backup.\n\n' +
@@ -546,6 +528,7 @@ window.exportarBackup = function () {
 };
 
 
+
 window.importarBackup = function (input) {
 
     const arquivo = input.files[0];
@@ -554,20 +537,20 @@ window.importarBackup = function (input) {
         return;
     }
 
+    if (typeof XLSX === 'undefined') {
+        alert('Erro: a biblioteca SheetJS não foi carregada.');
+        input.value = '';
+        return;
+    }
+
     const confirmacao = confirm(
-
         'Atenção!\n\n' +
-
         'A importação irá substituir os dados atuais pelos dados do backup.\n\n' +
-
         'Deseja continuar?'
-
     );
 
     if (!confirmacao) {
-
         input.value = '';
-
         return;
     }
 
@@ -577,36 +560,22 @@ window.importarBackup = function (input) {
 
         try {
 
-            const dados =
-                new Uint8Array(
-                    evento.target.result
-                );
+            const dados = new Uint8Array(evento.target.result);
 
-            const workbook =
-                XLSX.read(dados, {
-                    type: 'array'
-                });
-
+            const workbook = XLSX.read(dados, {
+                type: 'array'
+            });
 
             function lerAba(nomeAba) {
 
-                if (
-                    !workbook.SheetNames.includes(nomeAba)
-                ) {
-
+                if (!workbook.SheetNames.includes(nomeAba)) {
                     return [];
-
                 }
 
-                const worksheet =
-                    workbook.Sheets[nomeAba];
+                const worksheet = workbook.Sheets[nomeAba];
 
-                return XLSX.utils.sheet_to_json(
-                    worksheet
-                );
-
+                return XLSX.utils.sheet_to_json(worksheet);
             }
-
 
             function converterObjetos(array) {
 
@@ -625,15 +594,11 @@ window.importarBackup = function (input) {
                                 valor.startsWith('{')
                             )
                         ) {
-
                             try {
-
                                 valor = JSON.parse(valor);
-
                             } catch (erro) {
-
+                                // Mantém o valor original se não for JSON válido.
                             }
-
                         }
 
                         novoObjeto[chave] = valor;
@@ -641,61 +606,42 @@ window.importarBackup = function (input) {
                     });
 
                     return novoObjeto;
-
                 });
-
             }
 
-
             const tecnologias =
-                converterObjetos(
-                    lerAba('Tecnologias')
-                );
+                converterObjetos(lerAba('Tecnologias'));
 
             const disciplinas =
-                converterObjetos(
-                    lerAba('Disciplinas')
-                );
+                converterObjetos(lerAba('Disciplinas'));
 
             const livros =
-                converterObjetos(
-                    lerAba('Livros')
-                );
+                converterObjetos(lerAba('Livros'));
 
             const projetos =
-                converterObjetos(
-                    lerAba('Projetos')
-                );
+                converterObjetos(lerAba('Projetos'));
 
             const anotacoes =
-                converterObjetos(
-                    lerAba('Anotacoes')
-                );
+                converterObjetos(lerAba('Anotacoes'));
 
             const exerciciosProvas =
-                converterObjetos(
-                    lerAba('ExerciciosProvas')
-                );
+                converterObjetos(lerAba('ExerciciosProvas'));
 
+            // Novo array de ícones
+            const icones =
+                converterObjetos(lerAba('Icones'));
 
-            const dadosIds =
-                lerAba('IdsUtilizados');
+            const dadosIds = lerAba('IdsUtilizados');
 
-            const idsUtilizados =
-                dadosIds.map(item => {
+            const idsUtilizados = dadosIds.map(item => {
 
-                    try {
+                try {
+                    return JSON.parse(item.ids);
+                } catch (erro) {
+                    return [];
+                }
 
-                        return JSON.parse(item.ids);
-
-                    } catch (erro) {
-
-                        return [];
-
-                    }
-
-                });
-
+            });
 
             localStorage.setItem(
                 'Tecnologias',
@@ -727,18 +673,20 @@ window.importarBackup = function (input) {
                 JSON.stringify(exerciciosProvas)
             );
 
+            // Novo armazenamento dos ícones
+            localStorage.setItem(
+                'Icones',
+                JSON.stringify(icones)
+            );
+
             localStorage.setItem(
                 'ids',
                 JSON.stringify(idsUtilizados)
             );
 
-
             alert(
-
                 'Backup importado com sucesso!\n\n' +
-
                 'A página será recarregada para atualizar os dados.'
-
             );
 
             input.value = '';
@@ -747,17 +695,11 @@ window.importarBackup = function (input) {
 
         } catch (erro) {
 
-            console.error(
-                'Erro ao importar backup:',
-                erro
-            );
+            console.error('Erro ao importar backup:', erro);
 
             alert(
-
                 'Não foi possível importar o backup.\n\n' +
-
                 'Verifique se o arquivo é um backup válido do ADS Uninter.'
-
             );
 
             input.value = '';
