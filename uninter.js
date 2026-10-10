@@ -2014,7 +2014,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
 
 
                         <!-- BOTÕES -->
-                        <div class="col-12 flexCenter gap-2">
+                        <div class="col-12 flexCenter gap-2 mt-2">
                             <!-- SALVAR -->
                             <button
                                 class="btn btn-sm btn-success"
@@ -2090,6 +2090,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                                 placeholder="Insira o ícone...">
                             </div>
                         </div>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success uppercase"
                             onclick="salvarIconeAnotacao('inputNomeIcone_${i}'),
