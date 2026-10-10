@@ -389,12 +389,14 @@ function esconderElemento(id) {
 window.exportarBackup = function () {
 
     if (typeof XLSX === 'undefined') {
+
         alert(
             'Erro: a biblioteca SheetJS não foi carregada.\n\n' +
             'Verifique o carregamento do XLSX no HTML.'
         );
 
         console.error('XLSX não está disponível.');
+
         return;
     }
 
@@ -403,65 +405,95 @@ window.exportarBackup = function () {
         const workbook = XLSX.utils.book_new();
 
         const dadosBackup = [
+
             {
                 nomeAba: 'Tecnologias',
                 dados: arrayTecnologiasADS
             },
+
             {
                 nomeAba: 'Disciplinas',
                 dados: arrayDisciplinasADS
             },
+
             {
                 nomeAba: 'Livros',
                 dados: arrayLivrosADS
             },
+
             {
                 nomeAba: 'Projetos',
                 dados: arrayProjetosADS
             },
+
             {
                 nomeAba: 'Anotacoes',
                 dados: arrayAnotacoesADS
             },
+
             {
                 nomeAba: 'ExerciciosProvas',
                 dados: arrayExerciciosProvas
             },
+
             {
                 nomeAba: 'Icones',
                 dados: arrayIcones
             }
+
         ];
 
         dadosBackup.forEach(item => {
 
-            const dadosPlanilha = item.dados.map(objeto => {
+            let worksheet;
 
-                const linha = {};
+            if (item.nomeAba === 'Icones') {
 
-                Object.keys(objeto).forEach(chave => {
+                const linhasIcones = [
+                    ['dados'],
+                    ...item.dados.map(icone => [
+                        JSON.stringify(icone)
+                    ])
+                ];
 
-                    const valor = objeto[chave];
+                worksheet = XLSX.utils.aoa_to_sheet(
+                    linhasIcones
+                );
 
-                    if (
-                        typeof valor === 'object' &&
-                        valor !== null
-                    ) {
-                        linha[chave] = JSON.stringify(valor);
-                    } else {
-                        linha[chave] = valor;
-                    }
+            } else {
+
+                const dadosPlanilha = item.dados.map(objeto => {
+
+                    const linha = {};
+
+                    Object.keys(objeto).forEach(chave => {
+
+                        const valor = objeto[chave];
+
+                        if (
+                            typeof valor === 'object' &&
+                            valor !== null
+                        ) {
+
+                            linha[chave] = JSON.stringify(valor);
+
+                        } else {
+
+                            linha[chave] = valor;
+
+                        }
+
+                    });
+
+                    return linha;
 
                 });
 
-                return linha;
-
-            });
-
-            const worksheet =
-                dadosPlanilha.length > 0
+                worksheet = dadosPlanilha.length > 0
                     ? XLSX.utils.json_to_sheet(dadosPlanilha)
                     : XLSX.utils.aoa_to_sheet([]);
+
+            }
 
             XLSX.utils.book_append_sheet(
                 workbook,
@@ -471,15 +503,22 @@ window.exportarBackup = function () {
 
         });
 
+        // Exportação do histórico de IDs utilizados
+
         const dadosIds = arrayIdsUtilizados.map(
             (grupo, indice) => ({
+
                 grupo: indice,
                 ids: JSON.stringify(grupo)
+
             })
         );
 
-        const worksheetIds =
-            XLSX.utils.json_to_sheet(dadosIds);
+        const worksheetIds = XLSX.utils.json_to_sheet(
+            dadosIds.length > 0
+                ? dadosIds
+                : [{ grupo: '', ids: '[]' }]
+        );
 
         XLSX.utils.book_append_sheet(
             workbook,
@@ -487,36 +526,53 @@ window.exportarBackup = function () {
             'IdsUtilizados'
         );
 
+        // Nome do arquivo com a data atual
+
         const data = new Date();
 
-        const dia =
-            String(data.getDate()).padStart(2, '0');
+        const dia = String(
+            data.getDate()
+        ).padStart(2, '0');
 
-        const mes =
-            String(data.getMonth() + 1).padStart(2, '0');
+        const mes = String(
+            data.getMonth() + 1
+        ).padStart(2, '0');
 
-        const ano =
-            data.getFullYear();
+        const ano = data.getFullYear();
 
         const dataBackup = `${dia}${mes}${ano}`;
 
         const nomeArquivo =
             `backupUninter_${dataBackup}.xlsx`;
 
-        XLSX.writeFile(workbook, nomeArquivo);
+        // Geração do arquivo Excel
+
+        XLSX.writeFile(
+            workbook,
+            nomeArquivo
+        );
+
+        console.log(
+            'Abas exportadas:',
+            workbook.SheetNames
+        );
 
         console.log(
             `Backup exportado com sucesso: ${nomeArquivo}`
         );
 
         alert(
-            `Backup exportado com sucesso!\n\n` +
-            `Arquivo: ${nomeArquivo}`
+            'Backup exportado com sucesso!\n\n' +
+            `Arquivo: ${nomeArquivo}\n\n` +
+            `Abas: ${workbook.SheetNames.join(', ')}`
         );
 
     } catch (erro) {
 
-        console.error('Erro ao exportar backup:', erro);
+        console.error(
+            'Erro ao exportar backup:',
+            erro
+        );
 
         alert(
             'Não foi possível exportar o backup.\n\n' +
@@ -527,8 +583,6 @@ window.exportarBackup = function () {
 
 };
 
-
-
 window.importarBackup = function (input) {
 
     const arquivo = input.files[0];
@@ -538,19 +592,30 @@ window.importarBackup = function (input) {
     }
 
     if (typeof XLSX === 'undefined') {
-        alert('Erro: a biblioteca SheetJS não foi carregada.');
+
+        alert(
+            'Erro: a biblioteca SheetJS não foi carregada.'
+        );
+
         input.value = '';
+
         return;
     }
 
     const confirmacao = confirm(
+
         'Atenção!\n\n' +
+
         'A importação irá substituir os dados atuais pelos dados do backup.\n\n' +
+
         'Deseja continuar?'
+
     );
 
     if (!confirmacao) {
+
         input.value = '';
+
         return;
     }
 
@@ -560,22 +625,35 @@ window.importarBackup = function (input) {
 
         try {
 
-            const dados = new Uint8Array(evento.target.result);
+            const dados = new Uint8Array(
+                evento.target.result
+            );
 
             const workbook = XLSX.read(dados, {
                 type: 'array'
             });
 
+            // Leitura das abas do Excel
+
             function lerAba(nomeAba) {
 
-                if (!workbook.SheetNames.includes(nomeAba)) {
+                if (
+                    !workbook.SheetNames.includes(nomeAba)
+                ) {
+
                     return [];
+
                 }
 
                 const worksheet = workbook.Sheets[nomeAba];
 
-                return XLSX.utils.sheet_to_json(worksheet);
+                return XLSX.utils.sheet_to_json(
+                    worksheet
+                );
+
             }
+
+            // Conversão dos valores JSON para objetos e arrays
 
             function converterObjetos(array) {
 
@@ -594,11 +672,17 @@ window.importarBackup = function (input) {
                                 valor.startsWith('{')
                             )
                         ) {
+
                             try {
+
                                 valor = JSON.parse(valor);
+
                             } catch (erro) {
-                                // Mantém o valor original se não for JSON válido.
+
+                                // Mantém o valor original.
+
                             }
+
                         }
 
                         novoObjeto[chave] = valor;
@@ -606,42 +690,107 @@ window.importarBackup = function (input) {
                     });
 
                     return novoObjeto;
+
                 });
+
             }
 
-            const tecnologias =
-                converterObjetos(lerAba('Tecnologias'));
+            // Importação dos arrays existentes
 
-            const disciplinas =
-                converterObjetos(lerAba('Disciplinas'));
+            const tecnologias = converterObjetos(
+                lerAba('Tecnologias')
+            );
 
-            const livros =
-                converterObjetos(lerAba('Livros'));
+            const disciplinas = converterObjetos(
+                lerAba('Disciplinas')
+            );
 
-            const projetos =
-                converterObjetos(lerAba('Projetos'));
+            const livros = converterObjetos(
+                lerAba('Livros')
+            );
 
-            const anotacoes =
-                converterObjetos(lerAba('Anotacoes'));
+            const projetos = converterObjetos(
+                lerAba('Projetos')
+            );
 
-            const exerciciosProvas =
-                converterObjetos(lerAba('ExerciciosProvas'));
+            const anotacoes = converterObjetos(
+                lerAba('Anotacoes')
+            );
 
-            // Novo array de ícones
-            const icones =
-                converterObjetos(lerAba('Icones'));
+            const exerciciosProvas = converterObjetos(
+                lerAba('ExerciciosProvas')
+            );
+
+            // Importação do array de ícones
+
+            let icones = [];
+
+            if (
+                workbook.SheetNames.includes('Icones')
+            ) {
+
+                const worksheetIcones =
+                    workbook.Sheets['Icones'];
+
+                const linhasIcones =
+                    XLSX.utils.sheet_to_json(
+                        worksheetIcones,
+                        {
+                            header: 1
+                        }
+                    );
+
+                icones = linhasIcones
+                    .slice(1)
+                    .filter(linha => linha.length > 0)
+                    .map(linha => {
+
+                        const valor = linha[0];
+
+                        if (typeof valor !== 'string') {
+                            return valor;
+                        }
+
+                        try {
+
+                            return JSON.parse(valor);
+
+                        } catch (erro) {
+
+                            return valor;
+
+                        }
+
+                    });
+
+            } else {
+
+                console.warn(
+                    'A aba Icones não existe neste backup. ' +
+                    'O array de ícones será importado vazio.'
+                );
+
+            }
+
+            // Importação dos IDs utilizados
 
             const dadosIds = lerAba('IdsUtilizados');
 
             const idsUtilizados = dadosIds.map(item => {
 
                 try {
+
                     return JSON.parse(item.ids);
+
                 } catch (erro) {
+
                     return [];
+
                 }
 
             });
+
+            // Atualização do localStorage
 
             localStorage.setItem(
                 'Tecnologias',
@@ -673,7 +822,8 @@ window.importarBackup = function (input) {
                 JSON.stringify(exerciciosProvas)
             );
 
-            // Novo armazenamento dos ícones
+            // Gravação dos ícones importados
+
             localStorage.setItem(
                 'Icones',
                 JSON.stringify(icones)
@@ -684,9 +834,23 @@ window.importarBackup = function (input) {
                 JSON.stringify(idsUtilizados)
             );
 
+            console.log(
+                'Ícones importados:',
+                icones
+            );
+
+            console.log(
+                'Chaves do localStorage atualizadas com sucesso.'
+            );
+
             alert(
+
                 'Backup importado com sucesso!\n\n' +
+
+                `Ícones importados: ${icones.length}\n\n` +
+
                 'A página será recarregada para atualizar os dados.'
+
             );
 
             input.value = '';
@@ -695,16 +859,36 @@ window.importarBackup = function (input) {
 
         } catch (erro) {
 
-            console.error('Erro ao importar backup:', erro);
+            console.error(
+                'Erro ao importar backup:',
+                erro
+            );
 
             alert(
+
                 'Não foi possível importar o backup.\n\n' +
+
                 'Verifique se o arquivo é um backup válido do ADS Uninter.'
+
             );
 
             input.value = '';
 
         }
+
+    };
+
+    leitor.onerror = function () {
+
+        console.error(
+            'Erro ao ler o arquivo de backup.'
+        );
+
+        alert(
+            'Não foi possível ler o arquivo selecionado.'
+        );
+
+        input.value = '';
 
     };
 
