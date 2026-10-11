@@ -30,7 +30,7 @@ class Tecnologia {
 }
 
 class Disciplina {
-    constructor(id, nome, periodo, aulas, atividade,statusAtividade) {
+    constructor(id, nome, periodo, aulas, atividade, statusAtividade) {
         this.id = id;
         this.nome = nome;
         this.periodo = periodo;
@@ -53,38 +53,38 @@ class Livro {
     }
 }
 
-class Projeto{
-    constructor(id, 
-        nome, 
-        dataInicio, 
-        dataFinalizacao, 
-        periodo, 
-        disciplina, 
-        status, 
+class Projeto {
+    constructor(id,
+        nome,
+        dataInicio,
+        dataFinalizacao,
+        periodo,
+        disciplina,
+        status,
         linkProjeto,
         tecnologias,
         statusAtividade) {
-            this.id = id;
-            this.nome = nome;
-            this.dataInicio = dataInicio;
-            this.dataFinalizacao = dataFinalizacao;
-            this.periodo = periodo;
-            this.disciplina = disciplina;
-            this.status = status;
-            this.linkProjeto = linkProjeto;
-            this.tecnologias = tecnologias;
-            this.statusAtividade = statusAtividade;
-            
-        }
+        this.id = id;
+        this.nome = nome;
+        this.dataInicio = dataInicio;
+        this.dataFinalizacao = dataFinalizacao;
+        this.periodo = periodo;
+        this.disciplina = disciplina;
+        this.status = status;
+        this.linkProjeto = linkProjeto;
+        this.tecnologias = tecnologias;
+        this.statusAtividade = statusAtividade;
+
+    }
 }
 
 class Anotacao {
-    constructor(id, 
-        dataInicio, 
-        dataAtualizacao, 
-        periodo, 
-        disciplina, 
-        nomeAula, 
+    constructor(id,
+        dataInicio,
+        dataAtualizacao,
+        periodo,
+        disciplina,
+        nomeAula,
         anotacao,
         statusAtividade) {
         this.id = id;
@@ -100,22 +100,22 @@ class Anotacao {
 
 class Tarefa {
     constructor(
-        id, 
+        id,
         dataTarefa,
         tipoTarefa,
-        statusTarefa, 
+        statusTarefa,
         periodoTarefa,
         disciplinaTarefa,
-        statusAtividade){
-            this.id = id;
-            this.dataTarefa = dataTarefa;
-            this.tipoTarefa = tipoTarefa;
-            this.statusTarefa = statusTarefa;
-            this.periodoTarefa = periodoTarefa;
-            this.disciplinaTarefa = disciplinaTarefa;
-            this.statusAtividade = statusAtividade;
-            
-        }
+        statusAtividade) {
+        this.id = id;
+        this.dataTarefa = dataTarefa;
+        this.tipoTarefa = tipoTarefa;
+        this.statusTarefa = statusTarefa;
+        this.periodoTarefa = periodoTarefa;
+        this.disciplinaTarefa = disciplinaTarefa;
+        this.statusAtividade = statusAtividade;
+
+    }
 }
 
 
@@ -216,7 +216,7 @@ function excluirCampoCadastrado(escolha, idCampo, indice) {
             arrayTecnologiasADS.splice(indice, 1);
             localStorage.setItem('Tecnologias', JSON.stringify(arrayTecnologiasADS));
             populaListaButtonTecnologias();
-            gerarId('inputIdTecnologia',arrayTecnologiasADS,'tcn');
+            gerarId('inputIdTecnologia', arrayTecnologiasADS, 'tcn');
             populaCheckboxTecnologias('inputTecnologiasProjeto');
         }
         if (escolha === 'Disciplinas') {
@@ -224,7 +224,7 @@ function excluirCampoCadastrado(escolha, idCampo, indice) {
             localStorage.setItem('Disciplinas', JSON.stringify(arrayDisciplinasADS));
             populaListaButtonDisciplinas();
             populaSelectDisciplinas('selectDisplinaAnotacoes', 'inputPeriodoAnotacoes');
-            gerarId('inputIdDisciplina',arrayDisciplinasADS,'disc');
+            gerarId('inputIdDisciplina', arrayDisciplinasADS, 'disc');
             mostraQtdDisciplinas();
         }
         if (escolha === 'Livros') {
@@ -232,7 +232,7 @@ function excluirCampoCadastrado(escolha, idCampo, indice) {
             localStorage.setItem('Livros', JSON.stringify(arrayLivrosADS));
             populaListaButtonDisciplinas();
             populaListaButtonLivros();
-            gerarId('inputIdLivros',arrayLivrosADS, 'liv');
+            gerarId('inputIdLivros', arrayLivrosADS, 'liv');
         }
 
 
@@ -278,12 +278,12 @@ function populaSelectDisciplinas(idSelect, idInputPeriodo) {
 }
 
 // POPULA CAMPO ESPECIFICOM COM CHECKBOX DAS TECNOLOGIAS CADASTRADAS [OK]
-function populaCheckboxTecnologias(campo){
+function populaCheckboxTecnologias(campo) {
     let campoExibicao = document.getElementById(campo);
     campoExibicao.innerHTML = '';
 
-    for(let i=0; i<arrayTecnologiasADS.length;i++){
-        campoExibicao.innerHTML +=`
+    for (let i = 0; i < arrayTecnologiasADS.length; i++) {
+        campoExibicao.innerHTML += `
             <div class="col-4 mb-2 mt-3 flexCenter">
                 <input type="checkbox" name="tecnologiasProjeto_${arrayTecnologiasADS[i].nome}" id="tecnologia_${arrayTecnologiasADS[i].nome}" checked>&nbsp;&nbsp;
                 <span class="uppercase tamanho08 text-danger fw-semibold">${arrayTecnologiasADS[i].nome}</span>
@@ -943,7 +943,7 @@ function salvarNovoExerciciosProvas() {
     let cadastroExiste = arrayExerciciosProvas.some(tarefa => tarefa.dataTarefa === campoDATA.value && tarefa.disciplinaTarefa === campoDISCIPLINA.value && tarefa.tipoTarefa === campoTIPOTAREFA.value);
 
     if (cadastroExiste) {
-    alert(`Já existe um cadastro de ${campoTIPOTAREFA.value.toUpperCase()} para a disciplina ${campoDISCIPLINA.value.toUpperCase()}, na data ${formataData(campoDATA.value)}.`);        return;
+        alert(`Já existe um cadastro de ${campoTIPOTAREFA.value.toUpperCase()} para a disciplina ${campoDISCIPLINA.value.toUpperCase()}, na data ${formataData(campoDATA.value)}.`); return;
     }
 
     let novoExercicioProva = new Tarefa(
@@ -958,7 +958,7 @@ function salvarNovoExerciciosProvas() {
 
     arrayExerciciosProvas.push(novoExercicioProva);
 
-    localStorage.setItem('ExerciciosProvas',JSON.stringify(arrayExerciciosProvas));
+    localStorage.setItem('ExerciciosProvas', JSON.stringify(arrayExerciciosProvas));
 
     campoSTATUSPERIODO.value = 'Pendente';
     campoPERIODO.value = '-';
@@ -1045,7 +1045,7 @@ function checaAtividade(campoStatusAtividade, indiceArray, btnChecagem, iconeChe
     if (tarefa.statusTarefa === 'Pendente') {
         tarefa.statusTarefa = 'Finalizado';
 
-        campoAtividade.classList.replace('roundedUpStatusPendente','roundedUpStatusFinalizado');
+        campoAtividade.classList.replace('roundedUpStatusPendente', 'roundedUpStatusFinalizado');
 
         buttonChecagem.classList.replace('btn-success', 'btn-primary');
         iconChecagem.classList.replace('fa-check', 'fa-hourglass');
@@ -1054,7 +1054,7 @@ function checaAtividade(campoStatusAtividade, indiceArray, btnChecagem, iconeChe
 
         tarefa.statusTarefa = 'Pendente';
 
-        campoAtividade.classList.replace('roundedUpStatusFinalizado','roundedUpStatusPendente');
+        campoAtividade.classList.replace('roundedUpStatusFinalizado', 'roundedUpStatusPendente');
 
         buttonChecagem.classList.replace('btn-primary', 'btn-success');
         iconChecagem.classList.replace('fa-hourglass', 'fa-check');
@@ -1062,12 +1062,12 @@ function checaAtividade(campoStatusAtividade, indiceArray, btnChecagem, iconeChe
 
     campoAtividade.innerHTML = `${tarefa.tipoTarefa} ${tarefa.statusTarefa}`;
 
-    localStorage.setItem('ExerciciosProvas',JSON.stringify(arrayExerciciosProvas));
+    localStorage.setItem('ExerciciosProvas', JSON.stringify(arrayExerciciosProvas));
 }
 
 function removeAtividade(indice) {
     arrayExerciciosProvas.splice(indice, 1);
-    localStorage.setItem('ExerciciosProvas',JSON.stringify(arrayExerciciosProvas));
+    localStorage.setItem('ExerciciosProvas', JSON.stringify(arrayExerciciosProvas));
     exibeCadastroExercicioProva();
 }
 
@@ -1087,12 +1087,12 @@ function salvarNovaTecnologia() {
         if (arrayTecnologiasADS.some(tecnologia => tecnologia === campoCadastro_NomeTecnologia.value.trim())) {
             alert(`Tecnologia ${campoCadastro_NomeTecnologia.value} já foi cadastrada anteriormente!`); return
         }
-        else{
-            if(campoCadastro_AplicacaoTecnologia.value === '-'){
+        else {
+            if (campoCadastro_AplicacaoTecnologia.value === '-') {
                 alert('Preencha o campo de Aplicação da Tecnologia !')
             }
-            else{
-                 let novoCadastroTecnologia = new Tecnologia(campoCadastro_IdTecnologia.value, campoCadastro_NomeTecnologia.value, campoCadastro_ApelidoTecnologia.value, campoCadastro_AplicacaoTecnologia.value);
+            else {
+                let novoCadastroTecnologia = new Tecnologia(campoCadastro_IdTecnologia.value, campoCadastro_NomeTecnologia.value, campoCadastro_ApelidoTecnologia.value, campoCadastro_AplicacaoTecnologia.value);
 
                 arrayTecnologiasADS.push(novoCadastroTecnologia);
                 localStorage.setItem('Tecnologias', JSON.stringify(arrayTecnologiasADS));
@@ -1106,7 +1106,7 @@ function salvarNovaTecnologia() {
                 campoCadastro_ApelidoTecnologia.value = '';
                 campoCadastro_AplicacaoTecnologia.value = '-';
 
-                gerarId('inputIdTecnologia',arrayTecnologiasADS,'tcn');
+                gerarId('inputIdTecnologia', arrayTecnologiasADS, 'tcn');
 
                 populaListaButtonTecnologias();
                 copiaDadosDigitados('inputNomeTecnologia', 'inputApelidoTecnologia');
@@ -1191,8 +1191,7 @@ function salvarNovaDisciplina() {
 
     if (
         arrayDisciplinasADS.some(disciplina => disciplina.nome.toLowerCase() === nomeDisciplina.toLowerCase())
-    ) 
-    {
+    ) {
         alert('A disciplina já foi inserida anteriormente! Tente um novo cadastro diferente.');
         return;
     }
@@ -1209,12 +1208,12 @@ function salvarNovaDisciplina() {
 
     limparCampoIndividual('inputNomeDisciplina');
     campoCadastro_PeriodoDisciplina.value = 1;
-    
+
     arrayIdsUtilizados[1].push(campoCadastro_IdDisciplina.value);
     localStorage.setItem('ids', JSON.stringify(arrayIdsUtilizados));
 
-    populaSelectDisciplinas('materiaTarefaCadastro','periodoTarefaCadastro');
-    gerarId('inputIdDisciplina',arrayDisciplinasADS, 'dsc');
+    populaSelectDisciplinas('materiaTarefaCadastro', 'periodoTarefaCadastro');
+    gerarId('inputIdDisciplina', arrayDisciplinasADS, 'dsc');
     mostraQtdDisciplinas();
 
 }
@@ -1354,7 +1353,7 @@ function salvarNovoLivro() {
 
     let livroExiste = arrayLivrosADS.some(
         livro => livro.nome.trim().toLowerCase() === campoCadastro_NomeLivro.trim().toLowerCase()
-)   ;
+    );
 
     if (campoCadastro_NomeLivro) {
         if (livroExiste) {
@@ -1457,11 +1456,11 @@ function populaListaButtonLivros() {
             </div>
         `;
 
-        if (periodo === 1) {campoExibicaoLivros_1Periodo.innerHTML += mensagemPopular;}
-        else if (periodo === 2) {campoExibicaoLivros_2Periodo.innerHTML += mensagemPopular;}
-        else if (periodo === 3) {campoExibicaoLivros_3Periodo.innerHTML += mensagemPopular;}
-        else if (periodo === 4) {campoExibicaoLivros_4Periodo.innerHTML += mensagemPopular;}
-        else if (periodo === 5) {campoExibicaoLivros_5Periodo.innerHTML += mensagemPopular;}
+        if (periodo === 1) { campoExibicaoLivros_1Periodo.innerHTML += mensagemPopular; }
+        else if (periodo === 2) { campoExibicaoLivros_2Periodo.innerHTML += mensagemPopular; }
+        else if (periodo === 3) { campoExibicaoLivros_3Periodo.innerHTML += mensagemPopular; }
+        else if (periodo === 4) { campoExibicaoLivros_4Periodo.innerHTML += mensagemPopular; }
+        else if (periodo === 5) { campoExibicaoLivros_5Periodo.innerHTML += mensagemPopular; }
     }
 }
 
@@ -1510,8 +1509,8 @@ function salvarProjeto() {
         return;
     }
 
-    if (arrayProjetosADS.some(projeto => projeto.nomeProjeto === campoCadastro_NomeProjeto.trim())){
-            alert('Esse nome de projeto já foi inserido anteriormente.\n' +
+    if (arrayProjetosADS.some(projeto => projeto.nomeProjeto === campoCadastro_NomeProjeto.trim())) {
+        alert('Esse nome de projeto já foi inserido anteriormente.\n' +
             'Tente um novo nome de projeto diferente!'
         );
         return;
@@ -1532,7 +1531,7 @@ function salvarProjeto() {
     );
 
     arrayProjetosADS.push(novoProjeto);
-    localStorage.setItem('Projetos',JSON.stringify(arrayProjetosADS));
+    localStorage.setItem('Projetos', JSON.stringify(arrayProjetosADS));
 
     alert(`O projeto ${campoCadastro_NomeProjeto} foi cadastrado com Sucesso!`);
 
@@ -1544,20 +1543,20 @@ function salvarProjeto() {
 
     arrayIdsUtilizados[3].push(campoCadastro_IdProjeto.value);
     localStorage.setItem('ids', JSON.stringify(arrayIdsUtilizados));
-    gerarId('campoCadastro_IdProjeto',arrayProjetosADS,'ant');
+    gerarId('campoCadastro_IdProjeto', arrayProjetosADS, 'ant');
 
     mostraDataAtual('inputDataInicioProjeto');
-    populaSelectDisciplinas('selectDisplinaProjeto','inputPeriodoProjeto');
+    populaSelectDisciplinas('selectDisplinaProjeto', 'inputPeriodoProjeto');
     populaCheckboxTecnologias('inputTecnologiasProjeto');
 }
 
 // POPULA O CAMPO COM TODOS OS PROJETOS JA CADASTRADOS [OK]
-function exibirProjetosCadastrado(){
+function exibirProjetosCadastrado() {
     const campoExibicao = document.getElementById('exibicaoProjetosCadastrados');
     campoExibicao.innerHTML = '';
 
-    for(let i=0;i<arrayProjetosADS.length;i++){
-        campoExibicao.innerHTML +=`
+    for (let i = 0; i < arrayProjetosADS.length; i++) {
+        campoExibicao.innerHTML += `
             <div class="col-12">
                 <button class="btn btn-sm btn-dark uppercase w-100"
                 data-bs-toggle="modal" data-bs-target="#modalProjetoEditar"
@@ -1571,7 +1570,7 @@ function exibirProjetosCadastrado(){
     }
 }
 
-function recuperaDadosProjetoModal(indice){
+function recuperaDadosProjetoModal(indice) {
     const campoModalBodyDados = document.getElementById('campoModalBodyDadosProjetoEditar');
     const exibicaoModalTecnologias = document.getElementById('exibicaoModalTecnologias');
     const modalBodyBtnHref = document.getElementById('campoModalProjetoBtnHref');
@@ -1643,7 +1642,7 @@ function recuperaDadosProjetoModal(indice){
 
 }
 
-function limparCamposProjetos(){
+function limparCamposProjetos() {
     document.getElementById('inputNomeProjeto').value = '';
     const dataInicio_Projeto = document.getElementById('inputDataInicioProjeto').value;
     const dataFinalizacao_Projeto = document.getElementById('inputDataFinalizacaoProjeto').value;
@@ -1655,14 +1654,14 @@ function limparCamposProjetos(){
 
 }
 
-function excluirProjeto(id){
+function excluirProjeto(id) {
     let projetoExiste = arrayProjetosADS.some(projeto => projeto.id === id);
 
-    if(projetoExiste){
-        for(let i=0;i<arrayProjetosADS.length;i++){
-            if(arrayProjetosADS[i].id === id){
-            alert(`O ID: ${id} é referente ao projeto: ${arrayProjetosADS[i].nome}`);
-            }  
+    if (projetoExiste) {
+        for (let i = 0; i < arrayProjetosADS.length; i++) {
+            if (arrayProjetosADS[i].id === id) {
+                alert(`O ID: ${id} é referente ao projeto: ${arrayProjetosADS[i].nome}`);
+            }
         }
     }
 }
@@ -1741,7 +1740,7 @@ function salvarAnotacaoMateria() {
 
         arrayAnotacoesADS[indiceMateria] = anotacaoAtualizada;
 
-        localStorage.setItem('Anotacoes',JSON.stringify(arrayAnotacoesADS));
+        localStorage.setItem('Anotacoes', JSON.stringify(arrayAnotacoesADS));
         alert('Anotação atualizada com sucesso!');
 
         return;
@@ -1761,7 +1760,7 @@ function salvarAnotacaoMateria() {
 
     arrayAnotacoesADS.push(novaAnotacao);
 
-    localStorage.setItem('Anotacoes',JSON.stringify(arrayAnotacoesADS));
+    localStorage.setItem('Anotacoes', JSON.stringify(arrayAnotacoesADS));
 
     // REGISTRA O ID COMO UTILIZADO
     arrayIdsUtilizados[4].push(inputIdAnotacoes);
@@ -1776,7 +1775,7 @@ function salvarAnotacaoMateria() {
     document.getElementById('textAreaAnotacaoMateria').value = '';
 
     // GERA O PRÓXIMO ID DE ANOTAÇÃO
-    gerarId('inputIdAnotacoes',arrayAnotacoesADS,'ant');
+    gerarId('inputIdAnotacoes', arrayAnotacoesADS, 'ant');
 
     console.log(arrayAnotacoesADS);
     console.log(arrayIdsUtilizados);
@@ -1886,11 +1885,11 @@ function insereIconeTextArea(icone, idTextArea) {
     textArea.value = textoAtual.substring(0, posicaoCursor) + icone + textoAtual.substring(posicaoCursor);
 }
 
-function exibeIcones(idCampo , idTextAreaInserir) {
+function exibeIcones(idCampo, idTextAreaInserir) {
     const campoTextArea = document.getElementById(idCampo);
-    
-    campoTextArea.innerHTML = ''; 
-    for(let i=0;i<arrayIcones.length;i++){
+
+    campoTextArea.innerHTML = '';
+    for (let i = 0; i < arrayIcones.length; i++) {
         campoTextArea.innerHTML += `
             <button class="btn btn-sm btn-outline-dark mb-1"
                 value="${arrayIcones[i].trim()}"
@@ -1933,36 +1932,36 @@ function salvarIconeAnotacao(idInput) {
     );
 }
 
-function limparIconeAnotacao(idInput){
+function limparIconeAnotacao(idInput) {
     const input = document.getElementById(idInput);
     input.value = '';
 }
 
-function excluirIconeAnotacao(icone){
+function excluirIconeAnotacao(icone) {
     const index = arrayIcones.indexOf(icone);
 
-    if(index !== -1){
+    if (index !== -1) {
         let confirmacao = confirm('Deseja realmente excluir este ícone?');
-        if(confirmacao){
+        if (confirmacao) {
             arrayIcones.splice(index, 1);
             localStorage.setItem('Icones', JSON.stringify(arrayIcones));
             exibeIcones();
         }
-        else{
+        else {
             alert('Exclusão cancelada!');
         }
     }
 }
 
 //  LIBERA CAMPOS PARA EDICAO [OK]
-function editaAnotacaoFeita(idCampoPeriodo, idCampoNomeAula,SelectDisciplinas, textAreaAnotacao) {
+function editaAnotacaoFeita(idCampoPeriodo, idCampoNomeAula, SelectDisciplinas, textAreaAnotacao) {
     const campoPeriodo = document.getElementById(idCampoPeriodo);
     const campoNomeAula = document.getElementById(idCampoNomeAula);
     const selectDisciplinas = document.getElementById(SelectDisciplinas);
     const campoTextAreaAnotacao = document.getElementById(textAreaAnotacao);
 
 
-    if(campoPeriodo.disabled){
+    if (campoPeriodo.disabled) {
         campoPeriodo.disabled = false;
         campoNomeAula.disabled = false;
         selectDisciplinas.disabled = false;
@@ -1970,307 +1969,458 @@ function editaAnotacaoFeita(idCampoPeriodo, idCampoNomeAula,SelectDisciplinas, t
     }
 }
 
+function mudaCorBtnDisciplina(idBtn){
+    let buttonId = document.getElementById(idBtn);
+
+    if(buttonId.classList.contains('btn-danger')){
+        buttonId.classList.replace('btn-danger','btn-primary');
+    }
+    else{
+        buttonId.classList.replace('btn-primary','btn-danger');
+    }
+}
+
 // POPULA TODAS AS ANOTAÇÕES POR PERÍODO [OK]
 function populaAnotacoesPorPeriodo(periodoSelecionado) {
+
     const campoPeriodo = document.getElementById(
         `body_${periodoSelecionado}PeriodoAnotacoesAlert`
     );
 
+    const campoExibicaoDisciplina = document.getElementById(
+        `exibeTodasAnotacoes_${periodoSelecionado}`
+    );
+
+    if (!campoPeriodo) {
+        console.error(`Campo do período ${periodoSelecionado} não encontrado.`);
+        return;
+    }
+
     campoPeriodo.innerHTML = '';
 
+    if (campoExibicaoDisciplina) {
+        campoExibicaoDisciplina.innerHTML = '';
+    }
+
     const periodo = Number(periodoSelecionado);
-    let encontrouAnotacao = false;
+
+    let encontrouDisciplina = false;
+
+    // =========================================================
+    // 1. CRIA AS DISCIPLINAS DO PERÍODO
+    // =========================================================
+
+    for (let i = 0; i < arrayDisciplinasADS.length; i++) {
+
+        const disciplina = arrayDisciplinasADS[i];
+
+        if (Number(disciplina.periodo) !== periodo) {
+            continue;
+        }
+
+        encontrouDisciplina = true;
+
+        const idCollapseDisciplina =
+            `collapseDisciplina_${periodo}_${i}`;
+
+        const idCampoAnotacoes =
+            `exibeTodasAnotacoes_${periodo}_${i}`;
+
+        campoPeriodo.innerHTML += `
+            <div class="row">
+                <div class="col">
+                    <button
+                        class="btn btn-danger rounded-pill w-100 w-lg-25 py-2 mb-2 uppercase"
+                        style="font-size: 0.8rem"
+                        type="button"
+                        id="btnDanger_${disciplina.nome}"
+                        onclick="mudaCorBtnDisciplina('btnDanger_${disciplina.nome}')"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#${idCollapseDisciplina}"
+                        aria-expanded="false"
+                        aria-controls="${idCollapseDisciplina}">
+                        ${disciplina.nome}
+                    </button>
+                </div>
+            </div>
+
+            <div
+                class="row mb-3 collapse"
+                id="${idCollapseDisciplina}">
+
+                <div
+                    class="col-12"
+                    id="${idCampoAnotacoes}">
+                </div>
+
+            </div>
+        `;
+    }
+
+    if (!encontrouDisciplina) {
+
+        campoPeriodo.innerHTML = `
+            <div class="col-12">
+                <div class="alert alert-danger text-center">
+                    <span class="uppercase tamanho08 fw-bold">
+                        <i class="fas fa-exclamation-triangle"></i>&nbsp;
+                        Nenhuma disciplina cadastrada neste período.
+                    </span>
+                </div>
+            </div>
+        `;
+
+        return;
+    }
+
+    // =========================================================
+    // 2. PERCORRE AS ANOTAÇÕES DA MAIS RECENTE PARA A MAIS ANTIGA
+    // =========================================================
 
     for (let i = arrayAnotacoesADS.length - 1; i >= 0; i--) {
+
         const anotacao = arrayAnotacoesADS[i];
+
         if (Number(anotacao.periodo) !== periodo) {
             continue;
         }
-        encontrouAnotacao = true;
+
+        // Localiza a disciplina correspondente à anotação.
+        const indiceDisciplina = arrayDisciplinasADS.findIndex(
+            disciplina =>
+                Number(disciplina.periodo) === periodo &&
+                disciplina.nome === anotacao.disciplina
+        );
+
+        // Ignora anotações sem disciplina correspondente no período.
+        if (indiceDisciplina === -1) {
+            continue;
+        }
+
+        const idCampoAnotacoes =
+            `exibeTodasAnotacoes_${periodo}_${indiceDisciplina}`;
+
+        const campoAnotacoes = document.getElementById(
+            idCampoAnotacoes
+        );
+
+        if (!campoAnotacoes) {
+            continue;
+        }
+
+        // =====================================================
+        // 3. MANTÉM OS CAMPOS E BOTÕES DE CADA ANOTAÇÃO
+        // =====================================================
 
         const idPeriodo = `campoSessaoAnotacoesPERIODO_${i}`;
         const idID = `campoSessaoAnotacoesID_${i}`;
         const idNomeAula = `campoSessaoAnotacoesNOMEAULA_${i}`;
         const idDisciplina = `campoSessaoAnotacoesDISCIPLINA_${i}`;
         const idTextArea = `campoSessaoAnotacoesTEXTANOTACAO_${i}`;
+        const idCollapseAnotacao = `alertPeriodo_${periodo}_Anotacao_${i}`;
 
-        campoPeriodo.innerHTML += `
-            <div class="col-12 mt-4">
-                <div class="alert alert-primary">
-                    <span class="iconetagNumero uppercase px-2 rounded-start-pill" 
-                        data-bs-toggle="collapse"
-                        data-bs-target="#alertPeriodo_${periodo}_Anotacao_${i}"
-                        style="cursor:pointer"
-                        onclick="consoleArray(arrayAnotacoesADS)">
-                        &nbsp;&nbsp;
-                        <i class="fa fa-eye"
-                            id="iconeChevron_Anotacao_${i}">
-                        </i>
-                        &nbsp;&nbsp;
-                        <span>
-                            Resumo &nbsp;${i + 1}
+        campoAnotacoes.innerHTML += `
+            <div class="row mt-3">
+                <div class="col mt-4">
+                    <div class="alert alert-primary">
+                        <span class="iconetagNumero uppercase px-2 rounded-start-pill"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#${idCollapseAnotacao}"
+                            aria-expanded="false"
+                            aria-controls="${idCollapseAnotacao}"
+                            style="cursor:pointer"
+                            onclick="consoleArray(arrayAnotacoesADS)">
+                            &nbsp;&nbsp;
+                            <i class="fa fa-eye" id="iconeChevron_Anotacao_${i}"></i>&nbsp;&nbsp;
+                            <span>Resumo &nbsp;${i + 1}</span>
                         </span>
-                    </span>
-                    <span class="iconetagDisciplina uppercase rounded-start-pill">
-                        ${anotacao.disciplina}
-                    </span>
-                    <div class="row mt-2">
-                        <!-- ID -->
-                        <div class="col-lg-3 col-12 mb-2">
-                            <label class="labelFormat text-primary fw-bold">
-                                ID
-                            </label>
-                            <input class="form-control uppercase textoCenter"
-                                style="font-size: 0.8rem"
-                                type="text"
-                                value="${anotacao.id}"
-                                id="${idID}"
-                                disabled>
-                        </div>
 
-                        <!-- NOME DA AULA -->
-                        <div class="col-12 col-lg mb-3 mt-3 mt-lg-0">
-                            <label class="labelFormat text-primary fw-bold">
-                                Nome da Aula
-                            </label>
-                            <input class="form-control uppercase textoCenter"
-                                style="font-size: 0.8rem"
-                                type="text"
-                                value="${anotacao.nomeAula}"
-                                disabled
-                                id="${idNomeAula}"
-                                data-toggle="tooltip"
-                                title="${anotacao.nomeAula}">
-                        </div>
-                    </div>
+                        <span class="iconetagDisciplina uppercase rounded-start-pill">
+                            ${anotacao.disciplina}
+                        </span>
 
-                    <!-- DETALHES -->
-
-                    <div class="row collapse" id="alertPeriodo_${periodo}_Anotacao_${i}">
-                        <!-- PERÍODO -->
-                        <div class="col-auto mb-3">
-                            <label class="labelFormat text-primary fw-bold">
-                                Período
-                            </label>
-
-                            <select class="form-select uppercase textoCenter"
-                                id="${idPeriodo}"
-                                disabled
-                                style="font-size: 0.8rem"
-                                onchange="populaSelectDisciplinas('${idDisciplina}', '${idPeriodo}')">
-
-                                <option value="1" ${Number(anotacao.periodo) === 1 ? 'selected' : ''}>
-                                    1
-                                </option>
-                                <option value="2" ${Number(anotacao.periodo) === 2 ? 'selected' : ''}>
-                                    2
-                                </option>
-                                <option value="3" ${Number(anotacao.periodo) === 3 ? 'selected' : ''}>
-                                    3
-                                </option>
-                                <option value="4" ${Number(anotacao.periodo) === 4 ? 'selected' : ''}>
-                                    4
-                                </option>
-                                <option value="5" ${Number(anotacao.periodo) === 5 ? 'selected' : ''}>
-                                    5
-                                </option>
-                            </select>
-                        </div>
-
-                        <!-- DISCIPLINA -->
-                        <div class="col mb-2">
-                            <label class="labelFormat text-primary fw-bold">
-                                Disciplina da Aula
-                            </label>
-                            <select class="form-select uppercase textoCenter"
-                                id="${idDisciplina}"
-                                disabled
-                                style="font-size: 0.8rem">
-
-                                <option value="${anotacao.disciplina}" selected>
-                                    ${anotacao.disciplina}
-                                </option>
-                            </select>
-                        </div>
-
-                        <hr>
-
-                        <div class="row mb-3">
-                            <div class="col"></div>
-                            <div class="col-auto m-auto">
-                                <label for="" class="labelFormat">
-                                    ícones utilizados
-                                </label>
+                        <div class="row mt-2">
+                            <!-- ID -->
+                            <div class="col-lg-3 col-12 mb-2">
+                                <label class="labelFormat text-primary fw-bold">ID</label>
+                                <input
+                                    class="form-control uppercase textoCenter"
+                                    style="font-size: 0.8rem"
+                                    type="text"
+                                    value="${anotacao.id}"
+                                    id="${idID}"disabled>
                             </div>
-                            <div class="col-auto">
-                                <button class="btn btn-sm btn-dark"
-                                data-bs-toggle="modal" data-bs-target="#modalCadastroIcones_${i}">
-                                    <i class="fa fa-plus"></i></button>
-                            </div>
-                            <div class="col"></div>
-                        </div>
 
-                        <div class="row my-2 m-auto">
-                            <div class="col" id="colunaExibeIcones_${i}"></div>
-                        </div>
-
-                        <!-- ANOTAÇÃO -->
-                        <div class="col-12">
-                            <div class="mt-1">
+                            <!-- NOME DA AULA -->
+                            <div class="col-12 col-lg mb-3 mt-3 mt-lg-0">
                                 <label class="labelFormat text-primary fw-bold">
-                                    Anotações da Aula
+                                    Nome da Aula
                                 </label>
 
-                                <button class="btn btn-sm btn-dark rounded-pill btnExpandText d-none d-lg-block btnExpansivo"
-                                    id="btnExpancaoMinimizar_${idDisciplina}"
-                                    onclick="expandirReduzirTextArea(
-                                        'iconeExpandirRecolher_${idDisciplina}',
-                                        'colunaPricipalAnotacoes',
-                                        'btnExpancaoMinimizar_${idDisciplina}')">
-                                    <i class="fa-solid fa-up-right-and-down-left-from-center"
-                                        id="iconeExpandirRecolher_${idDisciplina}">
-                                    </i>
-                                </button>
-
-                                <textarea class="form-control" rows="10" disabled id="${idTextArea}_${i}">
-                                    ${anotacao.anotacao}
-                                </textarea>
+                                <input class="form-control uppercase textoCenter"
+                                    style="font-size: 0.8rem"
+                                    type="text"
+                                    value="${anotacao.nomeAula}"
+                                    disabled
+                                    id="${idNomeAula}"
+                                    data-toggle="tooltip"
+                                    title="${anotacao.nomeAula}">
                             </div>
                         </div>
 
+                        <!-- DETALHES DA ANOTAÇÃO -->
+                        <div class="row collapse" id="${idCollapseAnotacao}">
+                            <!-- PERÍODO -->
+                            <div class="col-auto mb-3">
+                                <label class="labelFormat text-primary fw-bold">
+                                    Período
+                                </label>
 
-                        <!-- BOTÕES -->
-                        <div class="col-12 flexCenter gap-2 mt-3">
-                            <!-- SALVAR -->
-                            <button
-                                class="btn btn-sm btn-success"
-                                onclick="sobscreverAtualizarAnotacao(
-                                    '${idID}',
-                                    '${idNomeAula}',
-                                    '${idPeriodo}',
-                                    '${idDisciplina}',
-                                    '${idTextArea}_${i}' )">
+                                <select class="form-select uppercase textoCenter"
+                                    id="${idPeriodo}" disabled
+                                    style="font-size: 0.8rem"
+                                    onchange="populaSelectDisciplinas('${idDisciplina}', '${idPeriodo}')">
 
-                                <i class="fa fa-save"></i>&nbsp;
-                                <span class="uppercase tamanho07">
-                                    Salvar
-                                </span>
-                            </button>
+                                    <option value="1" ${Number(anotacao.periodo) === 1 ? 'selected' : ''}>1</option>
+                                    <option value="2" ${Number(anotacao.periodo) === 2 ? 'selected' : ''}>2</option>
+                                    <option value="3" ${Number(anotacao.periodo) === 3 ? 'selected' : ''}>3</option>
+                                    <option value="4" ${Number(anotacao.periodo) === 4 ? 'selected' : ''}>4</option>
+                                    <option value="5" ${Number(anotacao.periodo) === 5 ? 'selected' : ''}>5</option>
+                                </select>
+                            </div>
 
-                            <!-- EDITAR -->
-                            <button class="btn btn-sm btn-primary"
-                                onclick="editaAnotacaoFeita(
-                                    '${idPeriodo}',
-                                    '${idNomeAula}',
-                                    '${idDisciplina}',
-                                    '${idTextArea}_${i}' )">
+                            <!-- DISCIPLINA -->
+                            <div class="col mb-2">
+                                <label class="labelFormat text-primary fw-bold">
+                                    Disciplina da Aula
+                                </label>
 
-                                <i class="fa fa-edit"></i>&nbsp;
-                                <span class="uppercase tamanho07">
-                                    Editar
-                                </span>
-                            </button>
+                                <select class="form-select uppercase textoCenter"
+                                    id="${idDisciplina}" disabled style="font-size: 0.8rem">
+                                    <option value="${anotacao.disciplina}" selected>
+                                        ${anotacao.disciplina}
+                                    </option>
+                                </select>
+                            </div>
 
+                            <hr>
 
-                            <!-- EXCLUIR -->
-                            <button class="btn btn-sm btn-danger"
-                                onclick="excluirAnotacaoCompleta('${anotacao.id}')">
-                                <i class="fa fa-trash"></i>&nbsp;
-
-                                <span class="uppercase tamanho07">
-                                    Excluir
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!--MODAL CADASTRO ICONES-->
-            <div class="modal mt-5" tabindex="-1" id="modalCadastroIcones_${i}">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header m-auto flexCenter">
-                            <div class="row">
-                                <div class="col">
-                                    <h5 class="modal-title uppercase tamanho12">cadastrar icone</h5>
+                            <!-- CABEÇALHO DOS ÍCONES -->
+                            <div class="row mb-3">
+                                <div class="col"></div>
+                                <div class="col-auto m-auto">
+                                    <label class="labelFormat">ícones utilizados</label>
                                 </div>
-                                <div class="col-1">
-                                    <button type="button" class="btn btn-sm btn-danger"
-                                        data-bs-dismiss="modal"
-                                        aria-label="Close">
-                                            <i class="fa fa-x"></i>
+
+                                <div class="col-auto">
+                                    <button class="btn btn-sm btn-dark"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalCadastroIcones_${i}">
+                                        <i class="fa fa-plus"></i>
                                     </button>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="modal-body">
-                            <label for="" class="labelFormat">
-                                Insira o ícone que deseja utilizar nas anotações das matérias
-                            </label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-primary text-light">
-                                    <i class="fa fa-star"></i>
-                                </span>
-                                <input type="text" class="form-control col-12" id="inputNomeIcone_${i}" 
-                                placeholder="Insira o ícone...">
-                            </div>
-                        </div>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-success uppercase"
-                            onclick="salvarIconeAnotacao('inputNomeIcone_${i}'),
-                            exibeIcones('colunaExibeIcones_${i}', '${idTextArea}_${i}')">
-                                <i class="fa fa-save"></i>&nbsp;
-                                <span class="tamanho08">salvar</span>
-                            </button>
-                            <button type="button" class="btn btn-primary uppercase"
-                            onclick="limparIconeAnotacao('inputNomeIcone_${i}')">
-                                <i class="fa fa-broom"></i>&nbsp;
-                                <span class="tamanho08">limpar</span>
-                            </button>
+                                <div class="col"></div>
+                            </div>
+
+                            <!-- EXIBIÇÃO DOS ÍCONES -->
+                            <div class="row my-2 m-auto">
+                                <div class="col" id="colunaExibeIcones_${i}"></div>
+                            </div>
+
+                            <!-- ANOTAÇÃO -->
+                            <div class="col-12">
+                                <div class="mt-1">
+                                    <label class="labelFormat text-primary fw-bold">
+                                        Anotações da Aula
+                                    </label>
+
+                                    <button
+                                        class="btn btn-sm btn-dark rounded-pill btnExpandText d-none d-lg-block btnExpansivo"
+                                        id="btnExpancaoMinimizar_${idDisciplina}"
+                                        onclick="expandirReduzirTextArea(
+                                            'iconeExpandirRecolher_${idDisciplina}',
+                                            'colunaPricipalAnotacoes',
+                                            'btnExpancaoMinimizar_${idDisciplina}')">
+
+                                        <i class="fa-solid fa-up-right-and-down-left-from-center"
+                                            id="iconeExpandirRecolher_${idDisciplina}">
+                                        </i>
+                                    </button>
+
+                                    <textarea class="form-control" rows="10" disabled
+                                        id="${idTextArea}_${i}">${anotacao.anotacao}</textarea>
+                                </div>
+                            </div>
+
+                            <!-- BOTÕES -->
+                            <div class="col-12 flexCenter gap-2 mt-3">
+                                <!-- SALVAR -->
+                                <button
+                                    class="btn btn-sm btn-success"
+                                    onclick="sobscreverAtualizarAnotacao(
+                                        '${idID}',
+                                        '${idNomeAula}',
+                                        '${idPeriodo}',
+                                        '${idDisciplina}',
+                                        '${idTextArea}_${i}')">
+
+                                    <i class="fa fa-save"></i>&nbsp;
+                                    <span class="uppercase tamanho07">Salvar</span>
+                                </button>
+                                <!-- EDITAR -->
+
+                                <button class="btn btn-sm btn-primary"
+                                    onclick="editaAnotacaoFeita(
+                                        '${idPeriodo}',
+                                        '${idNomeAula}',
+                                        '${idDisciplina}',
+                                        '${idTextArea}_${i}')">
+
+                                    <i class="fa fa-edit"></i>&nbsp;
+                                    <span class="uppercase tamanho07">
+                                        Editar
+                                    </span>
+                                </button>
+
+                                <!-- EXCLUIR -->
+
+                                <button class="btn btn-sm btn-danger"
+                                    onclick="excluirAnotacaoCompleta('${anotacao.id}')">
+
+                                    <i class="fa fa-trash"></i>&nbsp;
+                                    <span class="uppercase tamanho07">Excluir</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        `
-        ;
 
+                <!-- MODAL CADASTRO DE ÍCONES -->
 
-        // Popula o select de disciplinas
-        populaSelectDisciplinas(idDisciplina,idPeriodo);
+                <div class="modal mt-5" tabindex="-1" id="modalCadastroIcones_${i}">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header m-auto flexCenter">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="modal-title uppercase tamanho12">
+                                            cadastrar icone
+                                        </h5>
+                                    </div>
 
-        // Seleciona a disciplina salva
-        document.getElementById(idDisciplina).value =anotacao.disciplina;
+                                    <div class="col-1">
+                                        <button type="button" class="btn btn-sm btn-danger"
+                                            data-bs-dismiss="modal"
+                                            aria-label="Close">
+                                            <i class="fa fa-x"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-        exibeIcones(`colunaExibeIcones_${i}`, `${idTextArea}_${i}`);
-        insereIconeTextArea(anotacao.anotacao, `${idTextArea}_${i}`);
-    }
+                            <div class="modal-body">
+                                <label class="labelFormat">
+                                    Insira o ícone que deseja utilizar nas anotações das matérias
+                                </label>
 
-    // Nenhuma anotação encontrada para este período
-    if (!encontrouAnotacao) {
-        campoPeriodo.innerHTML = `
-            <div class="col-12">
-                <div class="alert alert-danger text-center">
-                    <span class="uppercase tamanho08 fw-bold">
-                        <i class="fas fa-exclamation-triangle"></i>&nbsp;
-                        Nenhuma anotação neste período.
-                    </span>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary text-light">
+                                        <i class="fa fa-star"></i>
+                                    </span>
+
+                                    <input type="text" class="form-control col-12"
+                                        id="inputNomeIcone_${i}"
+                                        placeholder="Insira o ícone...">
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button
+                                    type="button"
+                                    class="btn btn-success uppercase"
+                                    onclick="salvarIconeAnotacao('inputNomeIcone_${i}');
+                                        exibeIcones('colunaExibeIcones_${i}', '${idTextArea}_${i}')">
+
+                                    <i class="fa fa-save"></i>&nbsp;
+                                    <span class="tamanho08">salvar</span>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-primary uppercase"
+                                    onclick="limparIconeAnotacao('inputNomeIcone_${i}')">
+                                    <i class="fa fa-broom"></i>&nbsp;
+                                    <span class="tamanho08">limpar</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
+
+        // =====================================================
+        // 4. INICIALIZA OS SELECTS E OS ÍCONES DA ANOTAÇÃO
+        // =====================================================
+
+        populaSelectDisciplinas(idDisciplina, idPeriodo);
+
+        document.getElementById(idDisciplina).value =
+            anotacao.disciplina;
+
+        exibeIcones(
+            `colunaExibeIcones_${i}`,
+            `${idTextArea}_${i}`
+        );
+
+        insereIconeTextArea(
+            anotacao.anotacao,
+            `${idTextArea}_${i}`
+        );
+
     }
+
+    // =========================================================
+    // 5. AVISO CASO NÃO EXISTAM ANOTAÇÕES NO PERÍODO
+    // =========================================================
+
+    const possuiAnotacoes = arrayAnotacoesADS.some(
+        anotacao => Number(anotacao.periodo) === periodo
+    );
+
+    if (!possuiAnotacoes) {
+
+        campoPeriodo.innerHTML = `
+            <div class="col-12">
+
+                <div class="alert alert-danger text-center">
+
+                    <span class="uppercase tamanho08 fw-bold">
+
+                        <i class="fas fa-exclamation-triangle"></i>&nbsp;
+
+                        Nenhuma anotação neste período.
+
+                    </span>
+
+                </div>
+
+            </div>
+        `;
+    }
+
 }
 
 // ATUALIZA O ARRAY DE ACORDO COM A ATUALIZAÇAÃO DA ANOTAÇÃO [OK]
-function sobscreverAtualizarAnotacao( id, nomeAula, periodo, disciplina, anotacao) {
+function sobscreverAtualizarAnotacao(id, nomeAula, periodo, disciplina, anotacao) {
     const campoId = document.getElementById(id);
     const campoNomeAula = document.getElementById(nomeAula);
     const campoPeriodo = document.getElementById(periodo);
     const campoDisciplinas = document.getElementById(disciplina);
     const campoTextoAnotacao = document.getElementById(anotacao);
 
-    if ( !campoId || !campoNomeAula || !campoPeriodo || !campoDisciplinas || !campoTextoAnotacao) {
+    if (!campoId || !campoNomeAula || !campoPeriodo || !campoDisciplinas || !campoTextoAnotacao) {
         console.error('Um ou mais campos não foram encontrados.');
         return;
     }
@@ -2281,7 +2431,7 @@ function sobscreverAtualizarAnotacao( id, nomeAula, periodo, disciplina, anotaca
     const campoDisciplinaValor = campoDisciplinas.value;
     const campoTextoAnotacaoValor = campoTextoAnotacao.value.trim();
 
-    if ( campoNomeAulaValor === '' || campoTextoAnotacaoValor === '' ) {
+    if (campoNomeAulaValor === '' || campoTextoAnotacaoValor === '') {
         alert(
             'Os campos de Nome da Aula e Anotação não podem ficar vazios.\n' +
             'Insira e tente novamente.'
@@ -2290,7 +2440,7 @@ function sobscreverAtualizarAnotacao( id, nomeAula, periodo, disciplina, anotaca
         return;
     }
 
-    const indice = arrayAnotacoesADS.findIndex( anotacao => String(anotacao.id) === campoIdValor);
+    const indice = arrayAnotacoesADS.findIndex(anotacao => String(anotacao.id) === campoIdValor);
 
     if (indice === -1) {
         alert('Anotação não encontrada.');
@@ -2325,7 +2475,7 @@ function sobscreverAtualizarAnotacao( id, nomeAula, periodo, disciplina, anotaca
 
 function excluirAnotacaoCompleta(id) {
     const confirmacao = confirm('Deseja realmente excluir esta anotação?');
-    if (!confirmacao) {return;}
+    if (!confirmacao) { return; }
 
     const indice = arrayAnotacoesADS.findIndex(anotacao => String(anotacao.id) === String(id));
     if (indice === -1) {
@@ -2336,14 +2486,14 @@ function excluirAnotacaoCompleta(id) {
     const periodo = Number(arrayAnotacoesADS[indice].periodo);
     arrayAnotacoesADS.splice(indice, 1);
 
-    localStorage.setItem('Anotacoes',JSON.stringify(arrayAnotacoesADS));
+    localStorage.setItem('Anotacoes', JSON.stringify(arrayAnotacoesADS));
     alert('Anotação excluída com sucesso!');
 
     populaAnotacoesPorPeriodo(periodo);
     calculaQtdAnotacoesPeriodo();
 }
 
-function consoleArray(array){
+function consoleArray(array) {
     console.log(array)
 }
 
@@ -2357,9 +2507,9 @@ function expandirReduzirTextArea(iconeDoBTN, colunaPrincipalMain, btnParaExpande
             'fa-up-right-and-down-left-from-center',
             'fa-down-left-and-up-right-to-center'
         );
-        btnExpandeRecolhe.classList.replace("btn-dark",'btn-danger')
+        btnExpandeRecolhe.classList.replace("btn-dark", 'btn-danger')
         colunaPrincipal.classList.replace('col-lg-6', 'col-lg-12');
-        scrollParaId('btnSalvarAnotacoes',50)
+        scrollParaId('btnSalvarAnotacoes', 50)
         iconeBtn.classList.add('fa-beat-fade')
 
         document.getElementById('mainProvasExercicios').classList.add('d-none');
@@ -2369,20 +2519,20 @@ function expandirReduzirTextArea(iconeDoBTN, colunaPrincipalMain, btnParaExpande
         document.getElementById('mainProjetos').classList.add('d-none');
 
 
-        document.getElementById('colunaIDnovaAnotacao').classList.replace('col-lg-3','col-lg-2');
-        document.getElementById('colunaDATAINICIOnovaAnotacao').classList.replace('col-lg-4','col-lg-auto');
-        document.getElementById('colunaDATAATUALIZACAOnovaAnotacao').classList.replace('col-lg-5','col-lg-auto');
-        document.getElementById('colunaPERIODOnovaAnotacao').classList.replace('col-lg-3','col-lg-2');
-        document.getElementById('colunaDISCIPLINAnovaAnotacao').classList.replace('col-lg-9','col-lg-6');
-        document.getElementById('colunaNOMEMATERIAnovaAnotacao').classList.replace('col-12','col-6');
-    } 
+        document.getElementById('colunaIDnovaAnotacao').classList.replace('col-lg-3', 'col-lg-2');
+        document.getElementById('colunaDATAINICIOnovaAnotacao').classList.replace('col-lg-4', 'col-lg-auto');
+        document.getElementById('colunaDATAATUALIZACAOnovaAnotacao').classList.replace('col-lg-5', 'col-lg-auto');
+        document.getElementById('colunaPERIODOnovaAnotacao').classList.replace('col-lg-3', 'col-lg-2');
+        document.getElementById('colunaDISCIPLINAnovaAnotacao').classList.replace('col-lg-9', 'col-lg-6');
+        document.getElementById('colunaNOMEMATERIAnovaAnotacao').classList.replace('col-12', 'col-6');
+    }
     else {
         iconeBtn.classList.replace(
             'fa-down-left-and-up-right-to-center',
             'fa-up-right-and-down-left-from-center'
         );
 
-        btnExpandeRecolhe.classList.replace("btn-danger",'btn-dark')
+        btnExpandeRecolhe.classList.replace("btn-danger", 'btn-dark')
         iconeBtn.classList.remove('fa-beat-fade')
         colunaPrincipal.classList.replace('col-lg-12', 'col-lg-6');
 
@@ -2392,12 +2542,12 @@ function expandirReduzirTextArea(iconeDoBTN, colunaPrincipalMain, btnParaExpande
         document.getElementById('mainLivros').classList.remove('d-none');
         document.getElementById('mainProjetos').classList.remove('d-none');
 
-        document.getElementById('colunaIDnovaAnotacao').classList.replace('col-lg-2','col-lg-3');
-        document.getElementById('colunaDATAINICIOnovaAnotacao').classList.replace('col-lg-auto','col-lg-4');
-        document.getElementById('colunaDATAATUALIZACAOnovaAnotacao').classList.replace('col-lg-auto','col-lg-5');
-        document.getElementById('colunaPERIODOnovaAnotacao').classList.replace('col-lg-2','col-lg-3');
-        document.getElementById('colunaDISCIPLINAnovaAnotacao').classList.replace('col-lg-6','col-lg-9');
-        document.getElementById('colunaNOMEMATERIAnovaAnotacao').classList.replace('col-6','col-12');
+        document.getElementById('colunaIDnovaAnotacao').classList.replace('col-lg-2', 'col-lg-3');
+        document.getElementById('colunaDATAINICIOnovaAnotacao').classList.replace('col-lg-auto', 'col-lg-4');
+        document.getElementById('colunaDATAATUALIZACAOnovaAnotacao').classList.replace('col-lg-auto', 'col-lg-5');
+        document.getElementById('colunaPERIODOnovaAnotacao').classList.replace('col-lg-2', 'col-lg-3');
+        document.getElementById('colunaDISCIPLINAnovaAnotacao').classList.replace('col-lg-6', 'col-lg-9');
+        document.getElementById('colunaNOMEMATERIAnovaAnotacao').classList.replace('col-6', 'col-12');
     }
 }
 /*======================================== FUNÇÕES ONLOAD ========================================*/
@@ -2406,7 +2556,7 @@ window.onload = () => {
     verificaStatusLeituraLivro('Em Aberto');
     gerarId('inputIdProjeto', arrayProjetosADS, 'PRJ');
     mostraDataAtual('inputDataInicioProjeto');
-    populaSelectDisciplinas('selectDisplinaProjeto','inputPeriodoProjeto');
+    populaSelectDisciplinas('selectDisplinaProjeto', 'inputPeriodoProjeto');
     populaCheckboxTecnologias('inputTecnologiasProjeto');
     clicarElemento('btnSessaoCadastroExerciciosProvas');
     exibeCadastroExercicioProva();
