@@ -1973,10 +1973,10 @@ function mudaCorBtnDisciplina(idBtn){
     let buttonId = document.getElementById(idBtn);
 
     if(buttonId.classList.contains('btn-danger')){
-        buttonId.classList.replace('btn-danger','btn-primary');
+        buttonId.classList.replace('btn-danger','btn-success');
     }
     else{
-        buttonId.classList.replace('btn-primary','btn-danger');
+        buttonId.classList.replace('btn-success','btn-danger');
     }
 }
 
