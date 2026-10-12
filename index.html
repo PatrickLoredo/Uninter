@@ -100,6 +100,18 @@
                         Importar Backup
                     </button>
 
+                    <button class="btn btn-sm btn-dark btnExpandTextSuperior d-none d-lg-block"
+                        onclick="expandirReduzirTextArea('iconeExpandirRecolher', 'colunaPricipalAnotacoes', 'btnExpandeRecolheSuperior')"
+                        id="btnExpandeRecolheSuperior">
+                        <i class="fa-solid fa-up-right-and-down-left-from-center"
+                            id="iconeExpandirRecolher"></i>
+                    </button>
+
+                    <a class="btn btn-secondary" type="button" href="http://127.0.0.1:5500/Uninter/index.html"
+                    style="cursor: pointer;">
+                        <i class="fa fa-display"></i>
+                    </a>
+
                     <input type="file" id="inputImportarBackup" accept=".xlsx" style="display: none;"
                         onchange="importarBackup(this)">
                 </div>
