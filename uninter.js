@@ -2509,12 +2509,11 @@ function expandirReduzirTextArea(iconeDoBTN, colunaPrincipalMain, btnParaExpande
         scrollParaId('btnSalvarAnotacoes', 50)
         iconeBtn.classList.add('fa-beat-fade')
 
-        /*
-        document.getElementById('mainProvasExercicios').classList.add('d-none');
-        document.getElementById('mainTecnologias').classList.add('d-none');
-        document.getElementById('mainDisciplinas').classList.add('d-none');
-        document.getElementById('mainLivros').classList.add('d-none');
-        document.getElementById('mainProjetos').classList.add('d-none');*/
+        document.getElementById('mainProvasExercicios').classList.replace('col-lg-6','col-lg-12');
+        document.getElementById('mainTecnologias').classList.replace('col-lg-6','col-lg-12');
+        document.getElementById('mainDisciplinas').classList.replace('col-lg-6','col-lg-12');
+        document.getElementById('mainLivros').classList.replace('col-lg-6','col-lg-12');
+        document.getElementById('mainProjetos').classList.replace('col-lg-6','col-lg-12');
 
 
         document.getElementById('colunaIDnovaAnotacao').classList.replace('col-lg-3', 'col-lg-2');
@@ -2534,11 +2533,11 @@ function expandirReduzirTextArea(iconeDoBTN, colunaPrincipalMain, btnParaExpande
         iconeBtn.classList.remove('fa-beat-fade')
         colunaPrincipal.classList.replace('col-lg-12', 'col-lg-6');
 
-        document.getElementById('mainProvasExercicios').classList.remove('d-none');
-        document.getElementById('mainTecnologias').classList.remove('d-none');
-        document.getElementById('mainDisciplinas').classList.remove('d-none');
-        document.getElementById('mainLivros').classList.remove('d-none');
-        document.getElementById('mainProjetos').classList.remove('d-none');
+        document.getElementById('mainProvasExercicios').classList.replace('col-lg-12','col-lg-6');
+        document.getElementById('mainTecnologias').classList.replace('col-lg-12','col-lg-6');
+        document.getElementById('mainDisciplinas').classList.replace('col-lg-12','col-lg-6');
+        document.getElementById('mainLivros').classList.replace('col-lg-12','col-lg-6');
+        document.getElementById('mainProjetos').classList.replace('col-lg-12','col-lg-6');
 
         document.getElementById('colunaIDnovaAnotacao').classList.replace('col-lg-2', 'col-lg-3');
         document.getElementById('colunaDATAINICIOnovaAnotacao').classList.replace('col-lg-auto', 'col-lg-4');
