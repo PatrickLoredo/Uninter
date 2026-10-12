@@ -2509,11 +2509,11 @@ function expandirReduzirTextArea(iconeDoBTN, colunaPrincipalMain, btnParaExpande
         scrollParaId('btnSalvarAnotacoes', 50)
         iconeBtn.classList.add('fa-beat-fade')
 
-        document.getElementById('mainProvasExercicios').classList.replace('col-lg-6','col-lg-12');
-        document.getElementById('mainTecnologias').classList.replace('col-lg-6','col-lg-12');
-        document.getElementById('mainDisciplinas').classList.replace('col-lg-6','col-lg-12');
-        document.getElementById('mainLivros').classList.replace('col-lg-6','col-lg-12');
-        document.getElementById('mainProjetos').classList.replace('col-lg-6','col-lg-12');
+        document.getElementById('mainProvasExercicios').classList.add('col-lg-12');
+        document.getElementById('mainTecnologias').classList.add('col-lg-12');
+        document.getElementById('mainDisciplinas').classList.add('col-lg-12');
+        document.getElementById('mainLivros').classList.add('col-lg-12');
+        document.getElementById('mainProjetos').classList.add('col-lg-12');
 
 
         document.getElementById('colunaIDnovaAnotacao').classList.replace('col-lg-3', 'col-lg-2');
