@@ -2503,20 +2503,18 @@ function expandirReduzirTextArea(iconeDoBTN, colunaPrincipalMain, btnParaExpande
     const btnExpandeRecolhe = document.getElementById(btnParaExpandeRecolhe);
 
     if (iconeBtn.classList.contains('fa-up-right-and-down-left-from-center')) {
-        iconeBtn.classList.replace(
-            'fa-up-right-and-down-left-from-center',
-            'fa-down-left-and-up-right-to-center'
-        );
+        iconeBtn.classList.replace( 'fa-up-right-and-down-left-from-center', 'fa-down-left-and-up-right-to-center');
         btnExpandeRecolhe.classList.replace("btn-dark", 'btn-danger')
         colunaPrincipal.classList.replace('col-lg-6', 'col-lg-12');
         scrollParaId('btnSalvarAnotacoes', 50)
         iconeBtn.classList.add('fa-beat-fade')
 
+        /*
         document.getElementById('mainProvasExercicios').classList.add('d-none');
         document.getElementById('mainTecnologias').classList.add('d-none');
         document.getElementById('mainDisciplinas').classList.add('d-none');
         document.getElementById('mainLivros').classList.add('d-none');
-        document.getElementById('mainProjetos').classList.add('d-none');
+        document.getElementById('mainProjetos').classList.add('d-none');*/
 
 
         document.getElementById('colunaIDnovaAnotacao').classList.replace('col-lg-3', 'col-lg-2');
