@@ -386,201 +386,86 @@ function esconderElemento(id) {
     document.getElementById(id).style.display = 'none';
 }
 
-window.exportarBackup = function () {
+function dividirTextoParaExcel(texto, tamanhoMaximo = 30000) { const partes = [];
+    for (let i = 0; i < texto.length; i += tamanhoMaximo) { partes.push(texto.slice(i, i + tamanhoMaximo)); }
+    return partes.length > 0 ? partes : ['']; 
+}
 
-    if (typeof XLSX === 'undefined') {
+window.exportarBackup = function () { if (typeof XLSX === 'undefined') { alert('Erro: a biblioteca SheetJS não foi carregada.'); console.error('XLSX não está disponível.'); return; }
 
-        alert(
-            'Erro: a biblioteca SheetJS não foi carregada.\n\n' +
-            'Verifique o carregamento do XLSX no HTML.'
-        );
+try { var workbook = XLSX.utils.book_new(); var limite = 30000; var extras = [];
 
-        console.error('XLSX não está disponível.');
+var dadosBackup = [ { nomeAba: 'Tecnologias', dados: arrayTecnologiasADS }, { nomeAba: 'Disciplinas', dados: arrayDisciplinasADS }, { nomeAba: 'Livros', dados: arrayLivrosADS }, { nomeAba: 'Projetos', dados: arrayProjetosADS }, { nomeAba: 'Anotacoes', dados: arrayAnotacoesADS }, { nomeAba: 'ExerciciosProvas', dados: arrayExerciciosProvas }, { nomeAba: 'Icones', dados: arrayIcones } ];
 
-        return;
-    }
+function serializar(valor) { if (valor === undefined) { return ''; }
 
-    try {
+if (valor === null) { return 'null'; }
 
-        const workbook = XLSX.utils.book_new();
+if (typeof valor === 'object') { return JSON.stringify(valor); }
 
-        const dadosBackup = [
+return String(valor); }
 
-            {
-                nomeAba: 'Tecnologias',
-                dados: arrayTecnologiasADS
-            },
+function prepararValor(aba, indice, campo, valor) { var texto = serializar(valor);
 
-            {
-                nomeAba: 'Disciplinas',
-                dados: arrayDisciplinasADS
-            },
+if (texto.length <= limite) { return texto; }
 
-            {
-                nomeAba: 'Livros',
-                dados: arrayLivrosADS
-            },
+var partes = []; var inicio;
 
-            {
-                nomeAba: 'Projetos',
-                dados: arrayProjetosADS
-            },
+for (inicio = 0; inicio < texto.length; inicio += limite) { partes.push(texto.substring(inicio, inicio + limite)); }
 
-            {
-                nomeAba: 'Anotacoes',
-                dados: arrayAnotacoesADS
-            },
+var numero;
 
-            {
-                nomeAba: 'ExerciciosProvas',
-                dados: arrayExerciciosProvas
-            },
+for (numero = 0; numero < partes.length; numero++) { extras.push({ aba: aba, indice: indice, campo: campo, parte: numero, totalPartes: partes.length, conteudo: partes[numero] }); }
 
-            {
-                nomeAba: 'Icones',
-                dados: arrayIcones
-            }
+return 'BACKUPEXTRA_' + JSON.stringify({ aba: aba, indice: indice, campo: campo }); }
 
-        ];
+var i;
 
-        dadosBackup.forEach(item => {
+for (i = 0; i < dadosBackup.length; i++) { var item = dadosBackup[i]; var worksheet;
 
-            let worksheet;
+if (item.nomeAba === 'Icones') { var linhas = [['dados']]; var j;
 
-            if (item.nomeAba === 'Icones') {
+for (j = 0; j < item.dados.length; j++) { linhas.push([ prepararValor( item.nomeAba, j, 'dados', item.dados[j] ) ]); }
 
-                const linhasIcones = [
-                    ['dados'],
-                    ...item.dados.map(icone => [
-                        JSON.stringify(icone)
-                    ])
-                ];
+worksheet = XLSX.utils.aoatosheet(linhas); } else { var linhasDados = []; var k;
 
-                worksheet = XLSX.utils.aoa_to_sheet(
-                    linhasIcones
-                );
+for (k = 0; k < item.dados.length; k++) { var objeto = item.dados[k]; var linha = {}; var chaves = Object.keys(objeto); var c;
 
-            } else {
+for (c = 0; c < chaves.length; c++) { var chave = chaves[c];
 
-                const dadosPlanilha = item.dados.map(objeto => {
+linha[chave] = prepararValor( item.nomeAba, k, chave, objeto[chave] ); }
 
-                    const linha = {};
+linhasDados.push(linha); }
 
-                    Object.keys(objeto).forEach(chave => {
+worksheet = linhasDados.length > 0 ? XLSX.utils.jsontosheet(linhasDados) : XLSX.utils.aoatosheet([]); }
 
-                        const valor = objeto[chave];
+XLSX.utils.bookappendsheet( workbook, worksheet, item.nomeAba ); }
 
-                        if (
-                            typeof valor === 'object' &&
-                            valor !== null
-                        ) {
+var dadosIds = []; var idIndex;
 
-                            linha[chave] = JSON.stringify(valor);
+for (idIndex = 0; idIndex < arrayIdsUtilizados.length; idIndex++) { dadosIds.push({ grupo: idIndex, ids: prepararValor( 'IdsUtilizados', idIndex, 'ids', arrayIdsUtilizados[idIndex] ) }); }
 
-                        } else {
+var worksheetIds = XLSX.utils.jsontosheet( dadosIds.length > 0 ? dadosIds : [{ grupo: '', ids: '[]' }] );
 
-                            linha[chave] = valor;
+XLSX.utils.bookappendsheet( workbook, worksheetIds, 'IdsUtilizados' );
 
-                        }
+var worksheetExtras = XLSX.utils.jsontosheet( extras.length > 0 ? extras : [{ aba: '', indice: '', campo: '', parte: '', totalPartes: '', conteudo: '' }] );
 
-                    });
+XLSX.utils.bookappendsheet( workbook, worksheetExtras, 'BackupExtra' );
 
-                    return linha;
+var data = new Date(); var dia = String(data.getDate()).padStart(2, '0'); var mes = String(data.getMonth() + 1).padStart(2, '0'); var ano = data.getFullYear();
 
-                });
+var nomeArquivo = 'backupUninter_' + dia + mes + ano + '.xlsx';
 
-                worksheet = dadosPlanilha.length > 0
-                    ? XLSX.utils.json_to_sheet(dadosPlanilha)
-                    : XLSX.utils.aoa_to_sheet([]);
+XLSX.writeFile(workbook, nomeArquivo);
 
-            }
+console.log('Abas exportadas:', workbook.SheetNames); console.log('Partes extras:', extras.length);
 
-            XLSX.utils.book_append_sheet(
-                workbook,
-                worksheet,
-                item.nomeAba
-            );
+alert( 'Backup exportado com sucesso!\n\n' + 'Arquivo: ' + nomeArquivo + '\n\n' + 'Partes extras: ' + extras.length );
 
-        });
+} catch (erro) { console.error('Erro ao exportar backup:', erro);
 
-        // Exportação do histórico de IDs utilizados
-
-        const dadosIds = arrayIdsUtilizados.map(
-            (grupo, indice) => ({
-
-                grupo: indice,
-                ids: JSON.stringify(grupo)
-
-            })
-        );
-
-        const worksheetIds = XLSX.utils.json_to_sheet(
-            dadosIds.length > 0
-                ? dadosIds
-                : [{ grupo: '', ids: '[]' }]
-        );
-
-        XLSX.utils.book_append_sheet(
-            workbook,
-            worksheetIds,
-            'IdsUtilizados'
-        );
-
-        // Nome do arquivo com a data atual
-
-        const data = new Date();
-
-        const dia = String(
-            data.getDate()
-        ).padStart(2, '0');
-
-        const mes = String(
-            data.getMonth() + 1
-        ).padStart(2, '0');
-
-        const ano = data.getFullYear();
-
-        const dataBackup = `${dia}${mes}${ano}`;
-
-        const nomeArquivo =
-            `backupUninter_${dataBackup}.xlsx`;
-
-        // Geração do arquivo Excel
-
-        XLSX.writeFile(
-            workbook,
-            nomeArquivo
-        );
-
-        console.log(
-            'Abas exportadas:',
-            workbook.SheetNames
-        );
-
-        console.log(
-            `Backup exportado com sucesso: ${nomeArquivo}`
-        );
-
-        alert(
-            'Backup exportado com sucesso!\n\n' +
-            `Arquivo: ${nomeArquivo}\n\n` +
-            `Abas: ${workbook.SheetNames.join(', ')}`
-        );
-
-    } catch (erro) {
-
-        console.error(
-            'Erro ao exportar backup:',
-            erro
-        );
-
-        alert(
-            'Não foi possível exportar o backup.\n\n' +
-            'Verifique o console do navegador para mais detalhes.'
-        );
-
-    }
-
+alert( 'Não foi possível exportar o backup.\n\n' + 'Erro: ' + erro.message ); } 
 };
 
 window.importarBackup = function (input) {
