@@ -437,7 +437,7 @@ linha[chave] = prepararValor( item.nomeAba, k, chave, objeto[chave] ); }
 
 linhasDados.push(linha); }
 
-worksheet = linhasDados.length > 0 ? XLSX.utils.jsontosheet(linhasDados) : XLSX.utils.aoatosheet([]); }
+worksheet = linhasDados.length > 0 ? XLSX.utils.json_to_sheet(linhasDados) : XLSX.utils.aoatosheet([]); }
 
 XLSX.utils.bookappendsheet( workbook, worksheet, item.nomeAba ); }
 
