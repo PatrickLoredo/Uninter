@@ -391,7 +391,9 @@ function dividirTextoParaExcel(texto, tamanhoMaximo = 30000) { const partes = []
     return partes.length > 0 ? partes : ['']; 
 }
 
-window.exportarBackup = function () { if (typeof XLSX === 'undefined') { alert('Erro: a biblioteca SheetJS não foi carregada.'); console.error('XLSX não está disponível.'); return; }
+window.exportarBackup = function () {
+
+if (typeof XLSX === 'undefined') { alert( 'Erro: a biblioteca SheetJS não foi carregada.\n\n' + 'Verifique o carregamento do XLSX no HTML.' ); console.error('XLSX não está disponível.'); return; }
 
 try { var workbook = XLSX.utils.book_new(); var limite = 30000; var extras = [];
 
@@ -427,7 +429,9 @@ if (item.nomeAba === 'Icones') { var linhas = [['dados']]; var j;
 
 for (j = 0; j < item.dados.length; j++) { linhas.push([ prepararValor( item.nomeAba, j, 'dados', item.dados[j] ) ]); }
 
-worksheet = XLSX.utils.aoatosheet(linhas); } else { var linhasDados = []; var k;
+worksheet = XLSX.utils.aoatosheet(linhas);
+
+} else { var linhasDados = []; var k;
 
 for (k = 0; k < item.dados.length; k++) { var objeto = item.dados[k]; var linha = {}; var chaves = Object.keys(objeto); var c;
 
@@ -437,11 +441,11 @@ linha[chave] = prepararValor( item.nomeAba, k, chave, objeto[chave] ); }
 
 linhasDados.push(linha); }
 
-worksheet = linhasDados.length > 0 ? XLSX.utils.json_to_sheet(linhasDados) : XLSX.utils.aoatosheet([]); }
+worksheet = linhasDados.length > 0 ? XLSX.utils.jsontosheet(linhasDados) : XLSX.utils.aoatosheet([]); }
 
 XLSX.utils.bookappendsheet( workbook, worksheet, item.nomeAba ); }
 
-var dadosIds = []; var idIndex;
+// Exportação do histórico de IDs utilizados. var dadosIds = []; var idIndex;
 
 for (idIndex = 0; idIndex < arrayIdsUtilizados.length; idIndex++) { dadosIds.push({ grupo: idIndex, ids: prepararValor( 'IdsUtilizados', idIndex, 'ids', arrayIdsUtilizados[idIndex] ) }); }
 
@@ -449,24 +453,25 @@ var worksheetIds = XLSX.utils.jsontosheet( dadosIds.length > 0 ? dadosIds : [{ g
 
 XLSX.utils.bookappendsheet( workbook, worksheetIds, 'IdsUtilizados' );
 
-var worksheetExtras = XLSX.utils.jsontosheet( extras.length > 0 ? extras : [{ aba: '', indice: '', campo: '', parte: '', totalPartes: '', conteudo: '' }] );
+// Aba auxiliar para textos grandes. var worksheetExtras = XLSX.utils.jsontosheet( extras.length > 0 ? extras : [{ aba: '', indice: '', campo: '', parte: '', totalPartes: '', conteudo: '' }] );
 
 XLSX.utils.bookappendsheet( workbook, worksheetExtras, 'BackupExtra' );
 
-var data = new Date(); var dia = String(data.getDate()).padStart(2, '0'); var mes = String(data.getMonth() + 1).padStart(2, '0'); var ano = data.getFullYear();
+// Nome do arquivo com a data atual. var data = new Date();
+
+var dia = String(data.getDate()).padStart(2, '0'); var mes = String(data.getMonth() + 1).padStart(2, '0'); var ano = data.getFullYear();
 
 var nomeArquivo = 'backupUninter_' + dia + mes + ano + '.xlsx';
 
-XLSX.writeFile(workbook, nomeArquivo);
+// Geração do arquivo Excel. XLSX.writeFile(workbook, nomeArquivo);
 
-console.log('Abas exportadas:', workbook.SheetNames); console.log('Partes extras:', extras.length);
+console.log('Abas exportadas:', workbook.SheetNames); console.log('Partes extras exportadas:', extras.length);
 
-alert( 'Backup exportado com sucesso!\n\n' + 'Arquivo: ' + nomeArquivo + '\n\n' + 'Partes extras: ' + extras.length );
+alert( 'Backup exportado com sucesso!\n\n' + 'Arquivo: ' + nomeArquivo + '\n\n' + 'Abas: ' + workbook.SheetNames.join(', ') + '\n\n' + 'Partes extras: ' + extras.length );
 
 } catch (erro) { console.error('Erro ao exportar backup:', erro);
 
-alert( 'Não foi possível exportar o backup.\n\n' + 'Erro: ' + erro.message ); } 
-};
+alert( 'Não foi possível exportar o backup.\n\n' + 'Erro: ' + erro.message ); } };
 
 window.importarBackup = function (input) {
 
