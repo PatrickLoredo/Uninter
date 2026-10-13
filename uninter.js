@@ -1771,7 +1771,7 @@ function salvarAnotacaoMateria() {
     // LIMPA CAMPOS
     document.getElementById('inputDataInicioAnotacoes').value = '';
     document.getElementById('inputPeriodoAnotacoes').value = '1';
-    document.getElementById('inputNomeMateriaAnotacoes').value = 'Aula Teórica X - ';
+    document.getElementById('inputNomeMateriaAnotacoes').value = '';
     document.getElementById('textAreaAnotacaoMateria').value = '';
 
     // GERA O PRÓXIMO ID DE ANOTAÇÃO
@@ -2041,6 +2041,9 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
                         aria-controls="${idCollapseDisciplina}">
                         ${disciplina.nome}
                     </button>
+                    <span id="tollIcon_${disciplina.nome}" class="tollIcon">
+                        
+                    </span>
                 </div>
             </div>
 
@@ -2056,6 +2059,7 @@ function populaAnotacoesPorPeriodo(periodoSelecionado) {
             </div>
         `;
     }
+
 
     if (!encontrouDisciplina) {
 

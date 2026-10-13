@@ -195,7 +195,8 @@ a{
 .roundedUpStatusPendente,
 .roundedUpStatusFinalizado,
 .btnExpandText,
-.btnExpansivo{
+.btnExpansivo,
+.tollIcon{
     position: relative;
     z-index: 99;
 }
@@ -207,7 +208,15 @@ a{
     padding: 3px 15px;
     font-weight: bold;
 }
-
+.tollIcon{
+    bottom: 55%;
+    left: 95%;
+    padding: 8.2px;
+    border-radius: 0 20px 20px 0;
+    background-color: darkred;
+    font-weight: bold;
+    color: white;
+}
 .btnExpandText{
     top: 15px;
     right: -95%;
